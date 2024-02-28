@@ -40,6 +40,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    isVerifiedEmail: {
+      type:DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    emailToken: {
+      type: DataTypes.STRING,
+      
+    },
+
+
   });
   
   Taxpayer.associate = (models) => {

@@ -24,11 +24,11 @@ app.use(cors(
 app.use(bodyparser.json());
 app.use("/api/taxpayer", taxpayerRoutes);
 app.use((err, req, res, next) => {
-  console.log(err);
+  console.log(err); 
   res.status(err.status || 500).send("Something went wrong!");
 });
 
-db.sequelize.sync().then(() => {
+db.sequelize.sync({force:true}).then(() => {
   app.listen(3000, () => {  
     console.log("Server running on port 3000");
   }); 
