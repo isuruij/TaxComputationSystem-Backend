@@ -40,7 +40,7 @@ module.exports.loginTaxpayer = async (obj) => {
     if (!isMatch) {
       return { status: false, message:"Invalid credentials"};
     } else {
-      return { status: true, name: taxpayer.dataValues.name };
+      return { status: true, name: taxpayer.dataValues.name ,id:taxpayer.dataValues.id};
     }
   } catch (error) {
     console.error("Error in login:", error);

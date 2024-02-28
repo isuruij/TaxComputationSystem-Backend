@@ -17,7 +17,8 @@ module.exports.addTaxpayer = async (req, res) => {
 };
 
 module.exports.authenticateTaxpayer = async (req, res) => {
-  res.json({ Status: "Success", Data: req.name });
+  
+  res.json({ Status: "Success", name: req.name });
 };
 
 module.exports.loginTaxpayer = async (req, res) => {

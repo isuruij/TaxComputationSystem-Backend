@@ -15,9 +15,7 @@ module.exports.verifyuser = async (req, res, next) => {
   try {
     const token = req.cookies.token;
     const decoded = jwt.verify(token, "key");
-    
     req.name = decoded.name;
-    
     next();
   } catch (e) {
     res.status(401).send({ error: "please authenticate" });

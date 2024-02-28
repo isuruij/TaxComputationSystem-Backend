@@ -22,7 +22,7 @@ module.exports.loginTaxpayer = async (data) => {
     const avalable = await TaxpayerRepository.loginTaxpayer(data);
     
     if (avalable.status) {
-      const tokenData = { name: avalable.name, role: "taxpayer" };
+      const tokenData = {id:avalable.id, name: avalable.name, role: "taxpayer" };
       const recived = JwtService.createToken(tokenData);
       
       return recived;
