@@ -1,20 +1,45 @@
 const bcrypt = require("bcrypt");
 const { Taxpayer } = require("../models");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto")
+const crypto = require("crypto");
 
 module.exports.addTaxpayer = async (obj) => {
   try {
-    
     const hashedPw = await bcrypt.hash(obj.password.toString(), 8);
     var data = obj;
     data.password = hashedPw;
     const r = await Taxpayer.create(data);
-    console.log(r);
     return { status: true };
   } catch (error) {
-    console.log("came to catch")
     return { status: false };
+  }
+};
+
+module.exports.loginTaxpayer = async (obj) => {
+  try {
+    const taxpayer = await Taxpayer.findOne({
+      where: {
+        email: obj.email,
+      },
+    });
+
+    if (!taxpayer) {
+      return { status: false, message:"Taxpayer not found"};
+    }
+
+    const isMatch = await bcrypt.compare(
+      obj.password.toString(),
+      taxpayer.password
+    );
+
+    if (!isMatch) {
+      return { status: false, message:"Invalid credentials"};
+    } else {
+      return { status: true, data: obj };
+    }
+  } catch (error) {
+    console.error("Error in login:", error);
+    throw error;
   }
 };
 

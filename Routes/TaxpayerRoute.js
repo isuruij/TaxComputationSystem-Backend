@@ -16,19 +16,9 @@ router.get("/auth",JwtService.verifyuser,TaxpayerController.authenticateTaxpayer
  
 router.get("/logout",TaxpayerController.logoutTaxpayer);
  
-router.post('/login',async (req,res)=>{
-    try{
-        const data = await service.loginTaxpayer(req.body)
-        const token = jwt.sign({data},"key")
-        res.cookie("token",token)
-        res.json({Status:"Success",Data:data})
-        //res.status(201).send('created successfully !.')
-    }catch(error){
-        res.json({Status:"Falied to login"})
-    } 
-})
+router.post('/login',TaxpayerController.loginTaxpayer);
 
-
+ 
 // router.get('/register',async (req,res)=>{
 //     try{
 
