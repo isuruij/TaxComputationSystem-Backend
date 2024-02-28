@@ -4,7 +4,7 @@ module.exports.addTaxpayer = async (req, res) => {
     if (!req.body) {
       return res.status(400).json({ error: "empty request" });
     }
-
+    
     const result = await TaxpayerService.addTaxpayer(req.body);
     if (result.status) {
       res.cookie("token", result.token);
