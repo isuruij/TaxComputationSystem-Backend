@@ -22,6 +22,9 @@ module.exports.loginTaxpayer = async (obj) => {
         email: obj.email,
       },
     });
+   
+    console.log(taxpayer.dataValues.id)
+    
 
     if (!taxpayer) {
       return { status: false, message:"Taxpayer not found"};
@@ -32,10 +35,12 @@ module.exports.loginTaxpayer = async (obj) => {
       taxpayer.password
     );
 
+    
+
     if (!isMatch) {
       return { status: false, message:"Invalid credentials"};
     } else {
-      return { status: true, data: obj };
+      return { status: true, name: taxpayer.dataValues.name };
     }
   } catch (error) {
     console.error("Error in login:", error);

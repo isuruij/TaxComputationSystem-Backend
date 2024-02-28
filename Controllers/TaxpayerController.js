@@ -26,7 +26,8 @@ module.exports.loginTaxpayer = async (req, res) => {
     return res.status(400).json({ error: "empty request" });
   }
   const result = await TaxpayerService.loginTaxpayer(req.body);
-  console.log(result)
+  
+  
   if (!result.status) {
     console.log("failed login")
     res.json({ Status: "Failed"});

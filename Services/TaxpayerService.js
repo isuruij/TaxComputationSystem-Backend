@@ -7,6 +7,7 @@ module.exports.addTaxpayer = async (data) => {
     const created = await TaxpayerRepository.addTaxpayer(data);
     if (created.status) {
       const tokenData = { name: data.name, role: "taxpayer" };
+      
       const recived = JwtService.createToken(tokenData);
       return recived;
     }
@@ -19,9 +20,11 @@ module.exports.addTaxpayer = async (data) => {
 module.exports.loginTaxpayer = async (data) => {
   try {
     const avalable = await TaxpayerRepository.loginTaxpayer(data);
+    
     if (avalable.status) {
-      const tokenData = { name: data.name, role: "taxpayer" };
+      const tokenData = { name: avalable.name, role: "taxpayer" };
       const recived = JwtService.createToken(tokenData);
+      
       return recived;
     }else{
       return { status: false, message: "Invalid credentials" };
