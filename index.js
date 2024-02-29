@@ -28,8 +28,8 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).send("Something went wrong!");
 });
 
-db.sequelize.sync({force:true}).then(() => {
-  app.listen(3000, () => {  
+db.sequelize.sync().then(() => {
+  app.listen(3000, () => {    
     console.log("Server running on port 3000");
   }); 
 });      

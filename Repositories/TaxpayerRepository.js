@@ -8,6 +8,7 @@ module.exports.addTaxpayer = async (obj) => {
     const hashedPw = await bcrypt.hash(obj.password.toString(), 8);
     var data = obj;
     data.password = hashedPw;
+    data.emailToken = crypto.randomBytes(64).toString("hex");
     const r = await Taxpayer.create(data);
     return { status: true };
   } catch (error) {
