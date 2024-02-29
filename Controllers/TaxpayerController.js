@@ -52,16 +52,16 @@ module.exports.logoutTaxpayer = async (req, res) => {
 module.exports.verifyEmail = async (req, res) => {
   const emailToken = req.body.emailToken;
   if (!emailToken) {
-    return res.status(400).json({ error: "empty request" });
+    return res.status(400).json({status:"Failed", error: "empty request" });
   } 
   let user = await Taxpayer.findOne({ where: { emailToken: emailToken } });
 
   if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({status:"Failed", error: "User not found" });
   }
 
   await Taxpayer.update({ isVerifiedEmail: true,emailToken:null }, { where: { emailToken: emailToken } });
   await Taxpayer.findOne({ where: { emailToken: emailToken } });
-  return res.status(200).json({ message: "User verified successfully"});
+  return res.status(200).json({status:"Success" ,message: "User verified successfully"});
 };
 

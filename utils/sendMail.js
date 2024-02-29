@@ -18,7 +18,6 @@ const sendMail = (name,email,emailToken) => {
         subject: 'Please verify your email...',
         html:`<p>Hello ${name}, verify your email address by clicking on this</p>
         <br>
-        <p>${emailToken}</p>
         <br>
         <a href="http://localhost:5173/verify-email?emailToken=${emailToken}">Click here to verify</a>
         `
