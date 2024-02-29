@@ -1,4 +1,5 @@
 const TaxpayerService = require("../Services/TaxpayerService");
+const createMailTransporter = require('../utils/createMailTransporter');
 const { Taxpayer } = require("../models");
 module.exports.addTaxpayer = async (req, res) => {
   try {
@@ -8,6 +9,7 @@ module.exports.addTaxpayer = async (req, res) => {
 
     const result = await TaxpayerService.addTaxpayer(req.body);
     if (result.status) {
+      createMailTransporter();
       res.cookie("token", result.token);
       return res.json({ Status: "Success" });
     }
