@@ -11,7 +11,7 @@ module.exports.addTaxpayer = async (obj) => {
     data.password = hashedPw;
     data.emailToken = crypto.randomBytes(64).toString("hex");
     const r = await Taxpayer.create(data);
-    sendMail(obj.name,obj.email);
+    sendMail(data.name,data.email,data.emailToken);
     return { status: true };
   } catch (error) {
     return { status: false };

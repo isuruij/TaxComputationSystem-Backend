@@ -50,7 +50,7 @@ module.exports.logoutTaxpayer = async (req, res) => {
 
 
 module.exports.verifyEmail = async (req, res) => {
-  const emailToken = req.params.emailToken;
+  const emailToken = req.body.emailToken;
   if (!emailToken) {
     return res.status(400).json({ error: "empty request" });
   } 

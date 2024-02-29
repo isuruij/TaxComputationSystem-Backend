@@ -18,7 +18,7 @@ router.get("/logout",TaxpayerController.logoutTaxpayer);
  
 router.post('/login',TaxpayerController.loginTaxpayer);
 
-router.patch('/verify-email/:emailToken',TaxpayerController.verifyEmail);
+router.patch('/verifyemail',TaxpayerController.verifyEmail);
 
  
 // router.get('/register',async (req,res)=>{
