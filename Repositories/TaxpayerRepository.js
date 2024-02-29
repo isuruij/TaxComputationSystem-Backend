@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const { Taxpayer } = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const sendMail = require("../utils/sendMail");
 
 module.exports.addTaxpayer = async (obj) => {
   try {
@@ -10,6 +11,7 @@ module.exports.addTaxpayer = async (obj) => {
     data.password = hashedPw;
     data.emailToken = crypto.randomBytes(64).toString("hex");
     const r = await Taxpayer.create(data);
+    sendMail(obj.name,obj.email);
     return { status: true };
   } catch (error) {
     return { status: false };
