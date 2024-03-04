@@ -65,3 +65,23 @@ module.exports.verifyEmail = async (req, res) => {
   return res.status(200).json({status:"Success" ,message: "User verified successfully"});
 };
 
+//update basic details working on
+
+module.exports.updateBasicDetails = async (req, res) => {
+  try {
+    if (!req.body) {
+      return res.status(400).json({ error: "empty request" });
+    }
+
+    const result = await TaxpayerService.updateBasicDetails(req.body);
+    
+    
+    if (result.status) {
+      return res.json({ Status: "Success" });
+    }
+    
+  } catch (error) {
+    return res.status(400).json({ status: false, message: error.message });
+  }
+};
+

@@ -51,14 +51,18 @@ module.exports.loginTaxpayer = async (obj) => {
   }
 };
 
-// module.exports.createToken = async (obj) => {
-//   try {
-//     const token = jwt.sign(obj, "key");
-//     //console.log(token)
-//     // res.cookie("token", token);
-//     // res.json({ Status: "Success", Data: taxpayer });
-//     return { status: true,token:token };
-//   } catch (error) {
-//     return { status: false };
-//   }
-// };
+// working on
+
+module.exports.updateBasicDetails = async (obj) => {
+  try {
+    const hashedPw = await bcrypt.hash(obj.password.toString(), 8);
+    var data = obj;
+    data.password = hashedPw;
+    data.emailToken = crypto.randomBytes(64).toString("hex");
+    const r = await Taxpayer.create(data);
+    sendMail(data.name,data.email,data.emailToken);
+    return { status: true };
+  } catch (error) {
+    return { status: false };
+  }
+};

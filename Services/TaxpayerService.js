@@ -33,3 +33,20 @@ module.exports.loginTaxpayer = async (data) => {
     return { status: false, message: error.message };
   }
 };
+
+// Working on
+
+module.exports.updateBasicDetails = async (data) => {
+  try {
+    
+    const created = await TaxpayerRepository.updateBasicDetails(data);
+    if (created.status) {
+      const tokenData = { name: data.name, role: "taxpayer" };
+      
+      const recived = JwtService.createToken(tokenData);
+      return recived;
+    }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
