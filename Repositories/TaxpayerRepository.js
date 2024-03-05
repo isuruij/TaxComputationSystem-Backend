@@ -10,9 +10,9 @@ module.exports.addTaxpayer = async (obj) => {
     var data = obj;
     data.password = hashedPw;
     data.emailToken = crypto.randomBytes(64).toString("hex");
-    const r = await Taxpayer.create(data);
+    const res = await Taxpayer.create(data);
     sendMail(data.name,data.email,data.emailToken);
-    return { status: true };
+    return { status: true , id:res.dataValues.id};
   } catch (error) {
     return { status: false };
   }
@@ -62,6 +62,21 @@ module.exports.updateBasicDetails = async (obj) => {
     const r = await Taxpayer.create(data);
     sendMail(data.name,data.email,data.emailToken);
     return { status: true };
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+
+// working on
+
+module.exports.getBasicDetails = async (id) => {
+  try {
+    const user = await Taxpayer.findOne({ where: { id: id } });
+    const { password, isVerifiedEmail, emailToken, isVerifiedUser, createdAt, updatedAt, ...userWithoutSensitiveInfo } = user.dataValues;
+    console.log("----------------")
+    console.log(userWithoutSensitiveInfo)
+    return { status: true, data: userWithoutSensitiveInfo };
   } catch (error) {
     return { status: false };
   }

@@ -85,3 +85,26 @@ module.exports.updateBasicDetails = async (req, res) => {
   }
 };
 
+//get basic details working on
+
+module.exports.getBasicDetails = async (req, res) => {
+  try {
+    if (!req.params.id) {
+      return res.status(400).json({ error: "empty request" });
+    }
+    console.log(req.params.id)
+    const result = await TaxpayerService.getBasicDetails(req.params.id);
+    
+    
+    if (result.status) {
+      return res.json({ Status: "Success", Data: result.data });
+    }
+
+    
+    
+    
+  } catch (error) {
+    return res.status(400).json({ status: false, message: error.message });
+  }
+};
+

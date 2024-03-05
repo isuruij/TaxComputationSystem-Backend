@@ -6,8 +6,7 @@ module.exports.addTaxpayer = async (data) => {
     
     const created = await TaxpayerRepository.addTaxpayer(data);
     if (created.status) {
-      const tokenData = { name: data.name, role: "taxpayer" };
-      
+      const tokenData = {id:created.id, name: data.name, role: "taxpayer" };
       const recived = JwtService.createToken(tokenData);
       return recived;
     }
@@ -45,6 +44,21 @@ module.exports.updateBasicDetails = async (data) => {
       
       const recived = JwtService.createToken(tokenData);
       return recived;
+    }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+
+// Working on
+
+module.exports.getBasicDetails = async (id) => {
+  try {
+    
+    const created = await TaxpayerRepository.getBasicDetails(id);
+    if (created.status) {
+      return { status: true, data: created.data };
     }
   } catch (error) {
     return { status: false, message: error.message };

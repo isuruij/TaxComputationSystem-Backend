@@ -20,6 +20,8 @@ router.post('/login',TaxpayerController.loginTaxpayer);
 
 router.patch('/verifyemail',TaxpayerController.verifyEmail);
 
+router.get('/getuserbasicdetails/:id',TaxpayerController.getBasicDetails); 
+
 router.patch('/updatebasicdetails',TaxpayerController.updateBasicDetails); 
 
 
