@@ -73,7 +73,7 @@ module.exports.updateBasicDetails = async (obj) => {
 module.exports.getBasicDetails = async (id) => {
   try {
     const user = await Taxpayer.findOne({ where: { id: id } });
-    const { password, isVerifiedEmail, emailToken, isVerifiedUser, createdAt, updatedAt, ...userWithoutSensitiveInfo } = user.dataValues;
+    const { password, emailToken,  createdAt, updatedAt, ...userWithoutSensitiveInfo } = user.dataValues;
     console.log("----------------")
     console.log(userWithoutSensitiveInfo)
     return { status: true, data: userWithoutSensitiveInfo };
