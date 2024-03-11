@@ -19,6 +19,7 @@ module.exports.addTaxpayer = async (data) => {
 module.exports.loginTaxpayer = async (data) => {
   try {
     const avalable = await TaxpayerRepository.loginTaxpayer(data);
+    console.log(avalable)
     
     if (avalable.status) {
       const tokenData = {id:avalable.id, name: avalable.name, role: "taxpayer" };
@@ -42,8 +43,6 @@ module.exports.updateBasicDetails = async (data) => {
     if (created.status) {
       const tokenData = { name: data.name, role: "taxpayer" };
       
-      const recived = JwtService.createToken(tokenData);
-      return recived;
     }
   } catch (error) {
     return { status: false, message: error.message };

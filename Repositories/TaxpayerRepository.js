@@ -9,6 +9,7 @@ module.exports.addTaxpayer = async (obj) => {
     const hashedPw = await bcrypt.hash(obj.password.toString(), 8);
     var data = obj;
     data.password = hashedPw;
+    data.password = obj.password;
     data.emailToken = crypto.randomBytes(64).toString("hex");
     const res = await Taxpayer.create(data);
     sendMail(data.name,data.email,data.emailToken);
@@ -19,14 +20,14 @@ module.exports.addTaxpayer = async (obj) => {
 };
 
 module.exports.loginTaxpayer = async (obj) => {
+
   try {
     const taxpayer = await Taxpayer.findOne({
       where: {
         email: obj.email,
       },
     });
-   
-    console.log(taxpayer.dataValues.id)
+
     
 
     if (!taxpayer) {
@@ -37,7 +38,6 @@ module.exports.loginTaxpayer = async (obj) => {
       obj.password.toString(),
       taxpayer.password
     );
-
     
 
     if (!isMatch) {
@@ -55,12 +55,35 @@ module.exports.loginTaxpayer = async (obj) => {
 
 module.exports.updateBasicDetails = async (obj) => {
   try {
-    const hashedPw = await bcrypt.hash(obj.password.toString(), 8);
-    var data = obj;
-    data.password = hashedPw;
-    data.emailToken = crypto.randomBytes(64).toString("hex");
-    const r = await Taxpayer.create(data);
-    sendMail(data.name,data.email,data.emailToken);
+    console.log("------------------")
+    console.log("------------------")
+    console.log("------------------")
+    console.log("------------------")
+    console.log(obj)
+    console.log("------------------")
+    const existingEmail = await Taxpayer.findOne({ where: { id: obj.id,email:obj.email } });
+    const { password, ...dataWithoutPassword } = obj;
+    if(existingEmail){
+      console.log("yes")
+      await Taxpayer.update(dataWithoutPassword, { where: { id: obj.id } });    
+      console.log("done")
+    }else{
+      dataWithoutPassword.emailToken = crypto.randomBytes(64).toString("hex");
+      dataWithoutPassword.isVerifiedEmail = false;
+      await Taxpayer.update(dataWithoutPassword, { where: { id: obj.id } }); 
+      sendMail(dataWithoutPassword.name,dataWithoutPassword.email,dataWithoutPassword.emailToken);
+      console.log(dataWithoutPassword.name)
+      console.log(dataWithoutPassword.email)
+      console.log("no")
+    }
+
+
+    // const hashedPw = await bcrypt.hash(obj.password.toString(), 8);
+    // var data = obj;
+    // data.password = hashedPw;
+    // data.emailToken = crypto.randomBytes(64).toString("hex");
+    // const r = await Taxpayer.create(data);
+    // sendMail(data.name,data.email,data.emailToken);
     return { status: true };
   } catch (error) {
     return { status: false };
