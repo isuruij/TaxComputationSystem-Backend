@@ -55,12 +55,6 @@ module.exports.loginTaxpayer = async (obj) => {
 
 module.exports.updateBasicDetails = async (obj) => {
   try {
-    console.log("------------------")
-    console.log("------------------")
-    console.log("------------------")
-    console.log("------------------")
-    console.log(obj)
-    console.log("------------------")
     const existingEmail = await Taxpayer.findOne({ where: { id: obj.id,email:obj.email } });
     const { password, ...dataWithoutPassword } = obj;
     if(existingEmail){

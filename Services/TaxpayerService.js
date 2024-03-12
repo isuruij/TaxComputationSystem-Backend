@@ -40,10 +40,8 @@ module.exports.updateBasicDetails = async (data) => {
   try {
     
     const created = await TaxpayerRepository.updateBasicDetails(data);
-    if (created.status) {
-      const tokenData = { name: data.name, role: "taxpayer" };
-      
-    }
+    return created;
+
   } catch (error) {
     return { status: false, message: error.message };
   }

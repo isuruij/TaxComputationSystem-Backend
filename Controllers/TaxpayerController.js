@@ -77,6 +77,7 @@ module.exports.updateBasicDetails = async (req, res) => {
     
     
     if (result.status) {
+      console.log("sucesssssssss")
       return res.json({ Status: "Success" });
     }
     
