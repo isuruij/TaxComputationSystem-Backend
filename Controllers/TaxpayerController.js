@@ -13,6 +13,9 @@ module.exports.addTaxpayer = async (req, res) => {
       res.cookie("token", result.token);
       return res.json({ Status: "Success" });
     }
+    if(result.message=="already registered"){
+      return res.json({ status: false,message:"registered user" });
+    }
     
   } catch (error) {
     return res.status(400).json({ status: false, message: error.message });

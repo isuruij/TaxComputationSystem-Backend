@@ -6,6 +6,10 @@ const sendMail = require("../utils/sendMail");
 
 module.exports.addTaxpayer = async (obj) => {
   try {
+    const existingEmail = await Taxpayer.findOne({ where: { email:obj.email } });
+    if(existingEmail){
+      return { status: false,message:"already registered" };
+    }
     const hashedPw = await bcrypt.hash(obj.password.toString(), 8);
     var data = obj;
     data.password = hashedPw;
