@@ -22,7 +22,9 @@ router.patch('/verifyemail',TaxpayerController.verifyEmail);
 
 router.get('/getuserbasicdetails/:id',TaxpayerController.getBasicDetails); 
 
-router.patch('/updatebasicdetails',TaxpayerController.updateBasicDetails); 
+router.patch('/updatebasicdetails',TaxpayerController.updateBasicDetails);
+
+router.post('/forgot-password',TaxpayerController.forgotPassword);    
 
 
 module.exports = router;

@@ -34,7 +34,7 @@ module.exports.loginTaxpayer = async (data) => {
   }
 };
 
-// Working on
+
 
 module.exports.updateBasicDetails = async (data) => {
   try {
@@ -48,7 +48,7 @@ module.exports.updateBasicDetails = async (data) => {
 };
 
 
-// Working on
+
 
 module.exports.getBasicDetails = async (id) => {
   try {
@@ -56,6 +56,19 @@ module.exports.getBasicDetails = async (id) => {
     const created = await TaxpayerRepository.getBasicDetails(id);
     if (created.status) {
       return { status: true, data: created.data };
+    }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+
+module.exports.forgotPassword = async (email) => {
+  try {
+    
+    const created = await TaxpayerRepository.forgotPassword(email);
+    if (created.status) {
+      return { status: true };
     }
   } catch (error) {
     return { status: false, message: error.message };

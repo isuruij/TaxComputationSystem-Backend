@@ -51,7 +51,7 @@ module.exports.loginTaxpayer = async (obj) => {
   }
 };
 
-// working on
+
 
 module.exports.updateBasicDetails = async (obj) => {
   try {
@@ -71,13 +71,6 @@ module.exports.updateBasicDetails = async (obj) => {
       console.log("no")
     }
 
-
-    // const hashedPw = await bcrypt.hash(obj.password.toString(), 8);
-    // var data = obj;
-    // data.password = hashedPw;
-    // data.emailToken = crypto.randomBytes(64).toString("hex");
-    // const r = await Taxpayer.create(data);
-    // sendMail(data.name,data.email,data.emailToken);
     return { status: true };
   } catch (error) {
     return { status: false };
@@ -85,14 +78,27 @@ module.exports.updateBasicDetails = async (obj) => {
 };
 
 
-// working on
-
 module.exports.getBasicDetails = async (id) => {
   try {
     const user = await Taxpayer.findOne({ where: { id: id } });
     const { password, emailToken,  createdAt, updatedAt, ...userWithoutSensitiveInfo } = user.dataValues;
     console.log("----------------")
     console.log(userWithoutSensitiveInfo)
+    return { status: true, data: userWithoutSensitiveInfo };
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+
+module.exports.forgotPassword = async (email) => {
+  try {
+    
+    const existingEmail = await Taxpayer.findOne({ where: { email:email } });
+    if(!existingEmail){
+      console.log("no email")
+      return { status: false, message:"Email not found"};
+    }
     return { status: true, data: userWithoutSensitiveInfo };
   } catch (error) {
     return { status: false };

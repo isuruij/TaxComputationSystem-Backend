@@ -65,7 +65,7 @@ module.exports.verifyEmail = async (req, res) => {
   return res.status(200).json({status:"Success" ,message: "User verified successfully"});
 };
 
-//update basic details working on
+
 
 module.exports.updateBasicDetails = async (req, res) => {
   try {
@@ -86,7 +86,7 @@ module.exports.updateBasicDetails = async (req, res) => {
   }
 };
 
-//get basic details working on
+
 
 module.exports.getBasicDetails = async (req, res) => {
   try {
@@ -108,4 +108,27 @@ module.exports.getBasicDetails = async (req, res) => {
     return res.status(400).json({ status: false, message: error.message });
   }
 };
+
+module.exports.forgotPassword = async (req, res) => {
+  try {
+    if (!req.body.email) {
+      return res.status(400).json({ error: "empty request" });
+    }
+    //console.log(req.params.id)
+    const result = await TaxpayerService.forgotPassword(req.body.email);
+    
+    
+    if (result.status) {
+      return res.json({ Status: "Success", Data: result.data });
+    }
+
+    
+    
+    
+  } catch (error) {
+    return res.status(400).json({ status: false, message: error.message });
+  }
+};
+
+
 
