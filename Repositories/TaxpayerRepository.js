@@ -8,7 +8,7 @@ module.exports.addTaxpayer = async (obj) => {
   try {
     const existingEmail = await Taxpayer.findOne({ where: { email:obj.email } });
     if(existingEmail){
-      return { status: false,message:"already registered" };
+      return { status: false,message:"already registered email" };
     }
     const hashedPw = await bcrypt.hash(obj.password.toString(), 8);
     var data = obj;
@@ -59,6 +59,7 @@ module.exports.loginTaxpayer = async (obj) => {
 
 module.exports.updateBasicDetails = async (obj) => {
   try {
+    //checking is there ant taxpayer with given id and email
     const existingEmail = await Taxpayer.findOne({ where: { id: obj.id,email:obj.email } });
     const { password, ...dataWithoutPassword } = obj;
     if(existingEmail){
@@ -66,6 +67,13 @@ module.exports.updateBasicDetails = async (obj) => {
       await Taxpayer.update(dataWithoutPassword, { where: { id: obj.id } });    
       console.log("done")
     }else{
+
+      //checking user enterd email is previously entered or not
+      const existingEmail = await Taxpayer.findOne({ where: { email:obj.email } });
+      if(existingEmail){
+        return { status: false,message:"already registered email" };
+      }
+
       dataWithoutPassword.emailToken = crypto.randomBytes(64).toString("hex");
       dataWithoutPassword.isVerifiedEmail = false;
       await Taxpayer.update(dataWithoutPassword, { where: { id: obj.id } }); 

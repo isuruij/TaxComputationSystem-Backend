@@ -13,8 +13,8 @@ module.exports.addTaxpayer = async (req, res) => {
       res.cookie("token", result.token);
       return res.json({ Status: "Success" });
     }
-    if(result.message=="already registered"){
-      return res.json({ status: false,message:"registered user" });
+    if(result.message=="already registered email"){
+      return res.json({ status: false,message:"already registered email" });
     }
     
   } catch (error) {
@@ -83,9 +83,13 @@ module.exports.updateBasicDetails = async (req, res) => {
       console.log("sucesssssssss")
       return res.json({ Status: "Success" });
     }
+
+    if(result.message=="already registered email"){
+      return res.json({ Status: "NotSuccess" , message:"already registered email"});
+    }
     
   } catch (error) {
-    return res.status(400).json({ status: false, message: error.message });
+    return res.status(400).json({Status: "NotSuccess", message: error.message });
   }
 };
 
