@@ -124,7 +124,6 @@ module.exports.forgotPassword = async (req, res) => {
     //console.log(req.params.id)
     const result = await TaxpayerService.forgotPassword(req.body.email);
     
-    
     if (result.status) {
       return res.json({ Status: "Success", Data: result.data });
     }

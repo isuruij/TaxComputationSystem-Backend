@@ -7,8 +7,8 @@ const sendMail = (name,email,emailToken) => {
         port: 587, 
         secure: false, 
         auth: {
-          user: "isuruijs@gmail.com",
-          pass: "vahglsggdpidutpb",
+          user: process.env.EMAIL,
+          pass: process.env.EMAIL_PASSWORD,
         },
     });
 

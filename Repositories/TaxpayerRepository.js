@@ -107,10 +107,12 @@ module.exports.forgotPassword = async (email) => {
   try {
     
     const existingEmail = await Taxpayer.findOne({ where: { email:email } });
+    console.log(existingEmail)
     if(!existingEmail){
       console.log("no email")
       return { status: false, message:"Email not found"};
     }
+    
     return { status: true, data: userWithoutSensitiveInfo };
   } catch (error) {
     return { status: false };
