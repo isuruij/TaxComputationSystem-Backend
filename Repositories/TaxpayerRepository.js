@@ -3,6 +3,7 @@ const { Taxpayer } = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const sendMail = require("../utils/sendMail");
+const sendVerificationMail = require("../utils/sendVerificationMail");
 
 module.exports.addTaxpayer = async (obj) => {
   try {
@@ -131,6 +132,7 @@ module.exports.forgotPassword = async (email) => {
     const link = `http://localhost:3000/api/taxpayer/reset-password/${existingEmail.id}/${token}`;
     console.log(link);
     // sendMail here
+    sendVerificationMail(existingEmail.id,existingEmail.email,token)
 
     return { status: true};
   } catch (error) {

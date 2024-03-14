@@ -128,7 +128,7 @@ module.exports.forgotPassword = async (req, res) => {
       return res.json({ Status: "NotSuccess",message:"Email not found"});
     }
   } catch (error) {
-    return res.status(400).json({ status: false, message: error.message });
+    return res.status(400).json({ Status: "NotSuccess" });
   }
 };
 
@@ -141,10 +141,10 @@ module.exports.resetPassword = async (req, res) => {
     if (result.status) {
       return res.json({ Status: "Verified" });
     }else{
-      return res.status(400).json({ Status: "NotVerified"});
+      return res.status(200).json({ Status: "NotVerified"});
     }
   } catch (error) {
-    return res.status(400).json({ Status: "NotVerified", message: error.message });
+    return res.status(200).json({ Status: "NotVerified", message: error.message });
   }
 };
 
@@ -160,11 +160,11 @@ module.exports.addNewPassword = async (req, res) => {
     if (result.status) {
       return res.json({ Status: "Verified" });
     }else{
-      return res.status(400).json({ Status: "NotVerified"});
+      return res.status(200).json({ Status: "NotVerified"});
     }
 
   } catch (error) {
-    return res.status(400).json({ Status: "NotVerified", message: error.message });
+    return res.status(200).json({ Status: "NotVerified", message: error.message });
   }
 };
 
