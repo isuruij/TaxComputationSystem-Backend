@@ -71,9 +71,31 @@ module.exports.forgotPassword = async (email) => {
   try {
     
     const created = await TaxpayerRepository.forgotPassword(email);
+    return created;
+  } catch (error) {
+    
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.resetPassword = async (id,token) => {
+  try {
+    
+    const created = await TaxpayerRepository.resetPassword(id,token);
     if (created.status) {
       return { status: true };
     }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+
+module.exports.addNewPassword = async (id,token,newPassword) => {
+  try {
+    
+    const created = await TaxpayerRepository.addNewPassword(id,token,newPassword);
+    return created;
   } catch (error) {
     return { status: false, message: error.message };
   }

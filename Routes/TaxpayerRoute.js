@@ -26,5 +26,8 @@ router.patch('/updatebasicdetails',TaxpayerController.updateBasicDetails);
 
 router.post('/forgot-password',TaxpayerController.forgotPassword);    
 
+router.get('/reset-password/:id/:token',TaxpayerController.resetPassword);
+
+router.post('/addnew-password/:id/:token',TaxpayerController.addNewPassword);
 
 module.exports = router;

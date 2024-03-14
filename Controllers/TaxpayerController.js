@@ -108,9 +108,6 @@ module.exports.getBasicDetails = async (req, res) => {
       return res.json({ Status: "Success", Data: result.data });
     }
 
-    
-    
-    
   } catch (error) {
     return res.status(400).json({ status: false, message: error.message });
   }
@@ -121,18 +118,53 @@ module.exports.forgotPassword = async (req, res) => {
     if (!req.body.email) {
       return res.status(400).json({ error: "empty request" });
     }
-    //console.log(req.params.id)
-    const result = await TaxpayerService.forgotPassword(req.body.email);
-    
-    if (result.status) {
-      return res.json({ Status: "Success", Data: result.data });
-    }
 
-    
-    
-    
+    const result = await TaxpayerService.forgotPassword(req.body.email);
+
+    if (result.status) {
+      return res.json({ Status: "Success"});
+    }
+    if(result.message=="Email not found"){
+      return res.json({ Status: "NotSuccess",message:"Email not found"});
+    }
   } catch (error) {
     return res.status(400).json({ status: false, message: error.message });
+  }
+};
+
+
+module.exports.resetPassword = async (req, res) => {
+  try {
+    
+    const {id,token} = req.params;
+    const result = await TaxpayerService.resetPassword(id,token);
+    if (result.status) {
+      return res.json({ Status: "Verified" });
+    }else{
+      return res.status(400).json({ Status: "NotVerified"});
+    }
+  } catch (error) {
+    return res.status(400).json({ Status: "NotVerified", message: error.message });
+  }
+};
+
+module.exports.addNewPassword = async (req, res) => {
+  try {
+    
+    const {id,token} = req.params;
+    const newPassword = req.body.password;
+    console.log(newPassword)
+    const result = await TaxpayerService.addNewPassword(id,token,newPassword);
+    console.log("---------------------")
+    console.log(result)
+    if (result.status) {
+      return res.json({ Status: "Verified" });
+    }else{
+      return res.status(400).json({ Status: "NotVerified"});
+    }
+
+  } catch (error) {
+    return res.status(400).json({ Status: "NotVerified", message: error.message });
   }
 };
 
