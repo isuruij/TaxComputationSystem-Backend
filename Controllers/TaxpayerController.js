@@ -150,10 +150,13 @@ module.exports.resetPassword = async (req, res) => {
 
 module.exports.addNewPassword = async (req, res) => {
   try {
-    
+    console.log(",,,,,,,,,,,,,,,,,")
+    console.log(req.body)
     const {id,token} = req.params;
     const newPassword = req.body.password;
+    console.log(id,token)
     console.log(newPassword)
+    console.log("++++++++++++")
     const result = await TaxpayerService.addNewPassword(id,token,newPassword);
     console.log("---------------------")
     console.log(result)
