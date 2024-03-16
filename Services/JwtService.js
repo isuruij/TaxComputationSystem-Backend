@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 module.exports.createToken = async (obj) => {
   try {
-    const token = jwt.sign(obj, "key");
+    const token = jwt.sign(obj, process.env.JWT_SECRET);
 
     // res.cookie("token", token);
     // res.json({ Status: "Success", Data: taxpayer });
@@ -13,15 +13,11 @@ module.exports.createToken = async (obj) => {
 
 module.exports.verifyuser = async (req, res, next) => {
   try {
-    console.log("came to validation");
     const token = req.cookies.token;
-    console.log(token);
-    const decoded = jwt.verify(token, "key");
-    console.log(decoded); 
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.name = decoded.name;
-    console.log(decoded.name);
     next();
   } catch (e) {
     res.status(401).send({ error: "please authenticate" });
   }
-};
+}; 
