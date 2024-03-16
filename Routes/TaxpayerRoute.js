@@ -18,38 +18,16 @@ router.get("/logout",TaxpayerController.logoutTaxpayer);
  
 router.post('/login',TaxpayerController.loginTaxpayer);
 
- 
-// router.get('/register',async (req,res)=>{
-//     try{
+router.patch('/verifyemail',TaxpayerController.verifyEmail);
 
-//         const taxpayer  = await Taxpayer.findAll({where:{name:req.body.name}})
-//         res.json({Status:"Success",Data:taxpayer})
-//         // await service.addTaxpayer(req.body)
-//         // const data = req.body
-//         // const token = jwt.sign({data},"key")
-//         // res.cookie("token",token)
-//         // res.json({Status:"Success",Data:data})
-//         // res.status(201).send('created successfully !.')
-//     }catch(error){
-//         res.json({Status:"Falied to register"})
-//     }
-// })
+router.get('/getuserbasicdetails/:id',TaxpayerController.getBasicDetails); 
 
-// router.post('/login',async (req,res)=>{
-//     try{
-//         const data = await service.loginTaxpayer(req.body)
-//         const token = jwt.sign({data},"key")
-//         res.cookie("token",token)
-//         res.json({Status:"Success",Data:data})
-//         //res.status(201).send('created successfully !.')
-//     }catch(error){
-//         res.json({Status:"Falied to login"})
-//     } 
-// })
+router.patch('/updatebasicdetails',TaxpayerController.updateBasicDetails);
 
+router.post('/forgot-password',TaxpayerController.forgotPassword);    
 
+router.get('/reset-password/:id/:token',TaxpayerController.resetPassword);
 
-
-
+router.post('/addnew-password/:id/:token',TaxpayerController.addNewPassword);
 
 module.exports = router;

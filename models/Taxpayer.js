@@ -48,6 +48,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       
     },
+    isVerifiedUser: {
+      type:DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
 
 
   });

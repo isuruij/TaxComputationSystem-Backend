@@ -5,31 +5,35 @@ const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt")
 require("express-async-errors");
+require('dotenv').config();
 
 const db = require("./models")
 const taxpayerRoutes = require("./Routes/TaxpayerRoute");
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
- 
+
+
+
+
 //middleware
 app.use(cors(
   {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: process.env.FRONTEND_BASE_URL,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true
   }
 ));
 
 app.use(bodyparser.json());
-app.use("/api/taxpayer", taxpayerRoutes);
+app.use("/api/taxpayer", taxpayerRoutes); 
 app.use((err, req, res, next) => {
   console.log(err); 
   res.status(err.status || 500).send("Something went wrong!");
 });
 
-db.sequelize.sync({force:true}).then(() => {
-  app.listen(3000, () => {  
+db.sequelize.sync().then(() => {
+  app.listen(3000, () => {    
     console.log("Server running on port 3000");
   }); 
-});      
+});          
