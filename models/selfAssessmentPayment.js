@@ -2,9 +2,10 @@ module.exports = (sequelize, DataTypes) => {
     const selfAssessmentPayment = sequelize.define("selfAssessmentPayment", {
 
       taxCreditId: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
       selfAssessmentPayment: {
         type: DataTypes.FLOAT,
