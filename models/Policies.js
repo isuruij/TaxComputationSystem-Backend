@@ -1,9 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
     const Policies = sequelize.define("Policies", {
         policyId: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        primaryKey: true,
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+          allowNull: false,
       },
       policyTitle: {
         type: DataTypes.STRING,

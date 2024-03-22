@@ -1,9 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
     const Document = sequelize.define("Document", {
       documentId: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
       path: {
         type: DataTypes.STRING,

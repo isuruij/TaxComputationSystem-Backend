@@ -1,9 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
   const Notification = sequelize.define("Notification", {
     notificationId: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
+      allowNull: false,
     },
     message: {
       type: DataTypes.STRING,

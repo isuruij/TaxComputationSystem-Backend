@@ -2,9 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const qualifyingPayments = sequelize.define("qualifyingPayments", {
 
     reliefid: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
+      allowNull: false,
     },
     qualifyingPayments: {
       type: DataTypes.FLOAT,
