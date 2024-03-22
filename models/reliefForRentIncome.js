@@ -2,9 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const reliefForRentIncome = sequelize.define("reliefForRentIncome", {
 
     reliefid: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
+      allowNull: false,
     },
     reliefForRentIncome: {
       type: DataTypes.FLOAT,

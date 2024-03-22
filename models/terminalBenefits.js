@@ -2,9 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const terminalBenefits = sequelize.define("terminalBenefits", {
 
     assessmentId: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
+      allowNull: false,
     },
     terminalBenefits: {
       type: DataTypes.FLOAT,

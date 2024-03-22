@@ -2,9 +2,10 @@
     const businessIncome = sequelize.define("businessIncome", {
 
       incomeId: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
       businessIncome: {
         type: DataTypes.FLOAT,

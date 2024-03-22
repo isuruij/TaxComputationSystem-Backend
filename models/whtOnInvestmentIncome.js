@@ -2,9 +2,10 @@ module.exports = (sequelize, DataTypes) => {
     const whtOnInvestmentIncome = sequelize.define("whtOnInvestmentIncome", {
 
       taxCreditId: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
       whtOnInvestmentIncome: {
         type: DataTypes.FLOAT,

@@ -2,9 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const whtWhichIsNotDeducted = sequelize.define("whtWhichIsNotDeducted", {
 
     assessmentId: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
+      allowNull: false,
     },
     whtWhichIsNotDeducted: {
       type: DataTypes.FLOAT,
