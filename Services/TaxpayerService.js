@@ -111,3 +111,15 @@ module.exports.getuserincomedetails = async (id) => {
     return { status: false, message: error.message };
   }
 };
+
+module.exports.updateincomedetails = async (data) => {
+  try {
+    
+    const created = await TaxpayerRepository.updateincomedetails(data);
+    return created;
+    
+
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};

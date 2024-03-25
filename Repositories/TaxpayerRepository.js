@@ -223,19 +223,32 @@ module.exports.getuserincomedetails = async (id) => {
     const otherIncomeValue = await otherIncome.findOne({
       where: { taxpayerId: id },
     });
-    
+
     console.log("llllllll");
     console.log(businessIncome);
     return {
       status: true,
-      data: [
-        businessIncomeValue.dataValues.businessIncome,
-        employmentIncomeValue.dataValues.employmentIncome,
-        investmentIncomeValue.dataValues.investmentIncome,
-        otherIncomeValue.dataValues.otherIncome
-      ],
+      data: {
+        businessIncome: businessIncomeValue.dataValues.businessIncome,
+        employmentIncome: employmentIncomeValue.dataValues.employmentIncome,
+        investmentIncome: investmentIncomeValue.dataValues.investmentIncome,
+        otherIncome: otherIncomeValue.dataValues.otherIncome,
+      },
     };
   } catch (error) {
     return { status: false, message: error.message };
+  }
+};
+
+module.exports.updateincomedetails = async (obj) => {
+  try {
+    console.log(",,,,,,,,,")
+    await businessIncome.update({businessIncome:obj.businessIncome}, { where: { taxpayerId: obj.id } } )
+    await employmentIncome.update({employmentIncome:obj.employmentIncome}, { where: { taxpayerId: obj.id } } )
+    await investmentIncome.update({investmentIncome:obj.investmentIncome}, { where: { taxpayerId: obj.id } } )
+    await otherIncome.update({otherIncome:obj.otherIncome}, { where: { taxpayerId: obj.id } } )
+    return { status: true };
+  } catch (error) {
+    return { status: false };
   }
 };

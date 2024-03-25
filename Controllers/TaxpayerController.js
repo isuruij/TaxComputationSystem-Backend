@@ -190,3 +190,23 @@ module.exports.getuserincomedetails = async (req, res) => {
   }
 };
 
+
+module.exports.updateincomedetails = async (req, res) => {
+  try {
+    if (!req.body) {
+      return res.status(400).json({ error: "empty request" });
+    }
+    const result = await TaxpayerService.updateincomedetails(req.body);
+    
+    if (result.status) {
+      return res.json({ Status: "Success" });
+    }else{
+      return res.status(400).json({Status: "NotSuccess" });
+    }
+
+    
+  } catch (error) {
+    return res.status(400).json({Status: "NotSuccess", message: error.message });
+  }
+};
+

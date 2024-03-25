@@ -30,6 +30,8 @@ router.get('/reset-password/:id/:token',TaxpayerController.resetPassword);
 
 router.post('/addnew-password/:id/:token',TaxpayerController.addNewPassword);
 
-router.get('/getuserincomedetails/:id',TaxpayerController.getuserincomedetails); 
+router.get('/getuserincomedetails/:id',TaxpayerController.getuserincomedetails);
+
+router.patch('/updateincomedetails',TaxpayerController.updateincomedetails);
 
 module.exports = router;
