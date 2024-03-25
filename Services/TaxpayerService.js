@@ -100,3 +100,14 @@ module.exports.addNewPassword = async (id,token,newPassword) => {
     return { status: false, message: error.message };
   }
 };
+
+module.exports.getuserincomedetails = async (id) => {
+  try {
+    console.log("yyyyyyyyy")
+    const created = await TaxpayerRepository.getuserincomedetails(id);
+    return created;
+
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
