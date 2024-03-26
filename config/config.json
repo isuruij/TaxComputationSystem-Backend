@@ -1,15 +1,17 @@
 {
     "development": {
-      "username": "root",
-      "password": "1234",
+      "username": "admin",
+      "password": "123456789",
       "database": "employee_db",
-      "host": "localhost",
-      "dialect": "mysql"
+      "host": "database-2.c9s60mqmwypd.eu-north-1.rds.amazonaws.com",
+      "dialect": "mysql",
+      "port": 3306
+   
     },
     "test": {
       "username": "root",
-      "password": null,
-      "database": "database_test",
+      "password": null, 
+      "database": "database_test", 
       "host": "127.0.0.1",
       "dialect": "mysql"
     },

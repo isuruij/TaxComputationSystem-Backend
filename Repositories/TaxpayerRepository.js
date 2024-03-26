@@ -1,5 +1,11 @@
 const bcrypt = require("bcrypt");
-const { Taxpayer } = require("../models");
+const {
+  Taxpayer,
+  businessIncome,
+  employmentIncome,
+  investmentIncome,
+  otherIncome,
+} = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const sendMail = require("../utils/sendMail");
@@ -19,6 +25,25 @@ module.exports.addTaxpayer = async (obj) => {
     data.password = obj.password;
     data.emailToken = crypto.randomBytes(64).toString("hex");
     const res = await Taxpayer.create(data);
+
+    // add intial values to income tables
+    await businessIncome.create({
+      businessIncome: "0",
+      taxpayerId: res.dataValues.id,
+    });
+    await employmentIncome.create({
+      employmentIncome: "0",
+      taxpayerId: res.dataValues.id,
+    });
+    await investmentIncome.create({
+      investmentIncome: "0",
+      taxpayerId: res.dataValues.id,
+    });
+    await otherIncome.create({
+      otherIncome: "0",
+      taxpayerId: res.dataValues.id,
+    });
+
     sendMail(data.name, data.email, data.emailToken);
     return { status: true, id: res.dataValues.id };
   } catch (error) {
@@ -132,9 +157,9 @@ module.exports.forgotPassword = async (email) => {
     const link = `http://localhost:3000/api/taxpayer/reset-password/${existingEmail.id}/${token}`;
     console.log(link);
     // sendMail here
-    sendVerificationMail(existingEmail.id,existingEmail.email,token)
+    sendVerificationMail(existingEmail.id, existingEmail.email, token);
 
-    return { status: true};
+    return { status: true };
   } catch (error) {
     return { status: false };
   }
@@ -145,39 +170,85 @@ module.exports.resetPassword = async (id, token) => {
     const oldUser = await Taxpayer.findOne({ where: { id: id } });
     //console.log("old user pw :" , oldUser.dataValues.password);
     if (!oldUser) {
-      return {status: false, message: "User Not Exist" };
+      return { status: false, message: "User Not Exist" };
     }
     const secret = process.env.JWT_SECRET + oldUser.dataValues.password;
-    const decoded = jwt.verify(token,secret);
+    const decoded = jwt.verify(token, secret);
     //const link = `http://localhost:3000/api/taxpayer/reset-password/${existingEmail.id}/${token}`;
     console.log(decoded);
 
-    return { status: true};
+    return { status: true };
   } catch (error) {
     console.log("not verified");
     return { status: false };
   }
 };
 
-
-module.exports.addNewPassword = async (id, token,newPassword) => {
+module.exports.addNewPassword = async (id, token, newPassword) => {
   try {
     const oldUser = await Taxpayer.findOne({ where: { id: id } });
     //console.log("old user pw :" , oldUser.dataValues.password);
     if (!oldUser) {
-      return {status: false, message: "User Not Exist" };
+      return { status: false, message: "User Not Exist" };
     }
     const secret = process.env.JWT_SECRET + oldUser.dataValues.password;
-    const decoded = jwt.verify(token,secret);
-    const encryptedPassword = await bcrypt.hash(newPassword,8)
-    await Taxpayer.update({password:encryptedPassword}, { where: { id:id } });
+    const decoded = jwt.verify(token, secret);
+    const encryptedPassword = await bcrypt.hash(newPassword, 8);
+    await Taxpayer.update(
+      { password: encryptedPassword },
+      { where: { id: id } }
+    );
 
     //const link = `http://localhost:3000/api/taxpayer/reset-password/${existingEmail.id}/${token}`;
     console.log(decoded);
 
-    return { status: true};
+    return { status: true };
   } catch (error) {
     console.log("not verified");
+    return { status: false };
+  }
+};
+
+module.exports.getuserincomedetails = async (id) => {
+  try {
+    const businessIncomeValue = await businessIncome.findOne({
+      where: { taxpayerId: id },
+    });
+    const employmentIncomeValue = await employmentIncome.findOne({
+      where: { taxpayerId: id },
+    });
+    const investmentIncomeValue = await investmentIncome.findOne({
+      where: { taxpayerId: id },
+    });
+    const otherIncomeValue = await otherIncome.findOne({
+      where: { taxpayerId: id },
+    });
+
+    console.log("llllllll");
+    console.log(businessIncome);
+    return {
+      status: true,
+      data: {
+        businessIncome: businessIncomeValue.dataValues.businessIncome,
+        employmentIncome: employmentIncomeValue.dataValues.employmentIncome,
+        investmentIncome: investmentIncomeValue.dataValues.investmentIncome,
+        otherIncome: otherIncomeValue.dataValues.otherIncome,
+      },
+    };
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.updateincomedetails = async (obj) => {
+  try {
+    console.log(",,,,,,,,,")
+    await businessIncome.update({businessIncome:obj.businessIncome}, { where: { taxpayerId: obj.id } } )
+    await employmentIncome.update({employmentIncome:obj.employmentIncome}, { where: { taxpayerId: obj.id } } )
+    await investmentIncome.update({investmentIncome:obj.investmentIncome}, { where: { taxpayerId: obj.id } } )
+    await otherIncome.update({otherIncome:obj.otherIncome}, { where: { taxpayerId: obj.id } } )
+    return { status: true };
+  } catch (error) {
     return { status: false };
   }
 };
