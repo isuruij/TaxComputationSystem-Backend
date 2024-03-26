@@ -11,9 +11,8 @@ const {Taxpayer} = require("../models")
 
 router.post('/register',TaxpayerController.addTaxpayer)
 
-
 router.get("/auth",JwtService.verifyuser,TaxpayerController.authenticateTaxpayer);
- 
+
 router.get("/logout",TaxpayerController.logoutTaxpayer);
  
 router.post('/login',TaxpayerController.loginTaxpayer);

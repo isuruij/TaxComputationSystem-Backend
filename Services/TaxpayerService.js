@@ -72,6 +72,7 @@ module.exports.forgotPassword = async (email) => {
     
     const created = await TaxpayerRepository.forgotPassword(email);
     return created;
+    
   } catch (error) {
     
     return { status: false, message: error.message };
