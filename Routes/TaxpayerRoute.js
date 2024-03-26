@@ -11,9 +11,8 @@ const {Taxpayer} = require("../models")
 
 router.post('/register',TaxpayerController.addTaxpayer)
 
-
 router.get("/auth",JwtService.verifyuser,TaxpayerController.authenticateTaxpayer);
- 
+
 router.get("/logout",TaxpayerController.logoutTaxpayer);
  
 router.post('/login',TaxpayerController.loginTaxpayer);
@@ -33,5 +32,7 @@ router.post('/addnew-password/:id/:token',TaxpayerController.addNewPassword);
 router.get('/getuserincomedetails/:id',TaxpayerController.getuserincomedetails);
 
 router.patch('/updateincomedetails',TaxpayerController.updateincomedetails);
+
+router.get('/getNotifications/:id',TaxpayerController.getNotifications);
 
 module.exports = router;

@@ -252,3 +252,22 @@ module.exports.updateincomedetails = async (obj) => {
     return { status: false };
   }
 };
+
+module.exports.getNotifications = async (id) => {
+  try {
+    const notifications = await Notification.findAll({
+      where: {
+        taxpayerId: id 
+      }
+    });
+
+    const messages = notifications.map(notification => notification.dataValues.message);
+
+    console.log(messages)
+    
+    return { status: true, data: messages };
+  } catch (error) {
+    console.error(`Error fetching notifications: ${error}`);
+    return { status: false };
+  }
+};

@@ -72,6 +72,7 @@ module.exports.forgotPassword = async (email) => {
     
     const created = await TaxpayerRepository.forgotPassword(email);
     return created;
+    
   } catch (error) {
     
     return { status: false, message: error.message };
@@ -116,6 +117,18 @@ module.exports.updateincomedetails = async (data) => {
   try {
     
     const created = await TaxpayerRepository.updateincomedetails(data);
+    return created;
+    
+
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.getNotifications = async (id) => {
+  try {
+    
+    const created = await TaxpayerRepository.getNotifications(id);
     return created;
     
 
