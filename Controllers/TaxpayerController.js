@@ -171,5 +171,42 @@ module.exports.addNewPassword = async (req, res) => {
   }
 };
 
+module.exports.getuserincomedetails = async (req, res) => {
+  try {
+    if (!req.params.id) {
+      return res.status(400).json({ error: "empty request" });
+    }
+    console.log(req.params.id)
+    const result = await TaxpayerService.getuserincomedetails(req.params.id);
+    
+    if (result.status) {
+      return res.json({ Status: "Success", Data: result.data });
+    }else{
+      return res.status(400).json({ status: false });
+    }
 
+  } catch (error) {
+    return res.status(400).json({ status: false, message: error.message });
+  }
+};
+
+
+module.exports.updateincomedetails = async (req, res) => {
+  try {
+    if (!req.body) {
+      return res.status(400).json({ error: "empty request" });
+    }
+    const result = await TaxpayerService.updateincomedetails(req.body);
+    
+    if (result.status) {
+      return res.json({ Status: "Success" });
+    }else{
+      return res.status(400).json({Status: "NotSuccess" });
+    }
+
+    
+  } catch (error) {
+    return res.status(400).json({Status: "NotSuccess", message: error.message });
+  }
+};
 
