@@ -3,8 +3,7 @@ module.exports.createToken = async (obj) => {
   try {
     const token = jwt.sign(obj, process.env.JWT_SECRET);
 
-    // res.cookie("token", token);
-    // res.json({ Status: "Success", Data: taxpayer });
+
     return { status: true, token: token };
   } catch (error) {
     return { status: false };

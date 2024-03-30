@@ -6,7 +6,6 @@ const JwtService = require("../Services/JwtService")
 
 const TaxpayerController =require('../Controllers/TaxpayerController')
 
-
 const {Taxpayer} = require("../models")
 
 router.post('/register',TaxpayerController.addTaxpayer)

@@ -132,8 +132,7 @@ module.exports.getBasicDetails = async (id) => {
       updatedAt,
       ...userWithoutSensitiveInfo
     } = user.dataValues;
-    console.log("----------------");
-    console.log(userWithoutSensitiveInfo);
+
     return { status: true, data: userWithoutSensitiveInfo };
   } catch (error) {
     return { status: false };
@@ -242,7 +241,7 @@ module.exports.getuserincomedetails = async (id) => {
 
 module.exports.updateincomedetails = async (obj) => {
   try {
-    console.log(",,,,,,,,,")
+    
     await businessIncome.update({businessIncome:obj.businessIncome}, { where: { taxpayerId: obj.id } } )
     await employmentIncome.update({employmentIncome:obj.employmentIncome}, { where: { taxpayerId: obj.id } } )
     await investmentIncome.update({investmentIncome:obj.investmentIncome}, { where: { taxpayerId: obj.id } } )

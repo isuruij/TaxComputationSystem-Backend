@@ -22,7 +22,7 @@ module.exports.addTaxpayer = async (data) => {
 module.exports.loginTaxpayer = async (data) => {
   try {
     const avalable = await TaxpayerRepository.loginTaxpayer(data);
-    console.log(avalable)
+    
     
     if (avalable.status) {
       const tokenData = {id:avalable.id, name: avalable.name, role: "taxpayer" };
@@ -104,7 +104,7 @@ module.exports.addNewPassword = async (id,token,newPassword) => {
 
 module.exports.getuserincomedetails = async (id) => {
   try {
-    console.log("yyyyyyyyy")
+    
     const created = await TaxpayerRepository.getuserincomedetails(id);
     return created;
 

@@ -80,7 +80,7 @@ module.exports.updateBasicDetails = async (req, res) => {
     
     
     if (result.status) {
-      console.log("sucesssssssss")
+      
       return res.json({ Status: "Success" });
     }
 
@@ -100,7 +100,7 @@ module.exports.getBasicDetails = async (req, res) => {
     if (!req.params.id) {
       return res.status(400).json({ error: "empty request" });
     }
-    console.log(req.params.id)
+    
     const result = await TaxpayerService.getBasicDetails(req.params.id);
     
     
@@ -150,16 +150,10 @@ module.exports.resetPassword = async (req, res) => {
 
 module.exports.addNewPassword = async (req, res) => {
   try {
-    console.log(",,,,,,,,,,,,,,,,,")
-    console.log(req.body)
+
     const {id,token} = req.params;
     const newPassword = req.body.password;
-    console.log(id,token)
-    console.log(newPassword)
-    console.log("++++++++++++")
     const result = await TaxpayerService.addNewPassword(id,token,newPassword);
-    console.log("---------------------")
-    console.log(result)
     if (result.status) {
       return res.json({ Status: "Verified" });
     }else{
@@ -176,7 +170,7 @@ module.exports.getuserincomedetails = async (req, res) => {
     if (!req.params.id) {
       return res.status(400).json({ error: "empty request" });
     }
-    console.log(req.params.id)
+    
     const result = await TaxpayerService.getuserincomedetails(req.params.id);
     
     if (result.status) {
