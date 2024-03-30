@@ -46,42 +46,46 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    isVerifiedEmail: {
-      type:DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
     emailToken: {
       type: DataTypes.STRING,
-      
     },
-    isVerifiedUser: {
-      type:DataTypes.BOOLEAN,
+    isVerifiedEmail: {
+      type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-
-
+    isVerifiedUser: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   });
-  
-  Taxpayer.associate = (models) => {
-    Taxpayer.hasMany(models.apit, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.businessIncome, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.businessIncome, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.Document, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.employmentIncome, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.investmentIncome, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.Notification, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.otherIncome, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.qualifyingPayments, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.reliefForExpenditure, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.reliefForRentIncome, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.selfAssessmentPayment, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.TaxSummaryReport, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.terminalBenefits, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.whtOnInvestmentIncome, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.whtOnServiceFeeReceived, { foreignKey: 'taxpayerId' });
-    Taxpayer.hasMany(models.whtWhichIsNotDeducted, { foreignKey: 'taxpayerId' });
-  };
 
+  Taxpayer.associate = (models) => {
+    Taxpayer.hasMany(models.apit, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.businessIncome, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.businessIncome, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.Document, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.employmentIncome, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.investmentIncome, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.Notification, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.otherIncome, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.qualifyingPayments, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.reliefForExpenditure, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.reliefForRentIncome, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.selfAssessmentPayment, {
+      foreignKey: "taxpayerId",
+    });
+    Taxpayer.hasMany(models.TaxSummaryReport, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.terminalBenefits, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.whtOnInvestmentIncome, {
+      foreignKey: "taxpayerId",
+    });
+    Taxpayer.hasMany(models.whtOnServiceFeeReceived, {
+      foreignKey: "taxpayerId",
+    });
+    Taxpayer.hasMany(models.whtWhichIsNotDeducted, {
+      foreignKey: "taxpayerId",
+    });
+  };
 
   return Taxpayer;
 };

@@ -8,7 +8,7 @@ require("express-async-errors");
 require("dotenv").config();
 
 const db = require("./models");
-const taxpayerRoutes = require("./Routes/TaxpayerRoute");
+
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -23,7 +23,13 @@ app.use(
 );
 
 app.use(bodyparser.json());
+
+//Routers
+const taxpayerRoutes = require("./Routes/TaxpayerRoute");
 app.use("/api/taxpayer", taxpayerRoutes);
+const dataentryRoutes = require("./Routes/DataEntryRoute");
+app.use("/api/dataentry", dataentryRoutes);
+
 app.use((err, req, res, next) => {
   console.log(err);
   res.status(err.status || 500).send("Something went wrong!");
