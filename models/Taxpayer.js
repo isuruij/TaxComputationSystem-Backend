@@ -1,14 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
   const Taxpayer = sequelize.define("Taxpayer", {
     id: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
+      allowNull: false,
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-    }, 
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -45,13 +46,20 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    isEmailVerified:{
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    isVerifiedEmail: {
+      type:DataTypes.BOOLEAN,
+      defaultValue: false,
     },
-    emailToken:{
-      type:DataTypes.STRING
-    }
+    emailToken: {
+      type: DataTypes.STRING,
+      
+    },
+    isVerifiedUser: {
+      type:DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+
+
   });
   
   Taxpayer.associate = (models) => {

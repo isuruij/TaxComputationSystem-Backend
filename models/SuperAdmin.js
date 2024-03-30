@@ -1,10 +1,11 @@
 
 module.exports = (sequelize, DataTypes) => {
     const SuperAdmin = sequelize.define("SuperAdmin", {
-      userId: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
       userName: {
         type: DataTypes.STRING,

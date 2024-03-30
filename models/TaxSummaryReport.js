@@ -1,9 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
     const TaxSummaryReport = sequelize.define("TaxSummaryReport", {
       reportId: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
       isVerified: {
         type: DataTypes.BOOLEAN,

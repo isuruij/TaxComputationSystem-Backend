@@ -2,9 +2,10 @@ module.exports = (sequelize, DataTypes) => {
     const apit = sequelize.define("apit", {
 
       taxCreditId: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
       apit: {
         type: DataTypes.FLOAT,
