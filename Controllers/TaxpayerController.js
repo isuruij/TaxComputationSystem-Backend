@@ -1,5 +1,6 @@
 const TaxpayerService = require("../Services/TaxpayerService");
 const { Taxpayer } = require("../models");
+
 module.exports.addTaxpayer = async (req, res) => {
   try {
     if (Object.keys(req.body).length === 0) {

@@ -18,9 +18,9 @@ router.post('/login',TaxpayerController.loginTaxpayer);
 
 router.patch('/verifyemail',TaxpayerController.verifyEmail);
 
-router.get('/getuserbasicdetails/:id',TaxpayerController.getBasicDetails);
+router.get('/getuserbasicdetails/:id',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer"]),TaxpayerController.getBasicDetails);
 
-router.patch('/updatebasicdetails',TaxpayerController.updateBasicDetails);
+router.patch('/updatebasicdetails',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer"]),TaxpayerController.updateBasicDetails);
 
 router.post('/forgot-password',TaxpayerController.forgotPassword);    
 
@@ -28,11 +28,11 @@ router.get('/reset-password/:id/:token',TaxpayerController.resetPassword);
 
 router.post('/addnew-password/:id/:token',TaxpayerController.addNewPassword);
 
-router.get('/getuserincomedetails/:id',TaxpayerController.getuserincomedetails);
+router.get('/getuserincomedetails/:id',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer"]),TaxpayerController.getuserincomedetails);
 
-router.patch('/updateincomedetails',TaxpayerController.updateincomedetails);
+router.patch('/updateincomedetails',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer"]),TaxpayerController.updateincomedetails);
 
-router.get('/getNotifications/:id',TaxpayerController.getNotifications);
+router.get('/getNotifications/:id',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer"]),TaxpayerController.getNotifications);
 
 
 module.exports = router;
