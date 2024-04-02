@@ -38,8 +38,7 @@ module.exports.loginTaxpayer = async (req, res) => {
     req.body.email == undefined ||
     req.body.email == "" ||
     req.body.password == undefined ||
-    req.body.password == "" ||
-    req.body.name == ""
+    req.body.password == ""
   ) {
     return res.status(400).json({ status: false, message: "empty fields" });
   }
@@ -66,13 +65,15 @@ module.exports.verifyEmail = async (req, res) => {
   }
   const result = await TaxpayerService.verifyEmail(emailToken);
   return res.json(result);
-
 };
 
 module.exports.updateBasicDetails = async (req, res) => {
   try {
-    if (!req.body) {
+    if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ error: "empty request" });
+    }
+    if (req.body.email == undefined || req.body.email == "" || req.body.id == undefined || req.body.id == ""  ) {
+      return res.status(400).json({ status: false, message: "empty fields" });
     }
 
     const result = await TaxpayerService.updateBasicDetails(req.body);
@@ -96,10 +97,6 @@ module.exports.updateBasicDetails = async (req, res) => {
 
 module.exports.getBasicDetails = async (req, res) => {
   try {
-    if (!req.params.id) {
-      return res.status(400).json({ error: "empty request" });
-    }
-
     const result = await TaxpayerService.getBasicDetails(req.params.id);
 
     if (result.status) {
@@ -164,9 +161,6 @@ module.exports.addNewPassword = async (req, res) => {
 
 module.exports.getuserincomedetails = async (req, res) => {
   try {
-    if (!req.params.id) {
-      return res.status(400).json({ error: "empty request" });
-    }
 
     const result = await TaxpayerService.getuserincomedetails(req.params.id);
 
@@ -182,7 +176,7 @@ module.exports.getuserincomedetails = async (req, res) => {
 
 module.exports.updateincomedetails = async (req, res) => {
   try {
-    if (!req.body) {
+    if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ error: "empty request" });
     }
     const result = await TaxpayerService.updateincomedetails(req.body);
@@ -199,21 +193,14 @@ module.exports.updateincomedetails = async (req, res) => {
   }
 };
 
-
 module.exports.getNotifications = async (req, res) => {
   try {
-    
     console.log(req.params.id);
     const result = await TaxpayerService.getNotifications(req.params.id);
-    
+
     console.log(result);
     return res.status(200).json(result);
-
   } catch (error) {
     return { status: false };
   }
 };
-
-
-
-
