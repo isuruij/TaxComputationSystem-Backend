@@ -32,6 +32,7 @@ router.get('/getuserincomedetails/:id',TaxpayerController.getuserincomedetails);
 
 router.patch('/updateincomedetails',TaxpayerController.updateincomedetails);
 
+router.get('/getNotifications/:id',TaxpayerController.getNotifications);
 
 
 module.exports = router;

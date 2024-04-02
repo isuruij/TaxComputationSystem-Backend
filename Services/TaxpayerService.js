@@ -135,3 +135,15 @@ module.exports.verifyEmail = async (emailToken) => {
     return { status: false, message: error.message };
   }
 };
+
+module.exports.getNotifications = async (id) => {
+  try {
+    
+    const created = await TaxpayerRepository.getNotifications(id);
+    return created;
+    
+
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
