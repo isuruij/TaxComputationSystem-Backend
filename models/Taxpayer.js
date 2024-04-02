@@ -58,6 +58,13 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    agreeToannualFee:{
+      type: DataTypes.STRING,
+
+    },
+    dprSource:{
+      type: DataTypes.STRING,
+    }
 
 
   });

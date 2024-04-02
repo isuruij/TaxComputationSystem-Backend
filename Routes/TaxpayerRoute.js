@@ -6,7 +6,6 @@ const JwtService = require("../Services/JwtService")
 
 const TaxpayerController =require('../Controllers/TaxpayerController')
 
-
 const {Taxpayer} = require("../models")
 
 router.post('/register',TaxpayerController.addTaxpayer)
@@ -33,6 +32,6 @@ router.get('/getuserincomedetails/:id',TaxpayerController.getuserincomedetails);
 
 router.patch('/updateincomedetails',TaxpayerController.updateincomedetails);
 
-router.get('/getNotifications/:id',TaxpayerController.getNotifications);
+
 
 module.exports = router;
