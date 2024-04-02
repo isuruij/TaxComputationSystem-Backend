@@ -200,17 +200,5 @@ module.exports.updateincomedetails = async (req, res) => {
 };
 
 
-module.exports.getNotifications = async (req, res) => {
-  try {
-    
-    console.log(req.params.id);
-    const result = await TaxpayerService.getNotifications(req.params.id);
-    
-    console.log(result);
-    return res.status(200).json(result);
 
-  } catch (error) {
-    return { status: false };
-  }
-};
 
