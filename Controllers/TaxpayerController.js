@@ -64,20 +64,9 @@ module.exports.verifyEmail = async (req, res) => {
   if (!emailToken) {
     return res.status(400).json({ status: "Failed", error: "empty request" });
   }
-  let user = await Taxpayer.findOne({ where: { emailToken: emailToken } });
+  const result = await TaxpayerService.verifyEmail(emailToken);
+  return res.json(result);
 
-  if (!user) {
-    return res.status(404).json({ status: "Failed", error: "User not found" });
-  }
-
-  await Taxpayer.update(
-    { isVerifiedEmail: true, emailToken: null },
-    { where: { emailToken: emailToken } }
-  );
-  await Taxpayer.findOne({ where: { emailToken: emailToken } });
-  return res
-    .status(200)
-    .json({ status: "Success", message: "User verified successfully" });
 };
 
 module.exports.updateBasicDetails = async (req, res) => {

@@ -124,3 +124,14 @@ module.exports.updateincomedetails = async (data) => {
     return { status: false, message: error.message };
   }
 };
+
+module.exports.verifyEmail = async (emailToken) => {
+  try {
+    
+    const created = await TaxpayerRepository.verifyEmail(emailToken);
+    return created;
+    
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};

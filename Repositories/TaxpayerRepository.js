@@ -241,13 +241,45 @@ module.exports.getuserincomedetails = async (id) => {
 
 module.exports.updateincomedetails = async (obj) => {
   try {
-    
-    await businessIncome.update({businessIncome:obj.businessIncome}, { where: { taxpayerId: obj.id } } )
-    await employmentIncome.update({employmentIncome:obj.employmentIncome}, { where: { taxpayerId: obj.id } } )
-    await investmentIncome.update({investmentIncome:obj.investmentIncome}, { where: { taxpayerId: obj.id } } )
-    await otherIncome.update({otherIncome:obj.otherIncome}, { where: { taxpayerId: obj.id } } )
+    await businessIncome.update(
+      { businessIncome: obj.businessIncome },
+      { where: { taxpayerId: obj.id } }
+    );
+    await employmentIncome.update(
+      { employmentIncome: obj.employmentIncome },
+      { where: { taxpayerId: obj.id } }
+    );
+    await investmentIncome.update(
+      { investmentIncome: obj.investmentIncome },
+      { where: { taxpayerId: obj.id } }
+    );
+    await otherIncome.update(
+      { otherIncome: obj.otherIncome },
+      { where: { taxpayerId: obj.id } }
+    );
     return { status: true };
   } catch (error) {
     return { status: false };
+  }
+};
+
+module.exports.verifyEmail = async (emailToken) => {
+  try {
+    let user = await Taxpayer.findOne({ where: { emailToken: emailToken } });
+    console.log(user)
+    if (!user) {
+      return res
+        .status(404)
+        .json({ status: "Failed", error: "User not found" });
+    }
+
+    await Taxpayer.update(
+      { isVerifiedEmail: true, emailToken: null },
+      { where: { emailToken: emailToken } }
+    );
+    await Taxpayer.findOne({ where: { emailToken: emailToken } });
+    return { status: "Success", message: "User verified successfully" };
+  } catch (error) {
+    return { status: false, message: error.message};
   }
 };
