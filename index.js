@@ -9,6 +9,7 @@ require('dotenv').config();
 
 const db = require("./models")
 const taxpayerRoutes = require("./Routes/TaxpayerRoute");
+const SuperAdminRoutes = require("./Routes/SuperAdminRoute");
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
@@ -27,6 +28,7 @@ app.use(cors(
 
 app.use(bodyparser.json());
 app.use("/api/taxpayer", taxpayerRoutes); 
+app.use("/api/SuperAdmin", SuperAdminRoutes); 
 app.use((err, req, res, next) => {
   console.log(err); 
   res.status(err.status || 500).send("Something went wrong!");
