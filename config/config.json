@@ -3,17 +3,17 @@
       "username": "admin",
       "password": "123456789",
       "database": "employee_db",
-      "host": "database-2.c9s60mqmwypd.eu-north-1.rds.amazonaws.com",
+      "host": "database-3.c9s60mqmwypd.eu-north-1.rds.amazonaws.com",
       "dialect": "mysql",
       "port": 3306
    
     },
     "test": {
       "username": "root",
-      "password": null,  
+      "password": null, 
       "database": "database_test", 
       "host": "127.0.0.1",
-      "dialect": "mysql" 
+      "dialect": "mysql"  
     },
     "production": {
       "username": "root",
