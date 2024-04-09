@@ -10,8 +10,10 @@ module.exports.addTaxpayer = async (data) => {
       const recived = JwtService.createToken(tokenData);
       return recived;
     }
-    if(created.message=="already registered email"){
+    else if(created.message=="already registered email"){
       return { status: false,message:"already registered email" };
+    }else{
+      return created;
     }
   } catch (error) {
     return { status: false, message: error.message };
