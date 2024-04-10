@@ -1,6 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const reliefForExpenditure = sequelize.define("reliefForExpenditure", {
-
     reliefid: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -9,6 +8,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     reliefForExpenditure: {
       type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    rE_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    rE_Note: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   });

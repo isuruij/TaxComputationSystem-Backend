@@ -1,18 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
-    const selfAssessmentPayment = sequelize.define("selfAssessmentPayment", {
+  const selfAssessmentPayment = sequelize.define("selfAssessmentPayment", {
+    taxCreditId: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false,
+    },
+    selfAssessmentPayment: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    sAP_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    sAP_Note: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  });
 
-      taxCreditId: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false,
-      },
-      selfAssessmentPayment: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
-    });
-  
-    return selfAssessmentPayment;
-  };
-  
+  return selfAssessmentPayment;
+};

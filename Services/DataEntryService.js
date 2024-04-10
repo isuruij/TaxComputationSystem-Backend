@@ -8,6 +8,8 @@ module.exports.getusernames = async () => {
     const userarray = await DataEntryRepository.getusernames();
     if (userarray.status) {
       return { status: true, data: userarray.data };
+    } else {
+      console.log(userarray.message);
     }
   } catch (error) {
     return { status: false };

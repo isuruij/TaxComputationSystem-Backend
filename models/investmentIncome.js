@@ -1,6 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const investmentIncome = sequelize.define("investmentIncome", {
-
     incomeId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -9,6 +8,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     investmentIncome: {
       type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    iI_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    iI_Note: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   });

@@ -11,6 +11,6 @@ module.exports.getusernames = async () => {
     console.log(listOfUsers);
     return { status: true, data: listOfUsers };
   } catch (error) {
-    return { status: false };
+    return { status: false, message: error };
   }
 };

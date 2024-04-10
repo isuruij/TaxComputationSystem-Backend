@@ -1,6 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const terminalBenefits = sequelize.define("terminalBenefits", {
-
     assessmentId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -9,6 +8,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     terminalBenefits: {
       type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    tB_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    tB_Note: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   });

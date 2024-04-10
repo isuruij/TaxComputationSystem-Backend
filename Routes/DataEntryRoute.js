@@ -7,4 +7,7 @@ const DataEntryController = require("../Controllers/DataEntryController");
 //get user names and is verified by admin detals to dataentry dashboard
 router.get("/getusernames", DataEntryController.getusernames);
 
+//Post income data into database (on going)
+// router.post("/enterData", DataEntryController.postincomes);
+
 module.exports = router;

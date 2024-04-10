@@ -1,36 +1,42 @@
-const express = require('express')
+const express = require("express");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
-const router = express.Router()
-const JwtService = require("../Services/JwtService")
+const router = express.Router();
+const JwtService = require("../Services/JwtService");
 
-const TaxpayerController =require('../Controllers/TaxpayerController')
+const TaxpayerController = require("../Controllers/TaxpayerController");
 
+const { Taxpayer } = require("../models");
 
-const {Taxpayer} = require("../models")
+router.post("/register", TaxpayerController.addTaxpayer);
 
-router.post('/register',TaxpayerController.addTaxpayer)
+router.get(
+  "/auth",
+  JwtService.verifyuser,
+  TaxpayerController.authenticateTaxpayer
+);
 
-router.get("/auth",JwtService.verifyuser,TaxpayerController.authenticateTaxpayer);
+router.get("/logout", TaxpayerController.logoutTaxpayer);
 
-router.get("/logout",TaxpayerController.logoutTaxpayer);
- 
-router.post('/login',TaxpayerController.loginTaxpayer);
+router.post("/login", TaxpayerController.loginTaxpayer);
 
-router.patch('/verifyemail',TaxpayerController.verifyEmail);
+router.patch("/verifyemail", TaxpayerController.verifyEmail);
 
-router.get('/getuserbasicdetails/:id',TaxpayerController.getBasicDetails);
+router.get("/getuserbasicdetails/:id", TaxpayerController.getBasicDetails);
 
-router.patch('/updatebasicdetails',TaxpayerController.updateBasicDetails);
+router.patch("/updatebasicdetails", TaxpayerController.updateBasicDetails);
 
-router.post('/forgot-password',TaxpayerController.forgotPassword);    
+router.post("/forgot-password", TaxpayerController.forgotPassword);
 
-router.get('/reset-password/:id/:token',TaxpayerController.resetPassword);
+router.get("/reset-password/:id/:token", TaxpayerController.resetPassword);
 
-router.post('/addnew-password/:id/:token',TaxpayerController.addNewPassword);
+router.post("/addnew-password/:id/:token", TaxpayerController.addNewPassword);
 
-router.get('/getuserincomedetails/:id',TaxpayerController.getuserincomedetails);
+router.get(
+  "/getuserincomedetails/:id",
+  TaxpayerController.getuserincomedetails
+);
 
-router.patch('/updateincomedetails',TaxpayerController.updateincomedetails);
+router.patch("/updateincomedetails", TaxpayerController.updateincomedetails);
 
 module.exports = router;

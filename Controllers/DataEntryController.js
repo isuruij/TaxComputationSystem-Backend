@@ -11,6 +11,8 @@ module.exports.getusernames = async (req, res) => {
     console.log(result.data);
     if (result.status) {
       return res.json({ Status: "Success", Data: result.data });
+    } else {
+      console.log(result.status, result.data);
     }
   } catch (error) {
     console.error("Error fetching usernames:", error);
