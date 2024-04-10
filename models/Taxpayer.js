@@ -57,6 +57,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    numOfSubmissions: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
   });
 
   Taxpayer.associate = (models) => {
