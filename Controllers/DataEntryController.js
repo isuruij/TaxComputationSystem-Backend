@@ -26,7 +26,10 @@ module.exports.postTaxDetails = async (req, res) => {
     }
 
     const result = await DataEntryService.postTaxDetails(req.body);
-  } catch (error) {}
+    return { result };
+  } catch (error) {
+    return { error };
+  }
 };
 
 // getUserSubmission

@@ -19,7 +19,10 @@ module.exports.getusernames = async () => {
 module.exports.postTaxDetails = async (data) => {
   try {
     const result = await DataEntryRepository.postTaxDetails(data);
-  } catch (error) {}
+    return { status: true };
+  } catch (error) {
+    return { status: false };
+  }
 };
 
 //get submisssions in to dataentry submission dashboard
