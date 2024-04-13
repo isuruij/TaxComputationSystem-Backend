@@ -303,3 +303,14 @@ module.exports.getNotifications = async (id) => {
     return { status: false };
   }
 };
+
+module.exports.updatePassword = async (data) => {
+  try {
+
+    
+    return { status: true, data: messages };
+  } catch (error) {
+    console.error(`Error fetching notifications: ${error}`);
+    return { status: false };
+  }
+};

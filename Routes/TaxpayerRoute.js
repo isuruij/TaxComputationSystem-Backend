@@ -34,5 +34,7 @@ router.patch('/updateincomedetails',JwtService.verifyuser,JwtService.roleBasedAu
 
 router.get('/getNotifications/:id',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer"]),TaxpayerController.getNotifications);
 
+router.patch('/updatePassword',TaxpayerController.updatePassword);
+
 
 module.exports = router;
