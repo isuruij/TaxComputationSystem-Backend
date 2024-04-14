@@ -210,8 +210,7 @@ module.exports.getNotifications = async (req, res) => {
 
 module.exports.updatePassword = async (req, res) => {
   try {
-    console.log(req.body);
-    const result = await TaxpayerService.updatePassword(req.body);
+    const result = await TaxpayerService.updatePassword(req.cookies.token,req.body);
     return res.status(200).json(result);
   } catch (error) {
     return { status: false };

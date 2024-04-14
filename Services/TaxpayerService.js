@@ -150,13 +150,12 @@ module.exports.getNotifications = async (id) => {
   }
 };
 
-module.exports.updatePassword = async (data) => {
+module.exports.updatePassword = async (token,data) => {
   try {
     
-    const created = await TaxpayerRepository.updatePassword(data);
+    const created = await TaxpayerRepository.updatePassword(token,data);
     return created;
     
-
   } catch (error) {
     return { status: false, message: error.message };
   }

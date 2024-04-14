@@ -20,7 +20,7 @@ module.exports.addTaxpayer = async (obj) => {
     if (existingEmail) {
       return { status: false, message: "already registered email" };
     }
-    const hashedPw = await bcrypt.hash(obj.password, 10);
+    const hashedPw = await bcrypt.hash(obj.password.toString(), 10);
     var data = obj;
     data.password = hashedPw;
     data.password = obj.password;
@@ -193,7 +193,7 @@ module.exports.addNewPassword = async (id, token, newPassword) => {
     }
     const secret = process.env.JWT_SECRET + oldUser.dataValues.password;
     const decoded = jwt.verify(token, secret);
-    const encryptedPassword = await bcrypt.hash(newPassword, 8);
+    const encryptedPassword = await bcrypt.hash(newPassword.toString(), 8);
     await Taxpayer.update(
       { password: encryptedPassword },
       { where: { id: id } }
@@ -304,13 +304,34 @@ module.exports.getNotifications = async (id) => {
   }
 };
 
-module.exports.updatePassword = async (data) => {
+module.exports.updatePassword = async (token,data) => {
   try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const id = decoded.id;
+    const taxpayer = await Taxpayer.findOne({
+      where: {
+        id:id
+      },
+    });
+    console.log(data)
+    const isMatch = await bcrypt.compare(
+      data.OldPassword.toString(),
+      taxpayer.password
+    );
 
-    
-    return { status: true, data: messages };
+    if (!isMatch) {
+      return { status: false, message: "Taxpayer not found" };
+    }
+    const hashedPassword = await bcrypt.hash(data.Password.toString(), 10);
+
+    await Taxpayer.update({ password: hashedPassword }, {
+      where: {
+        id: id
+      }
+    });
+
+    return { status: true };
   } catch (error) {
-    console.error(`Error fetching notifications: ${error}`);
-    return { status: false };
+    return { status: false , message: "Failed"};
   }
 };
