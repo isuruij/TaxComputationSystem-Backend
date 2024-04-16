@@ -78,7 +78,6 @@ module.exports.updateBasicDetails = async (req, res) => {
     if (req.body.email == undefined || req.body.email == "" || req.body.id == undefined || req.body.id == ""  ) {
       return res.status(400).json({ status: false, message: "empty fields" });
     }
-
     const result = await TaxpayerService.updateBasicDetails(req.body);
 
     if (result.status) {

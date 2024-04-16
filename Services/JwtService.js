@@ -15,7 +15,7 @@ module.exports.verifyuser = async (req, res, next) => {
     req.name = decoded.name;
     next();
   } catch (e) {
-    res.status(401).send({ error: "please authenticate" });
+    res.send({ Status: "Failed"});
   }
 };
 
