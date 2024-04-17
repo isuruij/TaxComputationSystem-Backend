@@ -11,7 +11,8 @@ module.exports.addTaxpayer = async (req, res) => {
       req.body.email == "" ||
       req.body.password == undefined ||
       req.body.password == "" ||
-      req.body.name == ""
+      req.body.name == undefined ||
+      req.body.name == "" 
     ) {
       return res.status(400).json({ status: false, message: "empty fields" });
     }
