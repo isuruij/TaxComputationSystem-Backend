@@ -1,16 +1,21 @@
 const bcrypt = require("bcrypt");
 const {
     SuperAdmin,
+    SecondAdmin,
   Notification
 } = require("../models");
 const jwt = require("jsonwebtoken");
 
 module.exports.addSuperAdmin = async (obj) => {
   try {
-    const existingUser = await SuperAdmin.findOne({
+    const existingUser1 = await SuperAdmin.findOne({
       where: { userName: obj.userName },
     });
-    if (existingUser) {
+    const existingUser2 = await SecondAdmin.findOne({
+        where: { userName: obj.userName },
+      });
+
+    if (existingUser1 || existingUser2) {
       return { status: false, message: "already registered user" };
     }
     const hashedPw = await bcrypt.hash(obj.password.toString(), 10);
