@@ -33,7 +33,7 @@ module.exports.addTaxpayer = async (req, res) => {
   }
 };
 
-module.exports.authenticateTaxpayer = async (req, res) => {
+module.exports.authenticateUser = async (req, res) => {
   res.json({ Status: "Success", name: req.name });
 };
 

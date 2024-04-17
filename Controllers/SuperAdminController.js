@@ -23,12 +23,32 @@ module.exports.addSuperAdmin = async (req, res) => {
       res.cookie("token", result.token);
       return res.json({ Status: "Success" });
     }
-    else if (result.message == "already registered email") {
-      return res.json({ status: false, message: "already registered email" });
+    else if (result.message == "already registered user") {
+      return res.json({ status: false, message: "already registered user" });
     }else{
       return res.json({ Status: "Failed" });
     }
   } catch (error) {
     return res.status(400).json({ status: false, message: error.message });
+  }
+};
+
+module.exports.loginSuperAdmin = async (req, res) => {
+  if (
+    req.body.userName == undefined ||
+    req.body.userName == "" ||
+    req.body.password == undefined ||
+    req.body.password == ""
+  ) {
+    return res.status(400).json({ status: false, message: "empty fields" });
+  }
+  const result = await SuperAdminService.loginSuperAdmin(req.body);
+
+  if (!result.status) {
+    console.log("failed login");
+    res.json({ Status: "Failed" });
+  } else {
+    res.cookie("token", result.token);
+    res.json({ Status: "Success" });
   }
 };
