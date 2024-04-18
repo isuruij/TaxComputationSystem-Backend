@@ -34,37 +34,6 @@ module.exports.loginSuperAdmin = async (obj) => {
       },
     });
 
-    if (!superAdmin) {
-      return { status: false, message: "SuperAdmin not found" };
-    }
-
-    const isMatch = await bcrypt.compare(
-      obj.password.toString(),
-      superAdmin.password
-    );
-
-    if (!isMatch) {
-      return { status: false, message: "Invalid credentials" };
-    } else {
-      return {
-        status: true,
-        name: superAdmin.dataValues.name,
-        id: superAdmin.dataValues.id,
-      };
-    }
-  } catch (error) {
-    console.error("Error in login:", error);
-    throw error;
-  }
-};
-
-module.exports.loginSuperAdminnew = async (obj) => {
-  try {
-    const superAdmin = await SuperAdmin.findOne({
-      where: {
-        userName: obj.userName,
-      },
-    });
 
     if (superAdmin) {
       const isMatch = await bcrypt.compare(
@@ -75,10 +44,12 @@ module.exports.loginSuperAdminnew = async (obj) => {
       if (!isMatch) {
         return { status: false, message: "Invalid credentials" };
       } else {
+        
         return {
           status: true,
           name: superAdmin.dataValues.name,
           id: superAdmin.dataValues.id,
+          type:"superAdmin"
         };
       }
     }
@@ -102,13 +73,13 @@ module.exports.loginSuperAdminnew = async (obj) => {
           status: true,
           name: secondAdmin.dataValues.name,
           id: secondAdmin.dataValues.id,
+          type:"secondAdmin"
         };
       }
     }
-
-    return { status: false, message: "SuperAdmin not found" };
+    
+    return { status: false, message: "Admin not found" };
   } catch (error) {
-    console.error("Error in login:", error);
-    throw error;
+    return { status: false, message: error.message };
   }
 };

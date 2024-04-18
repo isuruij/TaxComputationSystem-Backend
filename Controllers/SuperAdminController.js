@@ -43,12 +43,16 @@ module.exports.loginSuperAdmin = async (req, res) => {
     return res.status(400).json({ status: false, message: "empty fields" });
   }
   const result = await SuperAdminService.loginSuperAdmin(req.body);
-
+  //console.log(result)
   if (!result.status) {
-    console.log("failed login");
     res.json({ Status: "Failed" });
   } else {
-    res.cookie("token", result.token);
-    res.json({ Status: "Success" });
+    if(result.type==="superAdmin"){
+      res.cookie("token", result.data.token);
+      res.json({ Status: "Success" , Type:"superAdmin"});
+    }else{
+      res.cookie("token", result.data.token);
+      res.json({ Status: "Success" , Type:"secondAdmin"});
+    }
   }
 };

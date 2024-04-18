@@ -80,7 +80,7 @@ module.exports.loginTaxpayer = async (obj) => {
     }
   } catch (error) {
     console.error("Error in login:", error);
-    throw error;
+    return { status: false, message: error.message };
   }
 };
 
