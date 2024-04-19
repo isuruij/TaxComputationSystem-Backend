@@ -40,6 +40,25 @@ module.exports.addSuperAdmin = async (data) => {
   }
 };
 
+module.exports.addFirstAdmin = async (data) => {
+  try {
+      const created = await SuperAdminRepository.addFirstAdmin(data);
+      if (created.status) {
+        const tokenData = {
+          id: created.id,
+          name: data.name,
+          role: "superAdmin",
+        };
+        const recived = JwtService.createToken(tokenData);
+        return recived;
+      }  else {
+        return created;
+      }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
 module.exports.loginSuperAdmin = async (data) => {
   try {
     const avalable = await SuperAdminRepository.loginSuperAdmin(data);

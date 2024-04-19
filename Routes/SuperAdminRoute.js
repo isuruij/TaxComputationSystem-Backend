@@ -7,7 +7,9 @@ const JwtService = require("../Services/JwtService")
 const SuperAdminController =require('../Controllers/SuperAdminController')
 
 
-router.post('/register',SuperAdminController.addSuperAdmin);
+router.post('/register',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.addSuperAdmin);
+
+router.post('/createfirstadmin',SuperAdminController.addFirstAdmin);
 
 router.post('/login',SuperAdminController.loginSuperAdmin);
 

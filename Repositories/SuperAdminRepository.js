@@ -26,6 +26,26 @@ module.exports.addSuperAdmin = async (obj) => {
   }
 };
 
+module.exports.addFirstAdmin = async (obj) => {
+  try {
+    const count = await SuperAdmin.count();
+    if(count==0){
+      const hashedPw = await bcrypt.hash(obj.password.toString(), 10);
+      var data = obj;
+      data.password = hashedPw;
+      data.password = obj.password;
+      const res = await SuperAdmin.create(data);
+  
+      return { status: true, id: res.dataValues.id };
+    }else{
+      return { status: false , message:"user exist"};
+    }
+
+  } catch (error) {
+    return { status: false };
+  }
+};
+
 module.exports.loginSuperAdmin = async (obj) => {
   try {
     const superAdmin = await SuperAdmin.findOne({
