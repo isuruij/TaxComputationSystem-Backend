@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 module.exports.createToken = async (obj) => {
   try {
     const token = jwt.sign(obj, process.env.JWT_SECRET);
-    return { status: true, token: token };
+    return { status: true, token: token , type:obj.role};
   } catch (error) {
     return { status: false };
   }

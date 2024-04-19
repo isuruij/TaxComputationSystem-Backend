@@ -49,13 +49,9 @@ module.exports.loginSuperAdmin = async (data) => {
         name: avalable.name,
         role: "superAdmin"
       };
-      const recived =await JwtService.createToken(tokenData);
-      const { token } = await recived;
-      console.log(recived);
-      console.log(recived.status);
-      console.log(token);
+      const recived = JwtService.createToken(tokenData);
 
-      return {status:true, token: token, type: "superAdmin" };
+      return recived;
     } else if (avalable.status && avalable.type === "secondAdmin") {
       const tokenData = {
         id: avalable.id,
@@ -63,9 +59,7 @@ module.exports.loginSuperAdmin = async (data) => {
         role: "secondAdmin"
       };
       const recived = JwtService.createToken(tokenData);
-      const token = recived.token
-
-      return {status:true, token: token, type: "secondAdmin" };
+      return recived;
     } else {
       return { status: false };
     }
