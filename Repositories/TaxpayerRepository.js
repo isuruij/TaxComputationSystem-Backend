@@ -5,6 +5,7 @@ const {
   employmentIncome,
   investmentIncome,
   otherIncome,
+  Notification,
 } = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
@@ -19,7 +20,7 @@ module.exports.addTaxpayer = async (obj) => {
     if (existingEmail) {
       return { status: false, message: "already registered email" };
     }
-    const hashedPw = await bcrypt.hash(obj.password, 10);
+    const hashedPw = await bcrypt.hash(obj.password.toString(), 10);
     var data = obj;
     data.password = hashedPw;
     data.password = obj.password;
@@ -79,7 +80,7 @@ module.exports.loginTaxpayer = async (obj) => {
     }
   } catch (error) {
     console.error("Error in login:", error);
-    throw error;
+    return { status: false, message: error.message };
   }
 };
 
@@ -132,8 +133,7 @@ module.exports.getBasicDetails = async (id) => {
       updatedAt,
       ...userWithoutSensitiveInfo
     } = user.dataValues;
-    console.log("----------------");
-    console.log(userWithoutSensitiveInfo);
+
     return { status: true, data: userWithoutSensitiveInfo };
   } catch (error) {
     return { status: false };
@@ -193,7 +193,7 @@ module.exports.addNewPassword = async (id, token, newPassword) => {
     }
     const secret = process.env.JWT_SECRET + oldUser.dataValues.password;
     const decoded = jwt.verify(token, secret);
-    const encryptedPassword = await bcrypt.hash(newPassword, 8);
+    const encryptedPassword = await bcrypt.hash(newPassword.toString(), 8);
     await Taxpayer.update(
       { password: encryptedPassword },
       { where: { id: id } }
@@ -242,13 +242,101 @@ module.exports.getuserincomedetails = async (id) => {
 
 module.exports.updateincomedetails = async (obj) => {
   try {
-    console.log(",,,,,,,,,")
-    await businessIncome.update({businessIncome:obj.businessIncome}, { where: { taxpayerId: obj.id } } )
-    await employmentIncome.update({employmentIncome:obj.employmentIncome}, { where: { taxpayerId: obj.id } } )
-    await investmentIncome.update({investmentIncome:obj.investmentIncome}, { where: { taxpayerId: obj.id } } )
-    await otherIncome.update({otherIncome:obj.otherIncome}, { where: { taxpayerId: obj.id } } )
+    await businessIncome.update(
+      { businessIncome: obj.businessIncome },
+      { where: { taxpayerId: obj.id } }
+    );
+    await employmentIncome.update(
+      { employmentIncome: obj.employmentIncome },
+      { where: { taxpayerId: obj.id } }
+    );
+    await investmentIncome.update(
+      { investmentIncome: obj.investmentIncome },
+      { where: { taxpayerId: obj.id } }
+    );
+    await otherIncome.update(
+      { otherIncome: obj.otherIncome },
+      { where: { taxpayerId: obj.id } }
+    );
     return { status: true };
   } catch (error) {
     return { status: false };
+  }
+};
+
+module.exports.verifyEmail = async (emailToken) => {
+  try {
+    let user = await Taxpayer.findOne({ where: { emailToken: emailToken } });
+    console.log(user);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ status: "Failed", error: "User not found" });
+    }
+
+    await Taxpayer.update(
+      { isVerifiedEmail: true, emailToken: null },
+      { where: { emailToken: emailToken } }
+    );
+    await Taxpayer.findOne({ where: { emailToken: emailToken } });
+    return { status: "Success", message: "User verified successfully" };
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.getNotifications = async (id) => {
+  try {
+    const notifications = await Notification.findAll({
+      where: {
+        taxpayerId: id,
+      },
+    });
+
+    const messages = notifications.map(
+      (notification) => notification.dataValues.message
+    );
+
+    console.log(messages);
+
+    return { status: true, data: messages };
+  } catch (error) {
+    console.error(`Error fetching notifications: ${error}`);
+    return { status: false };
+  }
+};
+
+module.exports.updatePassword = async (token, data) => {
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const id = decoded.id;
+    const taxpayer = await Taxpayer.findOne({
+      where: {
+        id: id,
+      },
+    });
+    console.log(data);
+    const isMatch = await bcrypt.compare(
+      data.OldPassword.toString(),
+      taxpayer.password
+    );
+
+    if (!isMatch) {
+      return { status: false, message: "Taxpayer not found" };
+    }
+    const hashedPassword = await bcrypt.hash(data.Password.toString(), 10);
+
+    await Taxpayer.update(
+      { password: hashedPassword },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+
+    return { status: true };
+  } catch (error) {
+    return { status: false, message: "Failed" };
   }
 };

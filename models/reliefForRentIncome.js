@@ -1,6 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const reliefForRentIncome = sequelize.define("reliefForRentIncome", {
-
     reliefid: {
       type: DataTypes.INTEGER,
       autoIncrement: true,

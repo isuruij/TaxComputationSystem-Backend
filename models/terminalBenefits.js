@@ -1,6 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const terminalBenefits = sequelize.define("terminalBenefits", {
-
     assessmentId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,

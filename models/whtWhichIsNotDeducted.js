@@ -1,6 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const whtWhichIsNotDeducted = sequelize.define("whtWhichIsNotDeducted", {
-
     assessmentId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
