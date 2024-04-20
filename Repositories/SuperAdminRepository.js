@@ -29,18 +29,17 @@ module.exports.addSuperAdmin = async (obj) => {
 module.exports.addFirstAdmin = async (obj) => {
   try {
     const count = await SuperAdmin.count();
-    if(count==0){
+    if (count == 0) {
       const hashedPw = await bcrypt.hash(obj.password.toString(), 10);
       var data = obj;
       data.password = hashedPw;
       data.password = obj.password;
       const res = await SuperAdmin.create(data);
-  
-      return { status: true, id: res.dataValues.id };
-    }else{
-      return { status: false , message:"user exist"};
-    }
 
+      return { status: true, id: res.dataValues.id };
+    } else {
+      return { status: false, message: "user exist" };
+    }
   } catch (error) {
     return { status: false };
   }
@@ -54,7 +53,6 @@ module.exports.loginSuperAdmin = async (obj) => {
       },
     });
 
-
     if (superAdmin) {
       const isMatch = await bcrypt.compare(
         obj.password.toString(),
@@ -64,12 +62,11 @@ module.exports.loginSuperAdmin = async (obj) => {
       if (!isMatch) {
         return { status: false, message: "Invalid credentials" };
       } else {
-        
         return {
           status: true,
           name: superAdmin.dataValues.name,
           id: superAdmin.dataValues.id,
-          type:"superAdmin"
+          type: "superAdmin",
         };
       }
     }
@@ -93,11 +90,11 @@ module.exports.loginSuperAdmin = async (obj) => {
           status: true,
           name: secondAdmin.dataValues.name,
           id: secondAdmin.dataValues.id,
-          type:"secondAdmin"
+          type: "secondAdmin",
         };
       }
     }
-    
+
     return { status: false, message: "Admin not found" };
   } catch (error) {
     return { status: false, message: error.message };

@@ -42,18 +42,18 @@ module.exports.addSuperAdmin = async (data) => {
 
 module.exports.addFirstAdmin = async (data) => {
   try {
-      const created = await SuperAdminRepository.addFirstAdmin(data);
-      if (created.status) {
-        const tokenData = {
-          id: created.id,
-          name: data.name,
-          role: "superAdmin",
-        };
-        const recived = JwtService.createToken(tokenData);
-        return recived;
-      }  else {
-        return created;
-      }
+    const created = await SuperAdminRepository.addFirstAdmin(data);
+    if (created.status) {
+      const tokenData = {
+        id: created.id,
+        name: data.name,
+        role: "superAdmin",
+      };
+      const recived = JwtService.createToken(tokenData);
+      return recived;
+    } else {
+      return created;
+    }
   } catch (error) {
     return { status: false, message: error.message };
   }
@@ -66,7 +66,7 @@ module.exports.loginSuperAdmin = async (data) => {
       const tokenData = {
         id: avalable.id,
         name: avalable.name,
-        role: "superAdmin"
+        role: "superAdmin",
       };
       const recived = JwtService.createToken(tokenData);
 
@@ -75,7 +75,7 @@ module.exports.loginSuperAdmin = async (data) => {
       const tokenData = {
         id: avalable.id,
         name: avalable.name,
-        role: "secondAdmin"
+        role: "secondAdmin",
       };
       const recived = JwtService.createToken(tokenData);
       return recived;

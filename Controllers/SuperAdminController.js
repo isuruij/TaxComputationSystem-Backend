@@ -12,7 +12,7 @@ module.exports.addSuperAdmin = async (req, res) => {
       req.body.password == undefined ||
       req.body.password == "" ||
       req.body.name == undefined ||
-      req.body.name == "" 
+      req.body.name == ""
     ) {
       return res.status(400).json({ status: false, message: "empty fields" });
     }
@@ -22,10 +22,9 @@ module.exports.addSuperAdmin = async (req, res) => {
     if (result.status) {
       res.cookie("token", result.token);
       return res.json({ Status: "Success" });
-    }
-    else if (result.message == "already registered user") {
+    } else if (result.message == "already registered user") {
       return res.json({ status: false, message: "already registered user" });
-    }else{
+    } else {
       return res.json({ Status: "Failed" });
     }
   } catch (error) {
@@ -44,7 +43,7 @@ module.exports.addFirstAdmin = async (req, res) => {
       req.body.password == undefined ||
       req.body.password == "" ||
       req.body.name == undefined ||
-      req.body.name == "" 
+      req.body.name == ""
     ) {
       return res.status(400).json({ status: false, message: "empty fields" });
     }
@@ -54,10 +53,9 @@ module.exports.addFirstAdmin = async (req, res) => {
     if (result.status) {
       res.cookie("token", result.token);
       return res.json({ Status: "Success" });
-    }
-    else if (result.message == "user exist") {
+    } else if (result.message == "user exist") {
       return res.json({ Status: "Failed", message: "user exist" });
-    }else{
+    } else {
       return res.json({ Status: "Failed" });
     }
   } catch (error) {
@@ -78,12 +76,12 @@ module.exports.loginSuperAdmin = async (req, res) => {
   if (!result.status) {
     res.json({ Status: "Failed" });
   } else {
-    if(result.type==="superAdmin"){
+    if (result.type === "superAdmin") {
       res.cookie("token", result.token);
-      res.json({ Status: "Success" , Type:"superAdmin"});
-    }else{
+      res.json({ Status: "Success", Type: "superAdmin" });
+    } else {
       res.cookie("token", result.token);
-      res.json({ Status: "Success" , Type:"secondAdmin"});
+      res.json({ Status: "Success", Type: "secondAdmin" });
     }
   }
 };

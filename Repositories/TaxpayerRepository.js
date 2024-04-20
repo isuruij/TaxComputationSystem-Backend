@@ -5,7 +5,7 @@ const {
   employmentIncome,
   investmentIncome,
   otherIncome,
-  Notification
+  Notification,
 } = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
@@ -267,7 +267,7 @@ module.exports.updateincomedetails = async (obj) => {
 module.exports.verifyEmail = async (emailToken) => {
   try {
     let user = await Taxpayer.findOne({ where: { emailToken: emailToken } });
-    console.log(user)
+    console.log(user);
     if (!user) {
       return res
         .status(404)
@@ -281,7 +281,7 @@ module.exports.verifyEmail = async (emailToken) => {
     await Taxpayer.findOne({ where: { emailToken: emailToken } });
     return { status: "Success", message: "User verified successfully" };
   } catch (error) {
-    return { status: false, message: error.message};
+    return { status: false, message: error.message };
   }
 };
 
@@ -289,14 +289,16 @@ module.exports.getNotifications = async (id) => {
   try {
     const notifications = await Notification.findAll({
       where: {
-        taxpayerId: id 
-      }
+        taxpayerId: id,
+      },
     });
 
-    const messages = notifications.map(notification => notification.dataValues.message);
+    const messages = notifications.map(
+      (notification) => notification.dataValues.message
+    );
 
-    console.log(messages)
-    
+    console.log(messages);
+
     return { status: true, data: messages };
   } catch (error) {
     console.error(`Error fetching notifications: ${error}`);
@@ -304,16 +306,16 @@ module.exports.getNotifications = async (id) => {
   }
 };
 
-module.exports.updatePassword = async (token,data) => {
+module.exports.updatePassword = async (token, data) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const id = decoded.id;
     const taxpayer = await Taxpayer.findOne({
       where: {
-        id:id
+        id: id,
       },
     });
-    console.log(data)
+    console.log(data);
     const isMatch = await bcrypt.compare(
       data.OldPassword.toString(),
       taxpayer.password
@@ -324,14 +326,17 @@ module.exports.updatePassword = async (token,data) => {
     }
     const hashedPassword = await bcrypt.hash(data.Password.toString(), 10);
 
-    await Taxpayer.update({ password: hashedPassword }, {
-      where: {
-        id: id
+    await Taxpayer.update(
+      { password: hashedPassword },
+      {
+        where: {
+          id: id,
+        },
       }
-    });
+    );
 
     return { status: true };
   } catch (error) {
-    return { status: false , message: "Failed"};
+    return { status: false, message: "Failed" };
   }
 };
