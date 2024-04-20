@@ -10,7 +10,7 @@ const {Taxpayer} = require("../models")
 
 router.post('/register',TaxpayerController.addTaxpayer)
 
-router.get("/auth",JwtService.verifyuser,TaxpayerController.authenticateTaxpayer);
+router.get("/auth",JwtService.verifyuser,TaxpayerController.authenticateUser);
 
 router.get("/logout",TaxpayerController.logoutTaxpayer);
  
@@ -18,9 +18,9 @@ router.post('/login',TaxpayerController.loginTaxpayer);
 
 router.patch('/verifyemail',TaxpayerController.verifyEmail);
 
-router.get('/getuserbasicdetails/:id',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer"]),TaxpayerController.getBasicDetails);
+router.get('/getuserbasicdetails/:id',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer","superAdmin","secondAdmin"]),TaxpayerController.getBasicDetails);
 
-router.patch('/updatebasicdetails',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer"]),TaxpayerController.updateBasicDetails);
+router.patch('/updatebasicdetails',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer","superAdmin","secondAdmin"]),TaxpayerController.updateBasicDetails);
 
 router.post('/forgot-password',TaxpayerController.forgotPassword);    
 
@@ -28,11 +28,11 @@ router.get('/reset-password/:id/:token',TaxpayerController.resetPassword);
 
 router.post('/addnew-password/:id/:token',TaxpayerController.addNewPassword);
 
-router.get('/getuserincomedetails/:id',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer"]),TaxpayerController.getuserincomedetails);
+router.get('/getuserincomedetails/:id',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer","superAdmin","secondAdmin"]),TaxpayerController.getuserincomedetails);
 
-router.patch('/updateincomedetails',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer"]),TaxpayerController.updateincomedetails);
+router.patch('/updateincomedetails',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer","superAdmin","secondAdmin"]),TaxpayerController.updateincomedetails);
 
-router.get('/getNotifications/:id',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer"]),TaxpayerController.getNotifications);
+router.get('/getNotifications/:id',JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer","superAdmin","secondAdmin"]),TaxpayerController.getNotifications);
 
 router.patch('/updatePassword',TaxpayerController.updatePassword);
 

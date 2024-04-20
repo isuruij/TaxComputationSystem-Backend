@@ -1,6 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const qualifyingPayments = sequelize.define("qualifyingPayments", {
-
     reliefid: {
       type: DataTypes.INTEGER,
       autoIncrement: true,

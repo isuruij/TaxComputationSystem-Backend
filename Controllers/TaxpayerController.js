@@ -11,6 +11,7 @@ module.exports.addTaxpayer = async (req, res) => {
       req.body.email == "" ||
       req.body.password == undefined ||
       req.body.password == "" ||
+      req.body.name == undefined ||
       req.body.name == ""
     ) {
       return res.status(400).json({ status: false, message: "empty fields" });
@@ -21,10 +22,9 @@ module.exports.addTaxpayer = async (req, res) => {
     if (result.status) {
       res.cookie("token", result.token);
       return res.json({ Status: "Success" });
-    }
-    else if (result.message == "already registered email") {
+    } else if (result.message == "already registered email") {
       return res.json({ status: false, message: "already registered email" });
-    }else{
+    } else {
       return res.json({ Status: "Failed" });
     }
   } catch (error) {
@@ -32,7 +32,7 @@ module.exports.addTaxpayer = async (req, res) => {
   }
 };
 
-module.exports.authenticateTaxpayer = async (req, res) => {
+module.exports.authenticateUser = async (req, res) => {
   res.json({ Status: "Success", name: req.name });
 };
 
@@ -75,10 +75,14 @@ module.exports.updateBasicDetails = async (req, res) => {
     if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ error: "empty request" });
     }
-    if (req.body.email == undefined || req.body.email == "" || req.body.id == undefined || req.body.id == ""  ) {
+    if (
+      req.body.email == undefined ||
+      req.body.email == "" ||
+      req.body.id == undefined ||
+      req.body.id == ""
+    ) {
       return res.status(400).json({ status: false, message: "empty fields" });
     }
-
     const result = await TaxpayerService.updateBasicDetails(req.body);
 
     if (result.status) {
@@ -164,7 +168,6 @@ module.exports.addNewPassword = async (req, res) => {
 
 module.exports.getuserincomedetails = async (req, res) => {
   try {
-
     const result = await TaxpayerService.getuserincomedetails(req.params.id);
 
     if (result.status) {
@@ -210,7 +213,10 @@ module.exports.getNotifications = async (req, res) => {
 
 module.exports.updatePassword = async (req, res) => {
   try {
-    const result = await TaxpayerService.updatePassword(req.cookies.token,req.body);
+    const result = await TaxpayerService.updatePassword(
+      req.cookies.token,
+      req.body
+    );
     return res.status(200).json(result);
   } catch (error) {
     return { status: false };

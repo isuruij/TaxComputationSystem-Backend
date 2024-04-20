@@ -1,6 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const employmentIncome = sequelize.define("employmentIncome", {
-
     incomeId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -12,8 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   });
-
-  
 
   return employmentIncome;
 };
