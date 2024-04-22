@@ -1,9 +1,9 @@
 {
     "development": {
-      "username": "admin",
-      "password": "123456789",
+      "username": "root",
+      "password": "Ananda2010!",
       "database": "employee_db",
-      "host": "database-2.c9s60mqmwypd.eu-north-1.rds.amazonaws.com",
+      "host": "localhost",
       "dialect": "mysql",
       "port": 3306
    

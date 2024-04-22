@@ -13,6 +13,6 @@ router.get("/getusers",SuperAdminController.getTaxpayers);
 
 // router.put("/taxpayers/:id", SuperAdminController.updateTaxpayer);
 router.delete("/deletetaxpayers/:id", SuperAdminController.deleteTaxpayer);
-// router.put("/approvetaxpayers/:id", SuperAdminController.toggleApproval);
+router.put("/updateUserApprovalStatus/:id", SuperAdminController.toggleApproval);
 
 module.exports = router;

@@ -41,16 +41,19 @@ module.exports.deleteTaxpayer = async (taxpayerId) => {
   }
 };
 
-// module.exports.approveTaxpayer = async (taxpayerId) => {
-//   try {
-//     //check wether taxpayerid exsits
-//     const existTaxpayer =  await Taxpayer.findOne({where: {id: taxpayerId}});
-//     if(existTaxpayer){
-//         await Taxpayer.destroy({where: {id: taxpayerId}});
-//     }else{
-//         return {message: "Taxpayer do not found" };  
-//     }
-//   } catch (error) {
-//     throw new Error(`Error while toggling approval status: ${error.message}`);
-//   }
-// };
+module.exports.toggleApproval = async (taxpayerId) => {
+ try {
+  const { approved, isVerifiedUser } = req.body;
+  const taxpayer = await Taxpayer.findById(id);
+  //check wether taxpayerid exsits
+  const existTaxpayer =  await Taxpayer.findOne({where: {id: taxpayerId}});
+  if(existTaxpayer){
+    await Taxpayer.findByIdAndUpdate(id, { approved, isVerifiedUser }); // Toggle approval status
+    await taxpayer.save();
+  }else{
+      return {message: "Taxpayer do not found" };  
+  }
+} catch (error) {
+  throw new Error(`Error while approveTaxpayer taxpayer: ${error.message}`);
+}
+};

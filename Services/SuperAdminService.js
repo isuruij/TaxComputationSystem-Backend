@@ -29,11 +29,11 @@ module.exports.deleteTaxpayer = async (taxpayerId) => {
   }
 };
 
-// module.exports.approveTaxpayer = async (taxpayerId) => {
-//   try {
-//     await SuperAdminRepository.approveTaxpayer(taxpayerId);
-//     return { message: 'Approval status toggled successfully' };
-//   } catch (error) {
-//     throw new Error(`Error while toggling approval status: ${error.message}`);
-//   }
-// };
+module.exports.toggleApproval = async (taxpayerId) => {
+  try {
+    await SuperAdminRepository.toggleApproval(taxpayerId);
+    return { message: 'Approval status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling approval status: ${error.message}`);
+  }
+};

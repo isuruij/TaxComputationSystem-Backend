@@ -38,11 +38,12 @@ module.exports.deleteTaxpayer = async (req, res) => {
   }
 };
 
-// module.exports.approveTaxpayer = async (req, res) => {
-//   try {
-//     await SuperAdminService.approveTaxpayer(req.params.id)
-//     return res.json({ message: "Approval status toggled successfully" });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
+module.exports.toggleApproval = async (req, res) => {
+  try {
+    
+    await SuperAdminService.toggleApproval(req.params.id);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
