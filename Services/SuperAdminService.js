@@ -1,6 +1,6 @@
 // SuperAdminServices.js
 
-const SuperAdminRepository = require('../repositories/SuperAdminRepository');
+const SuperAdminRepository = require('../Repositories/SuperAdminRepository');
 
 module.exports.getTaxpayers = async () => {
   try {
@@ -11,15 +11,6 @@ module.exports.getTaxpayers = async () => {
   }
 };
 
-// module.exports.updateTaxpayer = async (taxpayerId, taxpayerName) => {
-//   try {
-//     const updatedTaxpayer = await SuperAdminRepository.updateTaxpayer(taxpayerId, taxpayerName);
-//     return updatedTaxpayer;
-//   } catch (error) {
-//     throw new Error(`Error while updating taxpayer: ${error.message}`);
-//   }
-// };
-
 module.exports.deleteTaxpayer = async (taxpayerId) => {
   try {
     await SuperAdminRepository.deleteTaxpayer(taxpayerId);
@@ -29,11 +20,12 @@ module.exports.deleteTaxpayer = async (taxpayerId) => {
   }
 };
 
-module.exports.toggleApproval = async (taxpayerId) => {
+module.exports.toggleApproval = async (taxpayerId,value) => {
   try {
-    await SuperAdminRepository.toggleApproval(taxpayerId);
+    await SuperAdminRepository.toggleApproval(taxpayerId,value);
     return { message: 'Approval status toggled successfully' };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
 };
+
