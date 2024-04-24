@@ -225,3 +225,14 @@ module.exports.getNotifications = async (req, res) => {
   }
 };
 
+
+module.exports.updateNotificationStatus = async (req, res) => {
+  try {
+    
+    const result = await TaxpayerService.updateNotificationStatus(req.body.id);
+    return res.status(200).json(result);
+
+  } catch (error) {
+    return { status: false };
+  }
+};

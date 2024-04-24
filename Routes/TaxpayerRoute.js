@@ -35,4 +35,6 @@ router.patch('/updateincomedetails',TaxpayerController.updateincomedetails);
 
 router.get('/getNotifications/:id',TaxpayerController.getNotifications);
 
+router.patch('/updateNotificationStatus',TaxpayerController.updateNotificationStatus);
+
 module.exports = router;

@@ -5,6 +5,7 @@ const {
   employmentIncome,
   investmentIncome,
   otherIncome,
+  Notification,
 } = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
@@ -242,11 +243,23 @@ module.exports.getuserincomedetails = async (id) => {
 
 module.exports.updateincomedetails = async (obj) => {
   try {
-    console.log(",,,,,,,,,")
-    await businessIncome.update({businessIncome:obj.businessIncome}, { where: { taxpayerId: obj.id } } )
-    await employmentIncome.update({employmentIncome:obj.employmentIncome}, { where: { taxpayerId: obj.id } } )
-    await investmentIncome.update({investmentIncome:obj.investmentIncome}, { where: { taxpayerId: obj.id } } )
-    await otherIncome.update({otherIncome:obj.otherIncome}, { where: { taxpayerId: obj.id } } )
+    console.log(",,,,,,,,,");
+    await businessIncome.update(
+      { businessIncome: obj.businessIncome },
+      { where: { taxpayerId: obj.id } }
+    );
+    await employmentIncome.update(
+      { employmentIncome: obj.employmentIncome },
+      { where: { taxpayerId: obj.id } }
+    );
+    await investmentIncome.update(
+      { investmentIncome: obj.investmentIncome },
+      { where: { taxpayerId: obj.id } }
+    );
+    await otherIncome.update(
+      { otherIncome: obj.otherIncome },
+      { where: { taxpayerId: obj.id } }
+    );
     return { status: true };
   } catch (error) {
     return { status: false };
@@ -257,17 +270,48 @@ module.exports.getNotifications = async (id) => {
   try {
     const notifications = await Notification.findAll({
       where: {
-        taxpayerId: id 
-      }
+        taxpayerId: id,
+      },
     });
 
-    const messages = notifications.map(notification => notification.dataValues.message);
+    const messages = notifications.map((notification) => {
+      return {
+        message: notification.dataValues.message,
+        isViewed: notification.dataValues.isViewed,
+        id:notification.dataValues.notificationId
+      };
+    });
 
-    console.log(messages)
-    
-    return { status: true, data: messages };
+    console.log(messages);
+
+    // Count the number of notifications where isViewed is false
+    const unviewedCount = messages.filter(
+      (message) => !message.isViewed
+    ).length;
+
+    console.log(messages);
+    // await Notification.update(
+    //   { isViewed: false },
+    //   { where: { taxpayerId: id } }
+    // );
+    return { status: true, data: messages,count:unviewedCount };
   } catch (error) {
     console.error(`Error fetching notifications: ${error}`);
+    return { status: false };
+  }
+};
+
+
+module.exports.updateNotificationStatus = async (id) => {
+  try {
+
+    await Notification.update(
+      { isViewed: true },
+      { where: { notificationId: id } }
+    );
+    return { status: true};
+  } catch (error) {
+    console.error(`Error: ${error}`);
     return { status: false };
   }
 };

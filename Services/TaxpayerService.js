@@ -136,3 +136,15 @@ module.exports.getNotifications = async (id) => {
     return { status: false, message: error.message };
   }
 };
+
+module.exports.updateNotificationStatus = async (id) => {
+  try {
+    
+    const created = await TaxpayerRepository.updateNotificationStatus(id);
+    return created;
+    
+
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
