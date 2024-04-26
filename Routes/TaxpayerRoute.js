@@ -36,5 +36,9 @@ router.get('/getNotifications/:id',JwtService.verifyuser,JwtService.roleBasedAut
 
 router.patch('/updatePassword',TaxpayerController.updatePassword);
 
+router.get('/getNotifications/:id',TaxpayerController.getNotifications);
+
+router.patch('/updateNotificationStatus',TaxpayerController.updateNotificationStatus);
+
 
 module.exports = router;

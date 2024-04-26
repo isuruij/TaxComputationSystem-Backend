@@ -222,3 +222,30 @@ module.exports.updatePassword = async (req, res) => {
     return { status: false };
   }
 };
+
+
+module.exports.getNotifications = async (req, res) => {
+  try {
+    
+    console.log(req.params.id);
+    const result = await TaxpayerService.getNotifications(req.params.id);
+    
+    console.log(result);
+    return res.status(200).json(result);
+
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+
+module.exports.updateNotificationStatus = async (req, res) => {
+  try {
+    
+    const result = await TaxpayerService.updateNotificationStatus(req.body.id);
+    return res.status(200).json(result);
+
+  } catch (error) {
+    return { status: false };
+  }
+};
