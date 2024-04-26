@@ -1,0 +1,10 @@
+const express = require('express')
+const jwt = require("jsonwebtoken");
+const router = express.Router()
+const JwtService = require("../Services/JwtService")
+
+const superAdminController =require('../Controllers/SuperAdminController')
+
+router.post('/createPolicy',superAdminController.createPolicy);
+
+module.exports = router;
