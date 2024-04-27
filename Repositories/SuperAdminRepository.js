@@ -48,4 +48,19 @@ const {
       return { status: false };
     }
   };
+
+
+
+  module.exports.deletePolicy = async (data) => {
+    try {
+      console.log(data)
+      console.log("sdhfkfjh")
+      await Policies.destroy( { where: { policyId: data.id }});
+  
+      return { status: true};
+    } catch (error) {
+      console.error(`Error: ${error}`);
+      return { status: false };
+    }
+  };
   

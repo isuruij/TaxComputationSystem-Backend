@@ -42,3 +42,25 @@ module.exports.createPolicy = async (req, res) => {
       return res.status(400).json({Status: "NotSuccess", message: error.message });
     }
   };
+
+
+
+  module.exports.deletePolicy = async (req, res) => {
+    try {
+      if (!req.body) {
+        return res.status(400).json({ error: "empty request" });
+      }
+      console.log("tttttttnnnnnnnnnnn");
+      const result = await SuperAdminService.deletePolicy(req.body);
+      
+      
+      if (result.status) {
+        console.log("sucesssssssss")
+        return res.json({ Status: "Success" });
+      }
+  
+      
+    } catch (error) {
+      return res.status(400).json({Status: "NotSuccess", message: error.message });
+    }
+  };
