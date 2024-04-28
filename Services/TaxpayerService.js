@@ -148,3 +148,20 @@ module.exports.updateNotificationStatus = async (id) => {
     return { status: false, message: error.message };
   }
 };
+
+
+module.exports.taxHistoryType = async (id) => {
+  try {
+    // Call the repository function with the provided parameters
+    const created = await TaxpayerRepository.taxHistoryType(id);
+    return created;
+
+  } catch (error) {
+    console.error(`Error in service: ${error.message}`);
+    return { status: false, message: error.message };
+  }
+};
+
+
+
+

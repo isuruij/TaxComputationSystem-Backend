@@ -6,11 +6,13 @@ const {
   investmentIncome,
   otherIncome,
   Notification,
+  TaxHistory,
 } = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const sendMail = require("../utils/sendMail");
 const sendVerificationMail = require("../utils/sendVerificationMail");
+
 
 module.exports.addTaxpayer = async (obj) => {
   try {
@@ -315,3 +317,35 @@ module.exports.updateNotificationStatus = async (id) => {
     return { status: false };
   }
 };
+
+
+module.exports.taxHistoryType = async (id) => {
+  try {
+    // Query the database for records matching the given parameters
+    const types = await TaxHistory.findAll({
+      where: {
+        taxpayerId: id,
+      }
+    });
+
+    // Map the results to return the desired format
+    const messages = types.map(record => {
+      return {
+        description: record.dataValues.description,
+        date: record.dataValues.date,
+        time: record.dataValues.time,
+        reference: record.dataValues.reference, 
+        amount: record.dataValues.amount, 
+      };
+    });
+
+    return messages;
+
+  } catch (error) {
+    console.error(`Error in repository: ${error.message}`);
+    return { status: false, message: error.message };
+  }
+};
+
+
+
