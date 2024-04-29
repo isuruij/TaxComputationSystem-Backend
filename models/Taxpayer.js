@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     emailToken: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     isVerifiedEmail: {
       type: DataTypes.BOOLEAN,
@@ -56,10 +57,19 @@ module.exports = (sequelize, DataTypes) => {
     isVerifiedUser: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
+      allowNull: false,
     },
     numOfSubmissions: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
+    },
+    agreeToannualFee: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    dprSource: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   });
 

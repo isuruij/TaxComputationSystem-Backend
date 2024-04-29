@@ -1,9 +1,20 @@
 const TaxpayerService = require("../Services/TaxpayerService");
 const { Taxpayer } = require("../models");
+
 module.exports.addTaxpayer = async (req, res) => {
   try {
-    if (!req.body) {
+    if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ error: "empty request" });
+    }
+    if (
+      req.body.email == undefined ||
+      req.body.email == "" ||
+      req.body.password == undefined ||
+      req.body.password == "" ||
+      req.body.name == undefined ||
+      req.body.name == ""
+    ) {
+      return res.status(400).json({ status: false, message: "empty fields" });
     }
 
     const result = await TaxpayerService.addTaxpayer(req.body);
@@ -11,22 +22,28 @@ module.exports.addTaxpayer = async (req, res) => {
     if (result.status) {
       res.cookie("token", result.token);
       return res.json({ Status: "Success" });
-    }
-    if (result.message == "already registered email") {
+    } else if (result.message == "already registered email") {
       return res.json({ status: false, message: "already registered email" });
+    } else {
+      return res.json({ Status: "Failed" });
     }
   } catch (error) {
     return res.status(400).json({ status: false, message: error.message });
   }
 };
 
-module.exports.authenticateTaxpayer = async (req, res) => {
+module.exports.authenticateUser = async (req, res) => {
   res.json({ Status: "Success", name: req.name });
 };
 
 module.exports.loginTaxpayer = async (req, res) => {
-  if (!req.body) {
-    return res.status(400).json({ error: "empty request" });
+  if (
+    req.body.email == undefined ||
+    req.body.email == "" ||
+    req.body.password == undefined ||
+    req.body.password == ""
+  ) {
+    return res.status(400).json({ status: false, message: "empty fields" });
   }
   const result = await TaxpayerService.loginTaxpayer(req.body);
 
@@ -49,32 +66,26 @@ module.exports.verifyEmail = async (req, res) => {
   if (!emailToken) {
     return res.status(400).json({ status: "Failed", error: "empty request" });
   }
-  let user = await Taxpayer.findOne({ where: { emailToken: emailToken } });
-
-  if (!user) {
-    return res.status(404).json({ status: "Failed", error: "User not found" });
-  }
-
-  await Taxpayer.update(
-    { isVerifiedEmail: true, emailToken: null },
-    { where: { emailToken: emailToken } }
-  );
-  await Taxpayer.findOne({ where: { emailToken: emailToken } });
-  return res
-    .status(200)
-    .json({ status: "Success", message: "User verified successfully" });
+  const result = await TaxpayerService.verifyEmail(emailToken);
+  return res.json(result);
 };
 
 module.exports.updateBasicDetails = async (req, res) => {
   try {
-    if (!req.body) {
+    if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ error: "empty request" });
     }
-
+    if (
+      req.body.email == undefined ||
+      req.body.email == "" ||
+      req.body.id == undefined ||
+      req.body.id == ""
+    ) {
+      return res.status(400).json({ status: false, message: "empty fields" });
+    }
     const result = await TaxpayerService.updateBasicDetails(req.body);
 
     if (result.status) {
-      console.log("sucesssssssss");
       return res.json({ Status: "Success" });
     }
 
@@ -93,10 +104,6 @@ module.exports.updateBasicDetails = async (req, res) => {
 
 module.exports.getBasicDetails = async (req, res) => {
   try {
-    if (!req.params.id) {
-      return res.status(400).json({ error: "empty request" });
-    }
-    console.log(req.params.id);
     const result = await TaxpayerService.getBasicDetails(req.params.id);
 
     if (result.status) {
@@ -144,16 +151,9 @@ module.exports.resetPassword = async (req, res) => {
 
 module.exports.addNewPassword = async (req, res) => {
   try {
-    console.log(",,,,,,,,,,,,,,,,,");
-    console.log(req.body);
     const { id, token } = req.params;
     const newPassword = req.body.password;
-    console.log(id, token);
-    console.log(newPassword);
-    console.log("++++++++++++");
     const result = await TaxpayerService.addNewPassword(id, token, newPassword);
-    console.log("---------------------");
-    console.log(result);
     if (result.status) {
       return res.json({ Status: "Verified" });
     } else {
@@ -168,10 +168,6 @@ module.exports.addNewPassword = async (req, res) => {
 
 module.exports.getuserincomedetails = async (req, res) => {
   try {
-    if (!req.params.id) {
-      return res.status(400).json({ error: "empty request" });
-    }
-    console.log(req.params.id);
     const result = await TaxpayerService.getuserincomedetails(req.params.id);
 
     if (result.status) {
@@ -186,7 +182,7 @@ module.exports.getuserincomedetails = async (req, res) => {
 
 module.exports.updateincomedetails = async (req, res) => {
   try {
-    if (!req.body) {
+    if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ error: "empty request" });
     }
     const result = await TaxpayerService.updateincomedetails(req.body);
@@ -200,6 +196,30 @@ module.exports.updateincomedetails = async (req, res) => {
     return res
       .status(400)
       .json({ Status: "NotSuccess", message: error.message });
+  }
+};
+
+module.exports.getNotifications = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const result = await TaxpayerService.getNotifications(req.params.id);
+
+    console.log(result);
+    return res.status(200).json(result);
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+module.exports.updatePassword = async (req, res) => {
+  try {
+    const result = await TaxpayerService.updatePassword(
+      req.cookies.token,
+      req.body
+    );
+    return res.status(200).json(result);
+  } catch (error) {
+    return { status: false };
   }
 };
 
