@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const apit = sequelize.define("apit", {
-    taxCreditId: {
+    APITId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,

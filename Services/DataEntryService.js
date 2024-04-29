@@ -15,11 +15,14 @@ module.exports.getusernames = async () => {
   }
 };
 
-// dataentry data enter part(under  development)
+// dataentry data enter part
 module.exports.postTaxDetails = async (data) => {
   try {
     const result = await DataEntryRepository.postTaxDetails(data);
-    return { status: true };
+    if (result.status) {
+      return { status: true };
+    }
+    return { message: "Database not succussfully updated" };
   } catch (error) {
     return { status: false };
   }

@@ -58,6 +58,7 @@ app.use(bodyparser.json());
 const taxpayerRoutes = require("./Routes/TaxpayerRoute");
 app.use("/api/taxpayer", taxpayerRoutes);
 const dataentryRoutes = require("./Routes/DataEntryRoute");
+const { FORCE } = require("sequelize/lib/index-hints");
 app.use("/api/dataentry", dataentryRoutes);
 
 app.use((err, req, res, next) => {

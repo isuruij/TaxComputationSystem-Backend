@@ -66,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
   Taxpayer.associate = (models) => {
     Taxpayer.hasMany(models.apit, { foreignKey: "taxpayerId" });
     Taxpayer.hasMany(models.businessIncome, { foreignKey: "taxpayerId" });
-    Taxpayer.hasMany(models.businessIncome, { foreignKey: "taxpayerId" });
+    Taxpayer.hasMany(models.capitalValueGain, { foreignKey: "taxpayerId" });
     Taxpayer.hasMany(models.Document, { foreignKey: "taxpayerId" });
     Taxpayer.hasMany(models.employmentIncome, { foreignKey: "taxpayerId" });
     Taxpayer.hasMany(models.investmentIncome, { foreignKey: "taxpayerId" });

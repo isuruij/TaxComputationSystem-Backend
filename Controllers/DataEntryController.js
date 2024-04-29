@@ -18,7 +18,7 @@ module.exports.getusernames = async (req, res) => {
   }
 };
 
-// dataentry data enter part(under  development)
+// dataentry data enter part
 module.exports.postTaxDetails = async (req, res) => {
   try {
     if (!req.body) {
@@ -26,9 +26,16 @@ module.exports.postTaxDetails = async (req, res) => {
     }
 
     const result = await DataEntryService.postTaxDetails(req.body);
-    return { result };
+    if (result.status) {
+      console.log(result.status);
+      return res.json({ Status: "Success" });
+    } else {
+      console.log(result.message);
+      return res.json({ Status: "Failed", Message: result.message });
+    }
   } catch (error) {
-    return { error };
+    console.error("Error updating tables:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 

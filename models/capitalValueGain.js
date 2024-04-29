@@ -1,12 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
-  const capitalValue = sequelize.define("capitalValue", {
+  const capitalValueGain = sequelize.define("capitalValueGain", {
     assessmentId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false,
     },
-    capitalValue: {
+    capitalValueGain: {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
@@ -20,5 +20,5 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  return capitalValue;
+  return capitalValueGain;
 };
