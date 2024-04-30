@@ -10,6 +10,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
+    bI_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    bI_Note: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
 
   businessIncome.associate = (models) => {

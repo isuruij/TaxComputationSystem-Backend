@@ -10,6 +10,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
+    iI_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    iI_Note: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
 
   return investmentIncome;

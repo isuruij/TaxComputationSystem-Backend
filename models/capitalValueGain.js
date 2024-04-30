@@ -1,24 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
-  const reliefForRentIncome = sequelize.define("reliefForRentIncome", {
-    reliefid: {
+  const capitalValueGain = sequelize.define("capitalValueGain", {
+    assessmentId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false,
     },
-    reliefForRentIncome: {
+    capitalValueGain: {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    rRI_docname: {
+    cVnG_docname: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    rRI_Note: {
+    cVnG_Note: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   });
 
-  return reliefForRentIncome;
+  return capitalValueGain;
 };

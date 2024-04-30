@@ -10,6 +10,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
+    rE_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    rE_Note: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
 
   return reliefForExpenditure;

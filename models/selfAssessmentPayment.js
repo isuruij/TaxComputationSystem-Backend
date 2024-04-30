@@ -10,6 +10,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
+    sAP_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    sAP_Note: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
 
   return selfAssessmentPayment;

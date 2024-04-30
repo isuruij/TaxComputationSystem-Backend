@@ -10,6 +10,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
+    qP_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    qP_Note: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
 
   return qualifyingPayments;

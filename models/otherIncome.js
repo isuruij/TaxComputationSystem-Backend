@@ -10,6 +10,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
+    oI_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    oI_Note: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
 
   return otherIncome;

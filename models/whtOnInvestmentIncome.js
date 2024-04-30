@@ -10,6 +10,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
+    wHT_II_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    wHT_II_Note: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
 
   return whtOnInvestmentIncome;

@@ -10,6 +10,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
+    tB_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    tB_Note: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
 
   return terminalBenefits;

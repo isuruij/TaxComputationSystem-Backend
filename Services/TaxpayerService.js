@@ -136,3 +136,31 @@ module.exports.updatePassword = async (token, data) => {
     return { status: false, message: error.message };
   }
 };
+
+// thimira file upload part
+module.exports.fileUpload = async (userId, files) => {
+  try {
+    console.log("this service");
+    await TaxpayerRepository.fileUpload(userId, files);
+  } catch (error) {
+    throw new Error("Error uploading files");
+  }
+};
+
+//get tin and name
+module.exports.getUserDetails = async (userId) => {
+  try {
+    if (!userId) {
+      return { status: false };
+    }
+    const values = await TaxpayerRepository.getUserDetails(userId);
+
+    if (values.status) {
+      return { status: true, data: values.data };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false };
+  }
+};
