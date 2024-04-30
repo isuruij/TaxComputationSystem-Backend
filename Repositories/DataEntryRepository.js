@@ -34,21 +34,6 @@ module.exports.getusernames = async () => {
 // dataentry data enter part
 module.exports.postTaxDetails = async (dataObject) => {
   try {
-    console.log(dataObject.amount[0], dataObject.note[0], dataObject.UserId);
-    console.log(dataObject.amount[1], dataObject.note[1], dataObject.UserId);
-    console.log(dataObject.amount[2], dataObject.note[2], dataObject.UserId);
-    console.log(dataObject.amount[3], dataObject.note[3], dataObject.UserId);
-    console.log(dataObject.amount[4], dataObject.note[4], dataObject.UserId);
-    console.log(dataObject.amount[5], dataObject.note[5], dataObject.UserId);
-    console.log(dataObject.amount[6], dataObject.note[6], dataObject.UserId);
-    console.log(dataObject.amount[7], dataObject.note[7], dataObject.UserId);
-    console.log(dataObject.amount[8], dataObject.note[8], dataObject.UserId);
-    console.log(dataObject.amount[9], dataObject.note[9], dataObject.UserId);
-    console.log(dataObject.amount[10], dataObject.note[10], dataObject.UserId);
-    console.log(dataObject.amount[11], dataObject.note[11], dataObject.UserId);
-    console.log(dataObject.amount[12], dataObject.note[12], dataObject.UserId);
-    console.log(dataObject.amount[13], dataObject.note[13], dataObject.UserId);
-
     //dataObject.UserId is a string and want to convert to integer to compare
     let id = parseInt(dataObject.UserId, 10);
 
