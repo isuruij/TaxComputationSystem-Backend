@@ -4,7 +4,6 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-require("express-async-errors");
 require("dotenv").config();
 //to file upload
 const multer = require("multer");
@@ -37,11 +36,6 @@ const { FORCE } = require("sequelize/lib/index-hints");
 app.use("/api/taxpayer", taxpayerRoutes);
 app.use("/api/dataentry", dataentryRoutes);
 app.use("/api/SuperAdmin", SuperAdminRoutes);
-
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(err.status || 500).send("Something went wrong!");
-});
 
 db.sequelize.sync().then(() => {
   app.listen(3000, () => {
