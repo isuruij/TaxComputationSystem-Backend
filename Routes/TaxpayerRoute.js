@@ -4,6 +4,20 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const JwtService = require("../Services/JwtService");
 
+//For upload docs
+const multer = require("multer");
+
+//For upload docs
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/Images"); // Destination folder for uploaded files
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  },
+});
+const upload = multer({ storage: storage });
+
 const TaxpayerController = require("../Controllers/TaxpayerController");
 
 const { Taxpayer } = require("../models");
@@ -60,5 +74,12 @@ router.get(
 );
 
 router.patch("/updatePassword", TaxpayerController.updatePassword);
+
+//Upload files into database
+router.post(
+  "/fileUpload/:id",
+  upload.array("docs"),
+  TaxpayerController.fileUpload
+);
 
 module.exports = router;

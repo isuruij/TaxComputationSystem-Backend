@@ -136,3 +136,13 @@ module.exports.updatePassword = async (token, data) => {
     return { status: false, message: error.message };
   }
 };
+
+// thimira file upload part
+module.exports.fileUpload = async (userId, files) => {
+  try {
+    console.log("this service");
+    await TaxpayerRepository.fileUpload(userId, files);
+  } catch (error) {
+    throw new Error("Error uploading files");
+  }
+};

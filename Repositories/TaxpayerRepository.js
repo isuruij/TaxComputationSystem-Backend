@@ -340,3 +340,12 @@ module.exports.updatePassword = async (token, data) => {
     return { status: false, message: "Failed" };
   }
 };
+
+// thimira file upload part
+module.exports.fileUpload = async (userId, files) => {
+  try {
+    console.log("this repo");
+  } catch (error) {
+    throw new Error("Error saving files");
+  }
+};

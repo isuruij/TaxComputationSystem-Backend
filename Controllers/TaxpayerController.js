@@ -223,9 +223,35 @@ module.exports.updatePassword = async (req, res) => {
   }
 };
 
-// thimira file upload part
-// (module.exports.updatefiles = upload.fields),
-//   async (req, res) => {
-//     try {
-//     } catch (error) {}
-//   };
+// thimira file upload part(Under development)
+module.exports.fileUpload = async (req, res, next) => {
+  try {
+    console.log("this is controller");
+    const userId = req.params.id;
+    const files = req.files;
+
+    console.log(userId);
+    console.log(files);
+
+    const filesArray = [];
+    files.forEach((file) => {
+      // Extract file information and add it to filesArray
+      const fileInfo = {
+        filename: file.filename,
+        mimetype: file.mimetype,
+        path: file.path,
+        size: file.size,
+      };
+      filesArray.push(fileInfo);
+    });
+    console.log("Uploaded files:");
+    console.log(filesArray);
+
+    await TaxpayerService.fileUpload(userId, filesArray);
+
+    res.status(200).json({ message: "Files uploaded successfully" });
+  } catch (error) {
+    console.error("Error uploading files:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
