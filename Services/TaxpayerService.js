@@ -146,3 +146,21 @@ module.exports.fileUpload = async (userId, files) => {
     throw new Error("Error uploading files");
   }
 };
+
+//get tin and name
+module.exports.getUserDetails = async (userId) => {
+  try {
+    if (!userId) {
+      return { status: false };
+    }
+    const values = await TaxpayerRepository.getUserDetails(userId);
+
+    if (values.status) {
+      return { status: true, data: values.data };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false };
+  }
+};

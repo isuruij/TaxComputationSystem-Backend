@@ -349,3 +349,18 @@ module.exports.fileUpload = async (userId, files) => {
     throw new Error("Error saving files");
   }
 };
+
+module.exports.getUserDetails = async (userId) => {
+  try {
+    const result = await Taxpayer.findOne({
+      attributes: ["name", "tin"],
+      where: { id: userId },
+    });
+    if (!result) {
+      return { status: false };
+    }
+    return { status: true, data: result };
+  } catch (error) {
+    return { status: false };
+  }
+};

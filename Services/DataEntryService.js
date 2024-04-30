@@ -41,3 +41,21 @@ module.exports.getUserSubmission = async () => {
     return { status: false };
   }
 };
+
+//get tin and name
+module.exports.getUserDetails = async (userId) => {
+  try {
+    if (!userId) {
+      return { status: false };
+    }
+    const values = await DataEntryRepository.getUserDetails(userId);
+
+    if (values.status) {
+      return { status: true, data: values.data };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false };
+  }
+};

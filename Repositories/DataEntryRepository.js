@@ -469,3 +469,19 @@ module.exports.getUserSubmission = async () => {
     return { status: false, message: error };
   }
 };
+
+//get tin and name
+module.exports.getUserDetails = async (userId) => {
+  try {
+    const result = await Taxpayer.findOne({
+      attributes: ["name", "tin"],
+      where: { id: userId },
+    });
+    if (!result) {
+      return { status: false };
+    }
+    return { status: true, data: result };
+  } catch (error) {
+    return { status: false };
+  }
+};

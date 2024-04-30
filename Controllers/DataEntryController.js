@@ -55,3 +55,20 @@ module.exports.getUserSubmission = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+//get name and tin
+module.exports.getUserDetails = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+
+    const result = await DataEntryService.getUserDetails(id);
+    if (result.status) {
+      return res.json({ Status: "Success", Data: result.data });
+    } else {
+      return res.status(400).json({ Status: "NotSuccess" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

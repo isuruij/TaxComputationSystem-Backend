@@ -255,3 +255,20 @@ module.exports.fileUpload = async (req, res, next) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+//get name and tin
+module.exports.getUserDetails = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+
+    const result = await TaxpayerService.getUserDetails(id);
+    if (result.status) {
+      return res.json({ Status: "Success", Data: result.data });
+    } else {
+      return res.status(400).json({ Status: "NotSuccess" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

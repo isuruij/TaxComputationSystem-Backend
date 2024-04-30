@@ -13,4 +13,7 @@ router.post("/enterData", DataEntryController.postTaxDetails);
 //Get user submissions
 router.get("/getusersubmission", DataEntryController.getUserSubmission);
 
+//Get user name and tin number
+router.get("/getUserDetails/:id", DataEntryController.getUserDetails);
+
 module.exports = router;

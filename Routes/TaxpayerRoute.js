@@ -82,4 +82,6 @@ router.post(
   TaxpayerController.fileUpload
 );
 
+router.get("/getUserDetails/:id", TaxpayerController.getUserDetails);
+
 module.exports = router;
