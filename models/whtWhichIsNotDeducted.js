@@ -7,7 +7,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     whtWhichIsNotDeducted: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+    },
+    wHT_WND_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    wHT_WND_Note: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   });

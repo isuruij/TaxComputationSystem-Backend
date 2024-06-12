@@ -7,8 +7,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     businessIncome: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.DOUBLE,
       allowNull: false,
+    },
+    bI_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "path"
+    },
+    bI_Note: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "path"
     },
   });
 

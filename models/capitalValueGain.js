@@ -1,26 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
-  const investmentIncome = sequelize.define("investmentIncome", {
-    incomeId: {
+  const capitalValueGain = sequelize.define("capitalValueGain", {
+    assessmentId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false,
     },
-    investmentIncome: {
+    capitalValueGain: {
       type: DataTypes.DOUBLE,
       allowNull: false,
     },
-    iI_docname: {
+    cVnG_docname: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: "path"
     },
-    iI_Note: {
+    cVnG_Note: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: "path"
     },
   });
 
-  return investmentIncome;
+  return capitalValueGain;
 };

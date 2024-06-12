@@ -7,8 +7,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     otherIncome: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.DOUBLE,
       allowNull: false,
+    },
+    oI_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "path"
+    },
+    oI_Note: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "path"
     },
   });
 

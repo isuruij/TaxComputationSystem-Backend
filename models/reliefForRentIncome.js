@@ -7,7 +7,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     reliefForRentIncome: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+    },
+    rRI_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    rRI_Note: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   });

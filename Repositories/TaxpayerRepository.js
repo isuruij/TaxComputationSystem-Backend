@@ -12,6 +12,7 @@ const crypto = require("crypto");
 const sendMail = require("../utils/sendMail");
 const sendVerificationMail = require("../utils/sendVerificationMail");
 
+//register taxpayer
 module.exports.addTaxpayer = async (obj) => {
   try {
     const existingEmail = await Taxpayer.findOne({
@@ -20,6 +21,7 @@ module.exports.addTaxpayer = async (obj) => {
     if (existingEmail) {
       return { status: false, message: "already registered email" };
     }
+    //hashing password
     const hashedPw = await bcrypt.hash(obj.password.toString(), 10);
     var data = obj;
     data.password = hashedPw;
@@ -84,9 +86,10 @@ module.exports.loginTaxpayer = async (obj) => {
   }
 };
 
+//update taxpayer details
 module.exports.updateBasicDetails = async (obj) => {
   try {
-    //checking is there ant taxpayer with given id and email
+    //checking is there any taxpayer with given id and email
     const existingEmail = await Taxpayer.findOne({
       where: { id: obj.id, email: obj.email },
     });
@@ -123,6 +126,7 @@ module.exports.updateBasicDetails = async (obj) => {
   }
 };
 
+// get taxpayer details
 module.exports.getBasicDetails = async (id) => {
   try {
     const user = await Taxpayer.findOne({ where: { id: id } });
@@ -168,13 +172,12 @@ module.exports.forgotPassword = async (email) => {
 module.exports.resetPassword = async (id, token) => {
   try {
     const oldUser = await Taxpayer.findOne({ where: { id: id } });
-    //console.log("old user pw :" , oldUser.dataValues.password);
+
     if (!oldUser) {
       return { status: false, message: "User Not Exist" };
     }
     const secret = process.env.JWT_SECRET + oldUser.dataValues.password;
     const decoded = jwt.verify(token, secret);
-    //const link = `http://localhost:3000/api/taxpayer/reset-password/${existingEmail.id}/${token}`;
     console.log(decoded);
 
     return { status: true };
@@ -187,7 +190,6 @@ module.exports.resetPassword = async (id, token) => {
 module.exports.addNewPassword = async (id, token, newPassword) => {
   try {
     const oldUser = await Taxpayer.findOne({ where: { id: id } });
-    //console.log("old user pw :" , oldUser.dataValues.password);
     if (!oldUser) {
       return { status: false, message: "User Not Exist" };
     }
@@ -199,7 +201,6 @@ module.exports.addNewPassword = async (id, token, newPassword) => {
       { where: { id: id } }
     );
 
-    //const link = `http://localhost:3000/api/taxpayer/reset-password/${existingEmail.id}/${token}`;
     console.log(decoded);
 
     return { status: true };
@@ -224,8 +225,6 @@ module.exports.getuserincomedetails = async (id) => {
       where: { taxpayerId: id },
     });
 
-    console.log("llllllll");
-    console.log(businessIncome);
     return {
       status: true,
       data: {
@@ -278,7 +277,6 @@ module.exports.verifyEmail = async (emailToken) => {
       { isVerifiedEmail: true, emailToken: null },
       { where: { emailToken: emailToken } }
     );
-    await Taxpayer.findOne({ where: { emailToken: emailToken } });
     return { status: "Success", message: "User verified successfully" };
   } catch (error) {
     return { status: false, message: error.message };
@@ -338,5 +336,29 @@ module.exports.updatePassword = async (token, data) => {
     return { status: true };
   } catch (error) {
     return { status: false, message: "Failed" };
+  }
+};
+
+// thimira file upload part
+module.exports.fileUpload = async (userId, files) => {
+  try {
+    console.log("this repo");
+  } catch (error) {
+    throw new Error("Error saving files");
+  }
+};
+
+module.exports.getUserDetails = async (userId) => {
+  try {
+    const result = await Taxpayer.findOne({
+      attributes: ["name", "tin"],
+      where: { id: userId },
+    });
+    if (!result) {
+      return { status: false };
+    }
+    return { status: true, data: result };
+  } catch (error) {
+    return { status: false };
   }
 };

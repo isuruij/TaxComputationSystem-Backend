@@ -7,7 +7,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     whtOnInvestmentIncome: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+    },
+    wHT_II_docname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    wHT_II_Note: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   });
