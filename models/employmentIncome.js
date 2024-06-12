@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     employmentIncome: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.DOUBLE,
       allowNull: false,
     },
     eI_docname: {

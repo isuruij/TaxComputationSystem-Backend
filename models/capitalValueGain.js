@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     capitalValueGain: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.DOUBLE,
       allowNull: false,
     },
     cVnG_docname: {
