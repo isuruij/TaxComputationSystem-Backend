@@ -13,10 +13,12 @@ module.exports = (sequelize, DataTypes) => {
     eI_docname: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: "path"
     },
     eI_Note: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: "path"
     },
   });
 
