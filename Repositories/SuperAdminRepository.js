@@ -7,14 +7,14 @@ const {
     try {
       console.log(data)
       await Policies.create({
-        policyTitle: data.policyTitle,
-        policyDetails: data.policyDetails
+        title: data.title,
+        details: data.details
     });
   
       return { status: true};
     } catch (error) {
       console.error(`Error: ${error}`);
-      return { status: false };
+      return { status: false , message:error.message};
     }
   };
 
@@ -26,13 +26,13 @@ const {
       console.log(",,,,,,,,,");
       // Update policy title
       await Policies.update(
-        { policyTitle: obj.policyTitle },
+        { policyTitle: obj.title },
         { where: { policyId: obj.id } }
       );
       
       // Update policy details
       await Policies.update(
-        { policyDetails: obj.policyDetails },
+        { policyDetails: obj.details },
         { where: { policyId: obj.id }}
       );
       
@@ -61,6 +61,29 @@ const {
     } catch (error) {
       console.error(`Error: ${error}`);
       return { status: false };
+    }
+  };
+
+
+  module.exports.policy = async () => {
+    try {
+      // Query the database for records matching the given parameters
+      const types = await Policies.findAll();
+  
+      // Map the results to return the desired format
+      const messages = types.map(record => {
+        return {
+          title: record.dataValues.title,
+          details: record.dataValues.details,
+          
+        };
+      });
+  
+      return { status: true, data: messages };
+  
+    } catch (error) {
+      console.error(`Error in repository: ${error.message}`);
+      return { status: false, message: error.message };
     }
   };
   

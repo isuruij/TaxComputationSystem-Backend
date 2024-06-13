@@ -9,6 +9,8 @@ router.post('/createPolicy',superAdminController.createPolicy);
 
 router.patch('/updatePolicy',superAdminController.updatePolicy);
 
-router.delete('/deletePolicy',superAdminController.deletePolicy);
+router.delete('/deletePolicy/:id',superAdminController.deletePolicy);
+
+router.get('/policy',superAdminController.policy);
 
 module.exports = router;

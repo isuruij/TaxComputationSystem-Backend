@@ -3,10 +3,10 @@ const SuperAdminService = require("../Services/SuperAdminService");
 module.exports.createPolicy = async (req, res) => {
     try {
       if (
-        req.body.policyTitle == undefined ||
-        req.body.policyTitle == "" ||
-        req.body.policyDetails == undefined ||
-        req.body.policyDetails == ""
+        req.body.title == undefined ||
+        req.body.title == "" ||
+        req.body.details == undefined ||
+        req.body.details == ""
 
       ) {
         return res.status(400).json({ status: false, message: "empty fields" });
@@ -62,5 +62,27 @@ module.exports.createPolicy = async (req, res) => {
       
     } catch (error) {
       return res.status(400).json({Status: "NotSuccess", message: error.message });
+    }
+  };
+
+
+
+  module.exports.policy = async (req, res) => {
+    try {
+      // Use req.query.date and req.query.description
+      //const { id } = req.params;
+  
+      // Call the service function with the parameters
+      const result = await SuperAdminService.policy();
+      
+      // Log the result
+      console.log(result);
+  
+      // Return the result as a JSON response with a status code of 200
+      return res.status(200).json(result);
+  
+    } catch (error) {
+      console.error(`Error in controller: ${error.message}`);
+      return res.status(500).json({ status: false, message: error.message });
     }
   };
