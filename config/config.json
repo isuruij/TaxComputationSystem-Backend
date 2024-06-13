@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "admintax",
-    "password": "12345678Tax#", 
+    "username": "root",
+    "password": "1234", 
     "database": "employee_db",  
-    "host": "taxserver.mysql.database.azure.com", 
+    "host": "localhost", 
     "dialect": "mysql",   
     "port": 3306   
   

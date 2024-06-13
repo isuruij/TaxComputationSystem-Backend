@@ -54,7 +54,7 @@ const {
   module.exports.deletePolicy = async (data) => {
     try {
       console.log(data)
-      console.log("sdhfkfjh")
+      console.log("deleting")
       await Policies.destroy( { where: { policyId: data.id }});
   
       return { status: true};
@@ -73,6 +73,7 @@ const {
       // Map the results to return the desired format
       const messages = types.map(record => {
         return {
+          id: record.dataValues.policyId,
           title: record.dataValues.title,
           details: record.dataValues.details,
           

@@ -51,6 +51,7 @@ module.exports.createPolicy = async (req, res) => {
         return res.status(400).json({ error: "empty request" });
       }
       console.log("tttttttnnnnnnnnnnn");
+      console.log(req.body)
       const result = await SuperAdminService.deletePolicy(req.body);
       
       
