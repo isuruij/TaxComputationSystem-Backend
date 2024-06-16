@@ -164,3 +164,28 @@ module.exports.getUserDetails = async (userId) => {
     return { status: false };
   }
 };
+
+
+module.exports.getNotifications = async (id) => {
+  try {
+    
+    const created = await TaxpayerRepository.getNotifications(id);
+    return created;
+    
+
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.updateNotificationStatus = async (id) => {
+  try {
+    
+    const created = await TaxpayerRepository.updateNotificationStatus(id);
+    return created;
+    
+
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
