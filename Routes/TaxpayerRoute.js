@@ -84,4 +84,8 @@ router.post(
 
 router.get("/getUserDetails/:id", TaxpayerController.getUserDetails);
 
+router.get('/getNotifications/:id',TaxpayerController.getNotifications);
+
+router.patch('/updateNotificationStatus',TaxpayerController.updateNotificationStatus);
+
 module.exports = router;
