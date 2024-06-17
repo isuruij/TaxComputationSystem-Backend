@@ -13,6 +13,8 @@ router.post('/createfirstadmin',SuperAdminController.addFirstAdmin);
 
 router.post('/login',SuperAdminController.loginSuperAdmin);
 
+router.post('/addnotifications',SuperAdminController.addNotifications);
+
  
 
 module.exports = router;
