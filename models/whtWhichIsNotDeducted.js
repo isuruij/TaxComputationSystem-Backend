@@ -8,15 +8,27 @@ module.exports = (sequelize, DataTypes) => {
     },
     whtWhichIsNotDeducted: {
       type: DataTypes.FLOAT,
-      allowNull: false,
+      allowNull: true,
     },
-    wHT_WND_docname: {
+    docname: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+    },
+    filePath: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     wHT_WND_Note: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+    },
+    isverified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    isnewsubmission: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   });
 

@@ -8,15 +8,27 @@ module.exports = (sequelize, DataTypes) => {
     },
     qualifyingPayments: {
       type: DataTypes.FLOAT,
-      allowNull: false,
+      allowNull: true,
     },
-    qP_docname: {
+    docname: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+    },
+    filePath: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     qP_Note: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+    },
+    isverified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    isnewsubmission: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   });
 
