@@ -100,3 +100,24 @@ module.exports.loginSuperAdmin = async (obj) => {
     return { status: false, message: error.message };
   }
 };
+
+
+module.exports.addNotifications = async (obj) => {
+  try {
+    // Assuming obj contains the necessary fields to create a Notification
+    const { message, taxpayerId } = obj;
+    console.log(obj)
+
+    // Create a new notification
+    const newNotification = await Notification.create({
+      message,
+      isViewed: false, // Default value, can be omitted if not needed
+      taxpayerId
+    });
+
+    return { status: true, data: newNotification };
+  } catch (error) {
+    console.error('Error adding notification:', error);
+    return { status: false, error: error.message };
+  }
+};

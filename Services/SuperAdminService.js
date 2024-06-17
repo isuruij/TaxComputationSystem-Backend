@@ -86,3 +86,12 @@ module.exports.loginSuperAdmin = async (data) => {
     return { status: false, message: error.message };
   }
 };
+
+module.exports.addNotifications = async (data) => {
+  try {
+    const result = await SuperAdminRepository.addNotifications(data);
+    return result;
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};

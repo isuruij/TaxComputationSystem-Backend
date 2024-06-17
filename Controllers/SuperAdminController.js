@@ -85,3 +85,18 @@ module.exports.loginSuperAdmin = async (req, res) => {
     }
   }
 };
+
+
+module.exports.addNotifications = async (req, res) => {
+  try {
+    const result = await SuperAdminService.addNotifications(req.body);
+
+    if (result.status) {
+      return res.json({ Status: "Success"});
+    } else {
+      return res.status(400).json({ status: false });
+    }
+  } catch (error) {
+    return res.status(400).json({ status: false, message: error.message });
+  }
+};
