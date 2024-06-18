@@ -20,6 +20,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: "path"
     },
+    isverified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    isnewsubmission: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
   });
 
   return investmentIncome;

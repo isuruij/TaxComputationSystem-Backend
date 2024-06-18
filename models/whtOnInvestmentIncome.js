@@ -18,6 +18,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    isverified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    isnewsubmission: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
   });
 
   return whtOnInvestmentIncome;
