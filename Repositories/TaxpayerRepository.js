@@ -784,3 +784,54 @@ module.exports.getUserDetails = async (userId) => {
     return { status: false };
   }
 };
+
+
+module.exports.getNotifications = async (id) => {
+  try {
+    const notifications = await Notification.findAll({
+      where: {
+        taxpayerId: id,
+      },
+    });
+
+    const messages = notifications.map((notification) => {
+      return {
+        message: notification.dataValues.message,
+        isViewed: notification.dataValues.isViewed,
+        id:notification.dataValues.notificationId
+      };
+    });
+
+    console.log(messages);
+
+    // Count the number of notifications where isViewed is false
+    const unviewedCount = messages.filter(
+      (message) => !message.isViewed
+    ).length;
+
+    console.log(messages);
+    // await Notification.update(
+    //   { isViewed: false },
+    //   { where: { taxpayerId: id } }
+    // );
+    return { status: true, data: messages,count:unviewedCount };
+  } catch (error) {
+    console.error(`Error fetching notifications: ${error}`);
+    return { status: false };
+  }
+};
+
+
+module.exports.updateNotificationStatus = async (id) => {
+  try {
+
+    await Notification.update(
+      { isViewed: true },
+      { where: { notificationId: id } }
+    );
+    return { status: true};
+  } catch (error) {
+    console.error(`Error: ${error}`);
+    return { status: false };
+  }
+};
