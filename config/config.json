@@ -1,25 +1,25 @@
 {
-    "development": {
-      "username": "admin",
-      "password": "1234",
-      "database": "employee_db",
-      "host": "localhost",
-      "dialect": "mysql",
-      "port": 3306
-   
-    },
-    "test": {
-      "username": "root",
-      "password": null, 
-      "database": "database_test", 
-      "host": "127.0.0.1",
-      "dialect": "mysql"
-    },
-    "production": {
-      "username": "root",
-      "password": null,
-      "database": "database_production",
-      "host": "127.0.0.1",
-      "dialect": "mysql"
-    }
+  "development": {
+    "username": "admintax",
+    "password": "12345678Tax#", 
+    "database": "employee_db",  
+    "host": "taxserver.mysql.database.azure.com", 
+    "dialect": "mysql",   
+    "port": 3306  
+  
+  },  
+  "test": { 
+    "username": "root",
+    "password": null, 
+    "database": "database_test", 
+    "host": "127.0.0.1",
+    "dialect": "mysql"  
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
   }
+}

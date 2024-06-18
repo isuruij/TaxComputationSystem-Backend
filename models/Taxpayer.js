@@ -80,6 +80,8 @@ module.exports = (sequelize, DataTypes) => {
     Taxpayer.hasMany(models.whtOnInvestmentIncome, { foreignKey: 'taxpayerId' });
     Taxpayer.hasMany(models.whtOnServiceFeeReceived, { foreignKey: 'taxpayerId' });
     Taxpayer.hasMany(models.whtWhichIsNotDeducted, { foreignKey: 'taxpayerId' });
+    Taxpayer.hasMany(models.TaxHistory, { foreignKey: 'taxpayerId' });
+    Taxpayer.hasOne(models.PaymentUpdate, { foreignKey: "taxpayerId" });
   };
 
 

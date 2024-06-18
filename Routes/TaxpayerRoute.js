@@ -37,4 +37,9 @@ router.get('/getNotifications/:id',TaxpayerController.getNotifications);
 
 router.patch('/updateNotificationStatus',TaxpayerController.updateNotificationStatus);
 
+router.get("/taxHistoryType/:id",TaxpayerController.taxHistoryType);
+
+
+
+
 module.exports = router;

@@ -236,3 +236,26 @@ module.exports.updateNotificationStatus = async (req, res) => {
     return { status: false };
   }
 };
+
+
+module.exports.taxHistoryType = async (req, res) => {
+  try {
+    // Use req.query.date and req.query.description
+    const { id } = req.params;
+
+    // Call the service function with the parameters
+    const result = await TaxpayerService.taxHistoryType(id);
+    
+    // Log the result
+    console.log(result);
+
+    // Return the result as a JSON response with a status code of 200
+    return res.status(200).json(result);
+
+  } catch (error) {
+    console.error(`Error in controller: ${error.message}`);
+    return res.status(500).json({ status: false, message: error.message });
+  }
+};
+
+
