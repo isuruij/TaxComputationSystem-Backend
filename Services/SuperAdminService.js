@@ -17,11 +17,8 @@ module.exports.createPolicy = async (data) => {
 
   module.exports.updatePolicy = async (data) => {
     try {
-      console.log("ttttttttttaaaaaaaaaaaa");
       const created = await SuperAdminRepository.updatePolicy(data);
       return created;
-      
-  
     } catch (error) {
       return { status: false, message: error.message };
     }

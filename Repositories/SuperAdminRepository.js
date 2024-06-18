@@ -21,31 +21,28 @@ const {
 
 
   module.exports.updatePolicy = async (obj) => {
-   // const transaction = await db.sequelize.transaction();
     try {
-      console.log(",,,,,,,,,");
-      // Update policy title
-      await Policies.update(
-        { policyTitle: obj.title },
-        { where: { policyId: obj.id } }
-      );
-      
-      // Update policy details
-      await Policies.update(
-        { policyDetails: obj.details },
-        { where: { policyId: obj.id }}
-      );
-      
-      // Commit transaction
-     // await transaction.commit();
-      
+      const { policyId, title, amount, rate } = obj;
+  
+      // Find the policy by ID
+      const policy = await Policies.findByPk(policyId);
+  
+      if (!policy) {
+        return { status: false, message: 'Policy not found' };
+      }
+  
+      // Update the policy fields
+      policy.title = title;
+      policy.amount = amount;
+      policy.rate = rate;
+  
+      // Save the updated policy
+      await policy.save();
+  
       return { status: true };
     } catch (error) {
-
-      // Rollback transaction on error
-      //await transaction.rollback();
       console.error('Error updating policy:', error);
-      return { status: false };
+      return { status: false, error: error.message };
     }
   };
 
@@ -69,18 +66,7 @@ const {
     try {
       // Query the database for records matching the given parameters
       const types = await Policies.findAll();
-  
-      // Map the results to return the desired format
-      const messages = types.map(record => {
-        return {
-          id: record.dataValues.policyId,
-          title: record.dataValues.title,
-          details: record.dataValues.details,
-          
-        };
-      });
-  
-      return { status: true, data: messages };
+      return { status: true, data: types };
   
     } catch (error) {
       console.error(`Error in repository: ${error.message}`);

@@ -28,12 +28,8 @@ module.exports.createPolicy = async (req, res) => {
       if (!req.body) {
         return res.status(400).json({ error: "empty request" });
       }
-      console.log("tttttttnnnnnnnnnnn");
       const result = await SuperAdminService.updatePolicy(req.body);
-      
-      
       if (result.status) {
-        console.log("sucesssssssss")
         return res.json({ Status: "Success" });
       }
   
@@ -76,8 +72,7 @@ module.exports.createPolicy = async (req, res) => {
       // Call the service function with the parameters
       const result = await SuperAdminService.policy();
       
-      // Log the result
-      console.log(result);
+
   
       // Return the result as a JSON response with a status code of 200
       return res.status(200).json(result);

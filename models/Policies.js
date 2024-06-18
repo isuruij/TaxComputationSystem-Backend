@@ -10,8 +10,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      details: {
-        type: DataTypes.STRING,
+      amount: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      rate: {
+        type: DataTypes.FLOAT,
         allowNull: false,
       }
     });
