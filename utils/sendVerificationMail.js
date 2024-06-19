@@ -18,7 +18,7 @@ const sendMail = (id, email, token) => {
     subject: "Reset Password...",
     html: `<p>Hello, reset your password by clicking on this</p>
         <br>
-        <a href="http://localhost:5173/resetpassword?id=${id}&token=${token}">Click here to verify</a>
+        <a href="${process.env.FRONTEND_BASE_URL}/resetpassword?id=${id}&token=${token}">Click here to verify</a>
         `,
   };
 
