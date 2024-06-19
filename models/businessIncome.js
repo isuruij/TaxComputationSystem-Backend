@@ -7,18 +7,28 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     businessIncome: {
-      type: DataTypes.DOUBLE,
-      allowNull: false,
+      type: DataTypes.FLOAT,
+      allowNull: true,
     },
-    bI_docname: {
+    docname: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: "path"
+      allowNull: true,
+    },
+    filePath: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     bI_Note: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: "path"
+      allowNull: true,
+    },
+    isverified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    isnewsubmission: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
   });
 

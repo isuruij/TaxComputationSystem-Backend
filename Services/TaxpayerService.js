@@ -138,12 +138,12 @@ module.exports.updatePassword = async (token, data) => {
 };
 
 // thimira file upload part
-module.exports.fileUpload = async (userId, files) => {
+module.exports.fileUpload = async (userId, fileData) => {
   try {
-    console.log("this service");
-    await TaxpayerRepository.fileUpload(userId, files);
+    // Process the files as needed (e.g., save to the database)
+    await TaxpayerRepository.fileUpload(userId, fileData);
   } catch (error) {
-    throw new Error("Error uploading files");
+    throw new Error("Error processing files: " + error.message);
   }
 };
 

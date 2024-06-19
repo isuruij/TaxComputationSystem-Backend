@@ -59,3 +59,13 @@ module.exports.getUserDetails = async (userId) => {
     return { status: false };
   }
 };
+
+//file upload part
+module.exports.fileUpload = async (userId, fileData) => {
+  try {
+    // Process the files as needed (e.g., save to the database)
+    await DataEntryRepository.fileUpload(userId, fileData);
+  } catch (error) {
+    throw new Error("Error processing files: " + error.message);
+  }
+};

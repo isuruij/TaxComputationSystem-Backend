@@ -72,3 +72,30 @@ module.exports.getUserDetails = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+//Doc upload part
+module.exports.fileUpload = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const files = req.files;
+    const ids = req.body.fileIds;
+
+    // Ensure ids is an array even if there's only one ID
+    const idsArray = Array.isArray(ids) ? ids : [ids];
+
+    // Combine files and their respective IDs
+    const fileData = files.map((file, index) => ({
+      ...file,
+      id: idsArray[index],
+    }));
+
+    // Call the service to handle the file data
+    await DataEntryService.fileUpload(userId, fileData);
+
+    // Respond to the client
+    res.send("Files uploaded successfully!");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error uploading files");
+  }
+};

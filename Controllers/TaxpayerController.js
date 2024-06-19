@@ -223,36 +223,30 @@ module.exports.updatePassword = async (req, res) => {
   }
 };
 
-// thimira file upload part(Under development)
-module.exports.fileUpload = async (req, res, next) => {
+// thimira file upload
+module.exports.fileUpload = async (req, res) => {
   try {
-    console.log("this is controller");
-    const userId = req.params.id;
+    const userId = req.params.userId;
     const files = req.files;
+    const ids = req.body.fileIds;
 
-    console.log(userId);
-    console.log(files);
+    // Ensure ids is an array even if there's only one ID
+    const idsArray = Array.isArray(ids) ? ids : [ids];
 
-    const filesArray = [];
-    files.forEach((file) => {
-      // Extract file information and add it to filesArray
-      const fileInfo = {
-        filename: file.filename,
-        mimetype: file.mimetype,
-        path: file.path,
-        size: file.size,
-      };
-      filesArray.push(fileInfo);
-    });
-    console.log("Uploaded files:");
-    console.log(filesArray);
+    // Combine files and their respective IDs
+    const fileData = files.map((file, index) => ({
+      ...file,
+      id: idsArray[index],
+    }));
 
-    await TaxpayerService.fileUpload(userId, filesArray);
+    // Call the service to handle the file data
+    await TaxpayerService.fileUpload(userId, fileData);
 
-    res.status(200).json({ message: "Files uploaded successfully" });
+    // Respond to the client
+    res.send("Files uploaded successfully!");
   } catch (error) {
-    console.error("Error uploading files:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error(error);
+    res.status(500).send("Error uploading files");
   }
 };
 

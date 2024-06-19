@@ -100,3 +100,329 @@ module.exports.addNotifications = async (req, res) => {
     return res.status(400).json({ status: false, message: error.message });
   }
 };
+
+
+//Dashboard
+module.exports.getTaxpayers = async (req, res) => {
+  try {
+    const taxpayers = await SuperAdminService.getTaxpayers()
+    return res.json(taxpayers);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+};
+
+module.exports.deleteTaxpayer = async (req, res) => {
+  try {
+    await SuperAdminService.deleteTaxpayer(req.params.id)
+    return res.json({ message: "Taxpayer deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.toggleApproval = async (req, res) => {
+  try {
+    await SuperAdminService.toggleApproval(req.body.id,req.body.isVerifiedUser);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+//SubmissionList
+module.exports.getBusinessIncome = async (req, res) => {
+  try {
+    const businessIncome = await SuperAdminService.getBusinessIncome()
+    return res.json(businessIncome);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+};
+
+//get income details
+
+
+module.exports.getBusinessIncomeByTaxpayerId = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getBusinessIncomeByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports.getEmployeeIncomeByTaxpayerId = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getEmployeeIncomeByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports.getInvestIncomeByTaxpayerId = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getInvestIncomeByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports.getOtherIncomeByTaxpayerId = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getOtherIncomeByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+module.exports.getCapitalValueGain = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getCapitalValueGainByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports.getApit = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getApitByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports.getReliefForExpenditure = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getReliefForExpenditureByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports.getReliefForRentIncome = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getReliefForRentIncomeByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports.getSelfAssessmentPayment = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getSelfAssessmentPaymentByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports.getTerminalBenefits = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getTerminalBenefitsByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports.getWhtOnInvestmentIncome = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getWhtOnInvestmentIncomeByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports.getWhtOnServiceFeeReceived = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getWhtOnServiceFeeReceivedByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports.getWhtWhichIsNotDeducted = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getWhtWhichIsNotDeductedByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports.getQualifyingPayments = async (req, res) => {
+    try {
+        const result = await SuperAdminService.getQualifyingPaymentsByTaxpayerId(req.params.taxpayerId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+//verify buttons
+module.exports.verifyBusinessIncome = async (req, res) => {
+  try {
+    await SuperAdminService.verifyBusinessIncome(req.body.incomeId,req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.verifyEmploymentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.verifyEmploymentIncome(req.body.incomeId,req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.verifyInvestmentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.verifyInvestmentIncome(req.body.incomeId,req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.verifyOtherIncome = async (req, res) => {
+  try {
+    await SuperAdminService.verifyOtherIncome(req.body.incomeId,req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+// Add these functions in SuperAdminController.js
+
+module.exports.verifyCapitalValueGain = async (req, res) => {
+  try {
+    await SuperAdminService.verifyCapitalValueGain(req.body.assessmentId, req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.verifyReliefForExpenditure = async (req, res) => {
+  try {
+    await SuperAdminService.verifyReliefForExpenditure(req.body.reliefid, req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.verifyReliefForRentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.verifyReliefForRentIncome(req.body.reliefid, req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.verifyQualifyingPayments = async (req, res) => {
+  try {
+    await SuperAdminService.verifyQualifyingPayments(req.body.reliefid, req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.verifyTerminalBenefits = async (req, res) => {
+  try {
+    await SuperAdminService.verifyTerminalBenefits(req.body.assessmentId, req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+module.exports.verifyApit = async (req, res) => {
+  try {
+    await SuperAdminService.verifyApit(req.body.APITId, req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.verifyWhtOnServiceFeeReceived = async (req, res) => {
+  try {
+    await SuperAdminService.verifyWhtOnServiceFeeReceived(req.body.taxCreditId, req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.verifyWhtWhichIsNotDeducted = async (req, res) => {
+  try {
+    await SuperAdminService.verifyWhtWhichIsNotDeducted(req.body.assessmentId, req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.verifyWhtOnInvestmentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.verifyWhtOnInvestmentIncome(req.body.taxCreditId, req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.verifySelfAssessmentPayment = async (req, res) => {
+  try {
+    await SuperAdminService.verifySelfAssessmentPayment(req.body.taxCreditId, req.body.isverified);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+module.exports.requestDocument = async (req, res) => {
+  try {
+    await SuperAdminService.requestDocument(req.body.taxpayerId, req.body.documentName);
+    return res.json({ message: "rquest document status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+module.exports.requestAgainDocument = async (req, res) => {
+  try {
+    await SuperAdminService.requestAgainDocument(req.body.taxpayerId, req.body.documentName);
+    return res.json({ message: "rquest document status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+
+
