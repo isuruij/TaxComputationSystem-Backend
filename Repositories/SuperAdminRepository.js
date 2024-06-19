@@ -88,11 +88,7 @@ module.exports.optionalpolicy = async () => {
 module.exports.policy = async () => {
   try {
     // Query the database for records matching the given parameters
-    const types = await Policies.findAll({
-      where: {
-        optional: false,
-      },
-    });
+    const types = await Policies.findAll();
     return { status: true, data: types };
   } catch (error) {
     console.error(`Error in repository: ${error.message}`);
