@@ -403,3 +403,26 @@ module.exports.verifySelfAssessmentPayment = async (req, res) => {
 };
 
 
+module.exports.requestDocument = async (req, res) => {
+  try {
+    await SuperAdminService.requestDocument(req.body.taxpayerId, req.body.documentName);
+    return res.json({ message: "rquest document status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+module.exports.requestAgainDocument = async (req, res) => {
+  try {
+    await SuperAdminService.requestAgainDocument(req.body.taxpayerId, req.body.documentName);
+    return res.json({ message: "rquest document status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+
+

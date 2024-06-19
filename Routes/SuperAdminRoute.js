@@ -56,6 +56,10 @@ router.put("/verifyWhtOnInvestmentIncome", SuperAdminController.verifyWhtOnInves
 router.put("/verifySelfAssessmentPayment", SuperAdminController.verifySelfAssessmentPayment);
 
 
+router.post("/requestDocument",SuperAdminController.requestDocument);
+router.post("/requestAgainDocument",SuperAdminController.requestAgainDocument);
+
+
  
 
 module.exports = router;

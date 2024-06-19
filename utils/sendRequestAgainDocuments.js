@@ -18,7 +18,7 @@ const sendMail = (name, email, document) => {
     subject: "Upload Document...",
     html: `<p>
     <br>
-    hello ${name} please submit your document ${document}</p>
+    hello ${name} please submit your document Again ${document}</p>
         `,
   };
 

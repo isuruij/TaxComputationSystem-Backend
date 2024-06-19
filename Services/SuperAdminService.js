@@ -383,3 +383,21 @@ module.exports.verifySelfAssessmentPayment = async (paymentId, value) => {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
 };
+
+module.exports.requestDocument = async (taxpayerId, documentName) => {
+  try {
+    await SuperAdminRepository.requestDocument(taxpayerId, documentName);
+    return { message: 'rquest document status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling approval status: ${error.message}`);
+  }
+};
+
+module.exports.requestAgainDocument = async (taxpayerId, documentName) => {
+  try {
+    await SuperAdminRepository.requestAgainDocument(taxpayerId, documentName);
+    return { message: 'rquest document status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling approval status: ${error.message}`);
+  }
+};

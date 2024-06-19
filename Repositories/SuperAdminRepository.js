@@ -1,6 +1,9 @@
 const bcrypt = require("bcrypt");
 const { SuperAdmin, SecondAdmin, Notification } = require("../models");
 const jwt = require("jsonwebtoken");
+const sendRequestAgainDocument = require("../utils/sendRequestAgainDocuments");
+const sendRequestDocuments = require("../utils/sendRequestDocuments");
+
 
 module.exports.addSuperAdmin = async (obj) => {
   try {
@@ -105,14 +108,14 @@ module.exports.loginSuperAdmin = async (obj) => {
 module.exports.addNotifications = async (obj) => {
   try {
     // Assuming obj contains the necessary fields to create a Notification
-    const { message, taxpayerId } = obj;
+    const {  taxpayerId,documentName } = obj;
     console.log(obj)
 
     // Create a new notification
     const newNotification = await Notification.create({
-      message,
+      message:`submit your ${documentName} document`,
       isViewed: false, // Default value, can be omitted if not needed
-      taxpayerId
+      taxpayerId:taxpayerId
     });
 
     return { status: true, data: newNotification };
@@ -445,4 +448,25 @@ module.exports.verifyTerminalBenefits = async (incomeId, value) => {
   }
 };
 
+module.exports.requestDocument = async (taxpayerId, documentName) => {
+  try {
+    console.log(taxpayerId)
+    const taxpayer = await Taxpayer.findOne({ where: { id: taxpayerId } });
+    
+    sendRequestDocuments(taxpayer.name,taxpayer.email,documentName);
+  } catch (error) {
+    throw new Error(`Error while approving Terminal Benefits: ${error.message}`);
+  }
+};
+
+module.exports.requestAgainDocument = async (taxpayerId, documentName) => {
+  try {
+    console.log(taxpayerId)
+    const taxpayer = await Taxpayer.findOne({ where: { id: taxpayerId } });
+    
+    sendRequestAgainDocument(taxpayer.name,taxpayer.email,documentName);
+  } catch (error) {
+    throw new Error(`Error while approving Terminal Benefits: ${error.message}`);
+  }
+};
 
