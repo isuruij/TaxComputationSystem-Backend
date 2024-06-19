@@ -7,7 +7,7 @@ module.exports.createPolicy = async (data) => {
       title: data.title,
       amount: data.amount,
       rate: data.rate,
-      optional: data.optional
+      optional: true
     });
 
     return { status: true };
