@@ -17,7 +17,13 @@ module.exports = (sequelize, DataTypes) => {
       rate: {
         type: DataTypes.FLOAT,
         allowNull: false,
+      },
+      optional:{
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
       }
+      
     });
 
     const insertInitialData = async () => {
