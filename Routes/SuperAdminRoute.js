@@ -56,6 +56,25 @@ router.put("/verifyWhtOnInvestmentIncome", SuperAdminController.verifyWhtOnInves
 router.put("/verifySelfAssessmentPayment", SuperAdminController.verifySelfAssessmentPayment);
 
 
+router.post("/requestDocument",SuperAdminController.requestDocument);
+router.post("/requestAgainDocument",SuperAdminController.requestAgainDocument);
+
+
+router.patch('/updatePolicy',SuperAdminController.updatePolicy);
+
+router.delete('/deletePolicy',SuperAdminController.deletePolicy);
+
+router.get('/policy',SuperAdminController.policy);
+
+// optional policies
+
+router.get('/optionalpolicy',SuperAdminController.optionalpolicy);
+
+router.patch('/updateoptionalpolicy',SuperAdminController.updateoptionalpolicy);
+
+router.post('/createPolicy',SuperAdminController.createPolicy);
+
+
  
 
 module.exports = router;

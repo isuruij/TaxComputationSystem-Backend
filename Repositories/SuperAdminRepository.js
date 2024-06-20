@@ -1,6 +1,9 @@
 const bcrypt = require("bcrypt");
-const { SuperAdmin, SecondAdmin, Notification } = require("../models");
+const { SuperAdmin, SecondAdmin, Notification,Policies } = require("../models");
 const jwt = require("jsonwebtoken");
+const sendRequestAgainDocument = require("../utils/sendRequestAgainDocuments");
+const sendRequestDocuments = require("../utils/sendRequestDocuments");
+
 
 module.exports.addSuperAdmin = async (obj) => {
   try {
@@ -105,14 +108,14 @@ module.exports.loginSuperAdmin = async (obj) => {
 module.exports.addNotifications = async (obj) => {
   try {
     // Assuming obj contains the necessary fields to create a Notification
-    const { message, taxpayerId } = obj;
+    const {  taxpayerId,documentName } = obj;
     console.log(obj)
 
     // Create a new notification
     const newNotification = await Notification.create({
-      message,
+      message:`submit your ${documentName} document`,
       isViewed: false, // Default value, can be omitted if not needed
-      taxpayerId
+      taxpayerId:taxpayerId
     });
 
     return { status: true, data: newNotification };
@@ -445,4 +448,148 @@ module.exports.verifyTerminalBenefits = async (incomeId, value) => {
   }
 };
 
+module.exports.requestDocument = async (taxpayerId, documentName) => {
+  try {
+    console.log(taxpayerId)
+    const taxpayer = await Taxpayer.findOne({ where: { id: taxpayerId } });
+    
+    sendRequestDocuments(taxpayer.name,taxpayer.email,documentName);
+  } catch (error) {
+    throw new Error(`Error while approving Terminal Benefits: ${error.message}`);
+  }
+};
 
+module.exports.requestAgainDocument = async (taxpayerId, documentName) => {
+  try {
+    console.log(taxpayerId)
+    const taxpayer = await Taxpayer.findOne({ where: { id: taxpayerId } });
+    
+    sendRequestAgainDocument(taxpayer.name,taxpayer.email,documentName);
+  } catch (error) {
+    throw new Error(`Error while approving Terminal Benefits: ${error.message}`);
+  }
+};
+
+
+module.exports.createPolicy = async (data) => {
+  try {
+    console.log(data);
+    await Policies.create({
+      title: data.title,
+      amount: data.amount,
+      rate: data.rate,
+      optional: true
+    });
+
+    return { status: true };
+  } catch (error) {
+    console.error(`Error: ${error}`);
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.updatePolicy = async (obj) => {
+  try {
+    const { policyId, title, amount, rate } = obj;
+
+    // Find the policy by ID
+    const policy = await Policies.findByPk(policyId);
+
+    if (!policy) {
+      return { status: false, message: "Policy not found" };
+    }
+
+    // Update the policy fields
+    policy.title = title;
+    policy.amount = amount;
+    policy.rate = rate;
+
+    // Save the updated policy
+    await policy.save();
+
+    return { status: true };
+  } catch (error) {
+    console.error("Error updating policy:", error);
+    return { status: false, error: error.message };
+  }
+};
+
+module.exports.deletePolicy = async (data) => {
+  try {
+    // Find the policy by policyId
+    const policy = await Policies.findOne({ where: { policyId: data.policyId } });
+
+    // Check if the policy exists
+    if (!policy) { 
+      return { status: false, message: "Policy not found" };
+    }
+
+    // Check if the policy is optional
+    if (!policy.optional) {
+      console.log("-----------------------------")
+      return { status: false, message: "Policy is not optional and cannot be deleted" };
+    }
+
+    // Delete the policy
+    await Policies.destroy({ where: { policyId: data.policyId } });
+
+    return { status: true };
+  } catch (error) {
+    console.error(`Error: ${error}`);
+    return { status: false, message: `Error: ${error.message}` };
+  }
+};
+
+
+module.exports.optionalpolicy = async () => {
+  try {
+    // Query the database for records matching the given parameters
+    const types = await Policies.findAll({
+      where: {
+        optional: true,
+      },
+    });
+    return { status: true, data: types };
+  } catch (error) {
+    console.error(`Error in repository: ${error.message}`);
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.policy = async () => {
+  try {
+    // Query the database for records matching the given parameters
+    const types = await Policies.findAll();
+    return { status: true, data: types };
+  } catch (error) {
+    console.error(`Error in repository: ${error.message}`);
+    return { status: false, message: error.message };
+  }
+};
+
+
+module.exports.updateoptionalpolicy = async (obj) => {
+  try {
+    const { policyId, title, amount, rate } = obj;
+
+    // Find the policy by ID
+    const policy = await Policies.findByPk(policyId);
+
+    if (!policy) {
+      return { status: false, message: "Policy not found" };
+    }
+
+    // Update the policy fields
+    policy.title = title;
+    policy.amount = amount;
+    policy.rate = rate;
+
+    // Save the updated policy
+    await policy.save();
+
+    return { status: true };
+  } catch (error) {
+    console.error("Error updating policy:", error);
+    return { status: false, error: error.message };
+  }
+};

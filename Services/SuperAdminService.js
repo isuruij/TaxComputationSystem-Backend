@@ -20,6 +20,7 @@ module.exports.addSuperAdmin = async (data) => {
         return created;
       }
     } else {
+      console.log("new here")
       const created = await DataEntryRepository.addSecondAdmin(data);
       if (created.status) {
         const tokenData = {
@@ -381,5 +382,86 @@ module.exports.verifySelfAssessmentPayment = async (paymentId, value) => {
     return { message: 'Approval status toggled successfully' };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
+  }
+};
+
+module.exports.requestDocument = async (taxpayerId, documentName) => {
+  try {
+    await SuperAdminRepository.requestDocument(taxpayerId, documentName);
+    return { message: 'rquest document status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling approval status: ${error.message}`);
+  }
+};
+
+module.exports.requestAgainDocument = async (taxpayerId, documentName) => {
+  try {
+    await SuperAdminRepository.requestAgainDocument(taxpayerId, documentName);
+    return { message: 'rquest document status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling approval status: ${error.message}`);
+  }
+};
+
+
+module.exports.createPolicy = async (data) => {
+  try {
+    const created = await SuperAdminRepository.createPolicy(data);
+    return created;
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+
+module.exports.updatePolicy = async (data) => {
+  try {
+    const created = await SuperAdminRepository.updatePolicy(data);
+    return created;
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+
+
+module.exports.deletePolicy = async (data) => {
+  try {
+    const created = await SuperAdminRepository.deletePolicy(data);
+    return created;
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+
+module.exports.policy = async () => {
+  try {
+    const created = await SuperAdminRepository.policy();
+    return created;
+  } catch (error) {
+    console.error(`Error in service: ${error.message}`);
+    return { status: false, message: error.message };
+  }
+};
+
+
+module.exports.optionalpolicy = async () => {
+  try {
+    const created = await SuperAdminRepository.optionalpolicy();
+    return created;
+  } catch (error) {
+    console.error(`Error in service: ${error.message}`);
+    return { status: false, message: error.message };
+  }
+};
+
+
+module.exports.updateoptionalpolicy = async (data) => {
+  try {
+    const created = await SuperAdminRepository.updateoptionalpolicy(data);
+    return created;
+  } catch (error) {
+    return { status: false, message: error.message };
   }
 };

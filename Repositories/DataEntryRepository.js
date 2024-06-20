@@ -14,7 +14,10 @@ const {
   terminalBenefits,
   capitalValueGain,
   whtWhichIsNotDeducted,
+  SecondAdmin,
+  SuperAdmin
 } = require("../models");
+const bcrypt = require("bcrypt");
 
 //get username and is verified details to dataentry dashboard
 module.exports.getusernames = async () => {
@@ -892,3 +895,33 @@ module.exports.fileUpload = async (userId, files) => {
     throw new Error("Error saving or updating file: " + error.message);
   }
 };
+
+
+module.exports.addSecondAdmin = async (obj) => {
+  try {
+    
+    const existingUser1 = await SecondAdmin.findOne({
+      where: { userName: obj.userName },
+    });
+    console.log("in repos")
+
+    const existingUser2 = await SuperAdmin.findOne({
+      where: { userName: obj.userName },
+    });
+    if (existingUser1 || existingUser2) {
+      return { status: false, message: "already registered user" };
+    }
+    const hashedPw = await bcrypt.hash(obj.password.toString(), 10);
+    var data = obj;
+    data.password = hashedPw;
+    data.password = obj.password;
+    const res = await SecondAdmin.create(data);
+
+    return { status: true, id: res.dataValues.id };
+  } catch (error) {
+    console.log(error.message);
+    return { status: false };
+  }
+};
+
+
