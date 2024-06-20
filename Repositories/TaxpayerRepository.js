@@ -16,6 +16,7 @@ const {
   capitalValueGain,
   whtWhichIsNotDeducted,
   Notification,
+  sumOfCat,
 } = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
@@ -54,6 +55,15 @@ module.exports.addTaxpayer = async (obj) => {
     });
     await otherIncome.create({
       otherIncome: "0",
+      taxpayerId: res.dataValues.id,
+    });
+    await sumOfCat.create({
+      TotAssessableIncome: "0",
+      TotQPnR: "0",
+      totTaxCredit: "0",
+      terminal: "0",
+      capitalGain: "0",
+      WHT: "0",
       taxpayerId: res.dataValues.id,
     });
 
@@ -251,22 +261,38 @@ module.exports.getuserincomedetails = async (id) => {
 
 module.exports.updateincomedetails = async (obj) => {
   try {
-    await businessIncome.update(
-      { businessIncome: obj.businessIncome },
-      { where: { taxpayerId: obj.id } }
-    );
-    await employmentIncome.update(
-      { employmentIncome: obj.employmentIncome },
-      { where: { taxpayerId: obj.id } }
-    );
-    await investmentIncome.update(
-      { investmentIncome: obj.investmentIncome },
-      { where: { taxpayerId: obj.id } }
-    );
-    await otherIncome.update(
-      { otherIncome: obj.otherIncome },
-      { where: { taxpayerId: obj.id } }
-    );
+    const bussinessrow = await businessIncome.findOne({
+      where: { taxpayerId: obj.id },
+    });
+    if (bussinessrow) {
+      await bussinessrow.update({ businessIncome: obj.businessIncome });
+    }
+
+    const employmentIncomerow = await employmentIncome.findOne({
+      where: { taxpayerId: obj.id },
+    });
+    if (employmentIncomerow) {
+      await employmentIncomerow.update({
+        employmentIncome: obj.employmentIncome,
+      });
+    }
+
+    const investmentIncomerow = await investmentIncome.findOne({
+      where: { taxpayerId: obj.id },
+    });
+    if (investmentIncomerow) {
+      await investmentIncomerow.update({
+        investmentIncome: obj.investmentIncome,
+      });
+    }
+
+    const otherIncomerow = await otherIncome.findOne({
+      where: { taxpayerId: obj.id },
+    });
+    if (investmentIncomerow) {
+      await otherIncomerow.update({ otherIncome: obj.otherIncome });
+    }
+
     return { status: true };
   } catch (error) {
     return { status: false };
@@ -785,6 +811,21 @@ module.exports.getUserDetails = async (userId) => {
   }
 };
 
+//thimira get tax calculations(under development)
+module.exports.getTaxCalDetails = async (userId) => {
+  try {
+    const result = await Taxpayer.findOne({
+      attributes: ["name", "tin"],
+      where: { id: userId },
+    });
+    if (!result) {
+      return { status: false };
+    }
+    return { status: true, data: result };
+  } catch (error) {
+    return { status: false };
+  }
+};
 
 module.exports.getNotifications = async (id) => {
   try {
@@ -798,7 +839,7 @@ module.exports.getNotifications = async (id) => {
       return {
         message: notification.dataValues.message,
         isViewed: notification.dataValues.isViewed,
-        id:notification.dataValues.notificationId
+        id: notification.dataValues.notificationId,
       };
     });
 
@@ -814,22 +855,20 @@ module.exports.getNotifications = async (id) => {
     //   { isViewed: false },
     //   { where: { taxpayerId: id } }
     // );
-    return { status: true, data: messages,count:unviewedCount };
+    return { status: true, data: messages, count: unviewedCount };
   } catch (error) {
     console.error(`Error fetching notifications: ${error}`);
     return { status: false };
   }
 };
 
-
 module.exports.updateNotificationStatus = async (id) => {
   try {
-
     await Notification.update(
       { isViewed: true },
       { where: { notificationId: id } }
     );
-    return { status: true};
+    return { status: true };
   } catch (error) {
     console.error(`Error: ${error}`);
     return { status: false };

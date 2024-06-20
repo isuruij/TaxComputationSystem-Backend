@@ -47,7 +47,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           employmentIncome: dataObject.amount[0],
           eI_Note: dataObject.note[0],
           taxpayerId: id,
-          eI_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it
@@ -72,7 +72,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           businessIncome: dataObject.amount[1],
           bI_Note: dataObject.note[1],
           taxpayerId: id,
-          bI_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -97,7 +97,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           investmentIncome: dataObject.amount[2],
           iI_Note: dataObject.note[2],
           taxpayerId: id,
-          iI_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -125,7 +125,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           otherIncome: dataObject.amount[3],
           oI_Note: dataObject.note[3],
           taxpayerId: id,
-          oI_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -150,7 +150,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           reliefForRentIncome: dataObject.amount[4],
           rRI_Note: dataObject.note[4],
           taxpayerId: id,
-          rRI_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -181,7 +181,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           reliefForExpenditure: dataObject.amount[5],
           rE_Note: dataObject.note[5],
           taxpayerId: id,
-          rE_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -212,7 +212,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           qualifyingPayments: dataObject.amount[5],
           qP_Note: dataObject.note[5],
           taxpayerId: id,
-          qP_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -240,7 +240,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           apit: dataObject.amount[7],
           aPIT_Note: dataObject.note[7],
           taxpayerId: id,
-          aPIT_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -265,7 +265,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           whtOnInvestmentIncome: dataObject.amount[8],
           wHT_II_Note: dataObject.note[8],
           taxpayerId: id,
-          wHT_II_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -291,7 +291,7 @@ module.exports.postTaxDetails = async (dataObject) => {
             whtOnServiceFeeReceived: dataObject.amount[9],
             wHT_SFR_Note: dataObject.note[9],
             taxpayerId: id,
-            wHT_SFR_docname: "",
+            docname: "",
           },
         });
       // If the row was not created (already existed), update it using update()
@@ -323,7 +323,7 @@ module.exports.postTaxDetails = async (dataObject) => {
             selfAssessmentPayment: dataObject.amount[10],
             sAP_Note: dataObject.note[10],
             taxpayerId: id,
-            sAP_docname: "",
+            docname: "",
           },
         }
       );
@@ -355,7 +355,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           terminalBenefits: dataObject.amount[11],
           tB_Note: dataObject.note[11],
           taxpayerId: id,
-          tB_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -383,7 +383,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           capitalValueGain: dataObject.amount[12],
           cVnG_Note: dataObject.note[12],
           taxpayerId: id,
-          cVnG_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -412,7 +412,7 @@ module.exports.postTaxDetails = async (dataObject) => {
             whtWhichIsNotDeducted: dataObject.amount[13],
             wHT_WND_Note: dataObject.note[13],
             taxpayerId: id,
-            wHT_WND_docname: "",
+            docname: "",
           },
         }
       );

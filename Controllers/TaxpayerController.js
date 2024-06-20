@@ -230,6 +230,11 @@ module.exports.fileUpload = async (req, res) => {
     const files = req.files;
     const ids = req.body.fileIds;
 
+    // Check if no files were uploaded
+    if (!files || files.length === 0) {
+      return res.status(400).json({ Status: "No files selected" });
+    }
+
     // Ensure ids is an array even if there's only one ID
     const idsArray = Array.isArray(ids) ? ids : [ids];
 
@@ -257,6 +262,23 @@ module.exports.getUserDetails = async (req, res) => {
     console.log(id);
 
     const result = await TaxpayerService.getUserDetails(id);
+    if (result.status) {
+      return res.json({ Status: "Success", Data: result.data });
+    } else {
+      return res.status(400).json({ Status: "NotSuccess" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+//get tax calculations(under development)
+module.exports.getTaxCalDetails = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+
+    const result = await TaxpayerService.getTaxCalDetails(id);
     if (result.status) {
       return res.json({ Status: "Success", Data: result.data });
     } else {

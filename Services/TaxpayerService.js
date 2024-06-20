@@ -165,14 +165,28 @@ module.exports.getUserDetails = async (userId) => {
   }
 };
 
+//get tax calculations(under development)
+module.exports.getTaxCalDetails = async (userId) => {
+  try {
+    if (!userId) {
+      return { status: false };
+    }
+    const values = await TaxpayerRepository.getTaxCalDetails(userId);
+
+    if (values.status) {
+      return { status: true, data: values.data };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false };
+  }
+};
 
 module.exports.getNotifications = async (id) => {
   try {
-    
     const created = await TaxpayerRepository.getNotifications(id);
     return created;
-    
-
   } catch (error) {
     return { status: false, message: error.message };
   }
@@ -180,11 +194,8 @@ module.exports.getNotifications = async (id) => {
 
 module.exports.updateNotificationStatus = async (id) => {
   try {
-    
     const created = await TaxpayerRepository.updateNotificationStatus(id);
     return created;
-    
-
   } catch (error) {
     return { status: false, message: error.message };
   }

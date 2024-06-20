@@ -37,8 +37,8 @@ app.use("/api/taxpayer", taxpayerRoutes);
 app.use("/api/dataentry", dataentryRoutes);
 app.use("/api/SuperAdmin", SuperAdminRoutes);
 
-db.sequelize.sync({force:false}).then(() => { 
+db.sequelize.sync({ force: false }).then(() => {
   app.listen(3000, () => {
     console.log("Server running on port 3000");
   });
-}); 
+});
