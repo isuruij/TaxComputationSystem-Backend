@@ -59,6 +59,23 @@ router.put("/verifySelfAssessmentPayment", SuperAdminController.verifySelfAssess
 router.post("/requestDocument",SuperAdminController.requestDocument);
 router.post("/requestAgainDocument",SuperAdminController.requestAgainDocument);
 
+//update submission status
+router.put("/updateSubmissionStatusBusinessIncome/:incomeId", SuperAdminController.updateSubmissionStatusBusinessIncome);
+router.put("/updateSubmissionStatusEmploymentIncome/:incomeId", SuperAdminController.updateSubmissionStatusEmploymentIncome);
+router.put("/updateSubmissionStatusInvestmentIncome/:incomeId", SuperAdminController.updateSubmissionStatusInvestmentIncome);
+router.put("/updateSubmissionStatusOtherIncome/:incomeId", SuperAdminController.updateSubmissionStatusOtherIncome);
+router.put("/updateSubmissionStatusreliefForExpenditure/:incomeId", SuperAdminController.updateSubmissionStatusreliefForExpenditure);
+router.put("/updateSubmissionStatusCapitalValueGain/:incomeId", SuperAdminController.updateSubmissionStatusCapitalValueGain);
+router.put("/updateSubmissionStatusReliefForRentIncome/:incomeId", SuperAdminController.updateSubmissionStatusReliefForRentIncome);
+router.put("/updateSubmissionStatusQualifyingPayments/:incomeId", SuperAdminController.updateSubmissionStatusQualifyingPayments);
+router.put("/updateSubmissionStatusTerminalBenefits/:incomeId", SuperAdminController.updateSubmissionStatusTerminalBenefits);
+router.put("/updateSubmissionStatusWhtOnInvestmentIncome/:incomeId", SuperAdminController.updateSubmissionStatusWhtOnInvestmentIncome);
+router.put("/updateSubmissionStatusWhtOnServiceFeeReceived/:incomeId", SuperAdminController.updateSubmissionStatusWhtOnServiceFeeReceived);
+router.put("/updateSubmissionStatusWhtWhichIsNotDeducted/:incomeId", SuperAdminController.updateSubmissionStatusWhtWhichIsNotDeducted);
+router.put("/updateSubmissionStatusApit/:incomeId", SuperAdminController.updateSubmissionStatusApit);
+router.put("/updateSubmissionStatusSelfAssessmentPayment/:incomeId", SuperAdminController.updateSubmissionStatusSelfAssessmentPayment);
+router.put("/updateSubmissionStatusreliefForExpenditure/:incomeId", SuperAdminController.updateSubmissionStatusreliefForExpenditure);
+
 
  
 

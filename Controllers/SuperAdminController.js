@@ -424,5 +424,139 @@ module.exports.requestAgainDocument = async (req, res) => {
 
 
 
+//update submission status
+
+module.exports.updateSubmissionStatusBusinessIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusBusinessIncome(req.params.incomeId);
+    return res.json({ message: "Submission status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateSubmissionStatusEmploymentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusEmploymentIncome(req.params.incomeId);
+    return res.json({ message: "Submission status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateSubmissionStatusInvestmentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusInvestmentIncome(req.params.incomeId);
+    return res.json({ message: "Submission status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateSubmissionStatusOtherIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusOtherIncome(req.params.incomeId);
+    return res.json({ message: "Submission status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateSubmissionStatusCapitalValueGain = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusCapitalValueGain(req.params.incomeId);
+    return res.json({ message: "Submission status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateSubmissionStatusReliefForRentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusReliefForRentIncome(req.params.incomeId);
+    return res.json({ message: "Submission status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateSubmissionStatusQualifyingPayments = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusQualifyingPayments(req.params.incomeId);
+    return res.json({ message: "Submission status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateSubmissionStatusTerminalBenefits = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusTerminalBenefits(req.params.incomeId);
+    return res.json({ message: "Submission status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateSubmissionStatusWhtOnInvestmentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusWhtOnInvestmentIncome(req.params.incomeId);
+    return res.json({ message: "Submission status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateSubmissionStatusWhtOnServiceFeeReceived = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusWhtOnServiceFeeReceived(req.params.incomeId);
+    return res.json({ message: "Submission status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateSubmissionStatusWhtWhichIsNotDeducted = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusWhtWhichIsNotDeducted(req.params.incomeId);
+    return res.json({ message: "Submission status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateSubmissionStatusApit = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusApit(req.params.incomeId);
+    return res.json({ message: "Submission status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateSubmissionStatusSelfAssessmentPayment = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusSelfAssessmentPayment(req.params.incomeId);
+    return res.json({ message: "Submission status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+module.exports.updateSubmissionStatusreliefForExpenditure = async (req, res) => {
+  try {
+    await SuperAdminService.updateSubmissionStatusreliefForExpenditure(req.params.incomeId);
+    return res.json({ message: "User approval status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+ 
+
+
+
+
 
 

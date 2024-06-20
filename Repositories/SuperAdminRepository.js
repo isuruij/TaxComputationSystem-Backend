@@ -448,6 +448,8 @@ module.exports.verifyTerminalBenefits = async (incomeId, value) => {
   }
 };
 
+
+// request Document
 module.exports.requestDocument = async (taxpayerId, documentName) => {
   try {
     console.log(taxpayerId)
@@ -470,3 +472,189 @@ module.exports.requestAgainDocument = async (taxpayerId, documentName) => {
   }
 };
 
+
+//update submission status
+
+module.exports.updateSubmissionStatusBusinessIncome = async (incomeId) => {
+  try {
+    const existIncome = await businessIncome.findOne({ where: { incomeId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission: false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving Business Income: ${error.message}`);
+  }
+};
+
+module.exports.updateSubmissionStatusEmploymentIncome = async (incomeId) => {
+  try {
+    const existIncome = await employmentIncome.findOne({ where: { incomeId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission: false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving Employment Income: ${error.message}`);
+  }
+};
+
+module.exports.updateSubmissionStatusInvestmentIncome = async (incomeId) => {
+  try {
+    const existIncome = await investmentIncome.findOne({ where: { incomeId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission: false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving Investment Income: ${error.message}`);
+  }
+};
+
+module.exports.updateSubmissionStatusOtherIncome = async (incomeId) => {
+  try {
+    const existIncome = await otherIncome.findOne({ where: { incomeId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission: false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving Other Income: ${error.message}`);
+  }
+};
+
+module.exports.updateSubmissionStatusreliefForExpenditure = async (reliefid) => {
+  try {
+    const existIncome = await  reliefForExpenditure.findOne({ where: { reliefid: reliefid } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission:false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving Terminal Benefits: ${error.message}`);
+  }
+};
+
+
+
+module.exports.updateSubmissionStatusCapitalValueGain = async (incomeId) => {
+  try {
+    const existIncome = await capitalValueGain.findOne({ where: { assessmentId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission: false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving Capital Value Gain: ${error.message}`);
+  }
+};
+
+module.exports.updateSubmissionStatusReliefForRentIncome = async (incomeId) => {
+  try {
+    const existIncome = await reliefForRentIncome.findOne({ where: { reliefid: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission: false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving Relief for Rent Income: ${error.message}`);
+  }
+};
+
+module.exports.updateSubmissionStatusQualifyingPayments = async (incomeId) => {
+  try {
+    const existIncome = await qualifyingPayments.findOne({ where: { reliefid: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission: false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving Qualifying Payments: ${error.message}`);
+  }
+};
+
+module.exports.updateSubmissionStatusTerminalBenefits = async (incomeId) => {
+  try {
+    const existIncome = await terminalBenefits.findOne({ where: { assessmentId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission: false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving Terminal Benefits: ${error.message}`);
+  }
+};
+
+module.exports.updateSubmissionStatusWhtOnInvestmentIncome = async (incomeId) => {
+  try {
+    const existIncome = await whtOnInvestmentIncome.findOne({ where: { taxCreditId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission: false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving WHT on Investment Income: ${error.message}`);
+  }
+};
+
+module.exports.updateSubmissionStatusWhtOnServiceFeeReceived = async (incomeId) => {
+  try {
+    const existIncome = await whtOnServiceFeeReceived.findOne({ where: {taxCreditId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission: false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving WHT on Service Fee Received: ${error.message}`);
+  }
+};
+
+module.exports.updateSubmissionStatusWhtWhichIsNotDeducted = async (incomeId) => {
+  try {
+    const existIncome = await whtWhichIsNotDeducted.findOne({ where: { assessmentId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission: false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving WHT Which Is Not Deducted: ${error.message}`);
+  }
+};
+
+module.exports.updateSubmissionStatusApit = async (incomeId) => {
+  try {
+    const existIncome = await apit.findOne({ where: { APITId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission: false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving APIT: ${error.message}`);
+  }
+};
+
+module.exports.updateSubmissionStatusSelfAssessmentPayment = async (incomeId) => {
+  try {
+    const existIncome = await selfAssessmentPayment.findOne({ where: { taxCreditId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ isnewsubmission: false });
+    } else {
+      return { message: "Taxpayer not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while approving Self Assessment Payment: ${error.message}`);
+  }
+};
