@@ -14,6 +14,7 @@ router.post('/createfirstadmin',SuperAdminController.addFirstAdmin);
 router.post('/login',SuperAdminController.loginSuperAdmin);
 
 router.post('/addnotifications',SuperAdminController.addNotifications);
+router.post('/addnotifications2',SuperAdminController.addNotifications2);
 router.get("/getusers",SuperAdminController.getTaxpayers);
 
 router.get("/getBusinessIncome/",SuperAdminController.getBusinessIncome);

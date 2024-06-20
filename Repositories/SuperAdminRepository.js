@@ -125,6 +125,27 @@ module.exports.addNotifications = async (obj) => {
   }
 };
 
+module.exports.addNotifications2 = async (obj) => {
+  try {
+    // Assuming obj contains the necessary fields to create a Notification
+    const {  taxpayerId,documentName } = obj;
+    console.log(obj)
+
+    // Create a new notification
+    const newNotification = await Notification.create({
+      message:`submit your ${documentName} document Again Please check your email for more detail`,
+      isViewed: false, // Default value, can be omitted if not needed
+      taxpayerId:taxpayerId
+    });
+
+    return { status: true, data: newNotification };
+  } catch (error) {
+    console.error('Error adding notification:', error);
+    return { status: false, error: error.message };
+  }
+};
+
+
 //Dashboard
 const { Taxpayer } = require('../models');
 

@@ -101,6 +101,20 @@ module.exports.addNotifications = async (req, res) => {
   }
 };
 
+module.exports.addNotifications2 = async (req, res) => {
+  try {
+    const result = await SuperAdminService.addNotifications2(req.body);
+
+    if (result.status) {
+      return res.json({ Status: "Success"});
+    } else {
+      return res.status(400).json({ status: false });
+    }
+  } catch (error) {
+    return res.status(400).json({ status: false, message: error.message });
+  }
+};
+
 
 //Dashboard
 module.exports.getTaxpayers = async (req, res) => {

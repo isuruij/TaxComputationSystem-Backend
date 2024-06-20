@@ -96,6 +96,14 @@ module.exports.addNotifications = async (data) => {
   }
 };
 
+module.exports.addNotifications2 = async (data) => {
+  try {
+    const result = await SuperAdminRepository.addNotifications2(data);
+    return result;
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
 
 //Dashboard
 module.exports.getTaxpayers = async () => {
