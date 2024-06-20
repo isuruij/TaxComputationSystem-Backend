@@ -20,6 +20,7 @@ module.exports.addSuperAdmin = async (data) => {
         return created;
       }
     } else {
+      console.log("new here")
       const created = await DataEntryRepository.addSecondAdmin(data);
       if (created.status) {
         const tokenData = {

@@ -16,7 +16,7 @@ module.exports.addSuperAdmin = async (req, res) => {
     ) {
       return res.status(400).json({ status: false, message: "empty fields" });
     }
-
+    console.log("came here")
     const result = await SuperAdminService.addSuperAdmin(req.body);
 
     if (result.status) {
