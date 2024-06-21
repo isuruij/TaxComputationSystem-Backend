@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 module.exports.createToken = async (obj) => {
   try {
-    const token = jwt.sign(obj, process.env.JWT_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign(obj, process.env.JWT_SECRET, { expiresIn: "1d" });
     return { status: true, token: token, type: obj.role };
   } catch (error) {
     return { status: false };
@@ -34,4 +34,45 @@ module.exports.roleBasedAuth = (roles) => {
       res.status(401).send({ error: "please authenticate" });
     }
   };
+};
+
+module.exports.verifytaxpayer = async (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.name = decoded.name;
+    next();
+  } catch (e) {
+    res.send({ Status: "Failed" });
+  }
+};
+
+module.exports.authtaxpayer = async (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.name = decoded.name;
+    if (decoded.role === "taxpayer") {
+      next();
+    } else {
+      res.send({ Status: "Failed" });
+    }
+  } catch (e) {
+    res.send({ Status: "Failed" });
+  }
+};
+
+module.exports.authtsuperAdmin = async (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.name = decoded.name;
+    if (decoded.role === "superAdmin") {
+      next();
+    } else {
+      res.send({ Status: "Failed" });
+    }
+  } catch (e) {
+    res.send({ Status: "Failed" });
+  }
 };

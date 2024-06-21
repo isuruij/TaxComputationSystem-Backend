@@ -94,4 +94,6 @@ router.patch(
   TaxpayerController.updateNotificationStatus
 );
 
+router.get("/authtaxpayer", JwtService.authtaxpayer, TaxpayerController.authenticateUser);
+
 module.exports = router;

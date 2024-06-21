@@ -74,6 +74,8 @@ router.patch('/updateoptionalpolicy',SuperAdminController.updateoptionalpolicy);
 
 router.post('/createPolicy',SuperAdminController.createPolicy);
 
+router.get("/authtsuperAdmin", JwtService.authtsuperAdmin, SuperAdminController.authtsuperAdmin);
+
 
  
 

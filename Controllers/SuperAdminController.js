@@ -527,5 +527,10 @@ module.exports.updateoptionalpolicy = async (req, res) => {
 };
 
 
+module.exports.authtsuperAdmin = async (req, res) => {
+  res.json({ Status: "Success", name: req.name });
+};
+
+
 
 
