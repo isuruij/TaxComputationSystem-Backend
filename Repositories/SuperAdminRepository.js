@@ -541,20 +541,7 @@ module.exports.deletePolicy = async (data) => {
 };
 
 
-module.exports.optionalpolicy = async () => {
-  try {
-    // Query the database for records matching the given parameters
-    const types = await Policies.findAll({
-      where: {
-        optional: true,
-      },
-    });
-    return { status: true, data: types };
-  } catch (error) {
-    console.error(`Error in repository: ${error.message}`);
-    return { status: false, message: error.message };
-  }
-};
+
 
 module.exports.policy = async () => {
   try {
@@ -568,28 +555,3 @@ module.exports.policy = async () => {
 };
 
 
-module.exports.updateoptionalpolicy = async (obj) => {
-  try {
-    const { policyId, title, amount, rate } = obj;
-
-    // Find the policy by ID
-    const policy = await Policies.findByPk(policyId);
-
-    if (!policy) {
-      return { status: false, message: "Policy not found" };
-    }
-
-    // Update the policy fields
-    policy.title = title;
-    policy.amount = amount;
-    policy.rate = rate;
-
-    // Save the updated policy
-    await policy.save();
-
-    return { status: true };
-  } catch (error) {
-    console.error("Error updating policy:", error);
-    return { status: false, error: error.message };
-  }
-};

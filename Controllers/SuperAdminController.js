@@ -486,6 +486,7 @@ module.exports.deletePolicy = async (req, res) => {
 module.exports.policy = async (req, res) => {
   try {
     const result = await SuperAdminService.policy();
+    console.log("------------------")
     // Return the result as a JSON response with a status code of 200
     return res.status(200).json(result);
 
@@ -496,35 +497,6 @@ module.exports.policy = async (req, res) => {
 };
 
 
-module.exports.optionalpolicy = async (req, res) => {
-  try {
-    const result = await SuperAdminService.optionalpolicy();
-    // Return the result as a JSON response with a status code of 200
-    return res.status(200).json(result);
-
-  } catch (error) {
-    console.error(`Error in controller: ${error.message}`);
-    return res.status(500).json({ status: false, message: error.message });
-  }
-};
-
-
-
-module.exports.updateoptionalpolicy = async (req, res) => {
-  try {
-    if (!req.body) {
-      return res.status(400).json({ error: "empty request" });
-    }
-    const result = await SuperAdminService.updateoptionalpolicy(req.body);
-    if (result.status) {
-      return res.json({ Status: "Success" });
-    }
-
-    
-  } catch (error) {
-    return res.status(400).json({Status: "NotSuccess", message: error.message });
-  }
-};
 
 
 module.exports.authtsuperAdmin = async (req, res) => {

@@ -64,13 +64,7 @@ router.patch('/updatePolicy',JwtService.roleBasedAuth(["superAdmin"]),SuperAdmin
 
 router.delete('/deletePolicy',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.deletePolicy);
 
-router.get('/policy',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.policy);
-
-// optional policies
-
-router.get('/optionalpolicy',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.optionalpolicy);
-
-router.patch('/updateoptionalpolicy',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.updateoptionalpolicy);
+router.get('/policy',SuperAdminController.policy);
 
 router.post('/createPolicy',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.createPolicy);
 

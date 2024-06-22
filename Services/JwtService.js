@@ -23,14 +23,18 @@ module.exports.roleBasedAuth = (roles) => {
   return async (req, res, next) => {
     try {
       const token = req.cookies.token;
+      console.log(req.cookies)
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log("+++++++++++++++++")
+      console.log(roles)
 
       if (!roles.includes(decoded.role)) {
         return res.status(403).json({ message: "Forbidden" });
       }
-
+      console.log("+++++new+++++")
       next();
     } catch (e) {
+      console.log(e.message)
       res.status(401).send({ error: "please authenticate" });
     }
   };
@@ -73,6 +77,7 @@ module.exports.authtsuperAdmin = async (req, res, next) => {
       res.send({ Status: "Failed" });
     }
   } catch (e) {
+    console.log(e.message)
     res.send({ Status: "Failed" });
   }
 };
