@@ -43,18 +43,22 @@ module.exports.addTaxpayer = async (obj) => {
     // add intial values to income tables
     await businessIncome.create({
       businessIncome: "0",
+      businessIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
     await employmentIncome.create({
       employmentIncome: "0",
+      employmentIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
     await investmentIncome.create({
       investmentIncome: "0",
+      investmentIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
     await otherIncome.create({
       otherIncome: "0",
+      otherIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
     await sumOfCat.create({

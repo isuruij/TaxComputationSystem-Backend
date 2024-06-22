@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: true,
       },
+      reliefForRentIncome2: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
       docname: {
         type: DataTypes.STRING,
         allowNull: true,
