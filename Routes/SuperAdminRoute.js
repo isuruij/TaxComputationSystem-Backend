@@ -74,7 +74,7 @@ router.patch('/updateoptionalpolicy',JwtService.roleBasedAuth(["superAdmin"]),Su
 
 router.post('/createPolicy',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.createPolicy);
 
-router.get("/authtsuperAdmin",JwtService.roleBasedAuth(["superAdmin"]), JwtService.authtsuperAdmin, SuperAdminController.authtsuperAdmin);
+router.get("/authtsuperAdmin", JwtService.authtsuperAdmin, SuperAdminController.authtsuperAdmin);
 
 
  
