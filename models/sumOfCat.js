@@ -10,43 +10,39 @@ module.exports = (sequelize, DataTypes) => {
       },
       TotAssessableIncome: {
         type: DataTypes.FLOAT,
-        allowNull: true,
+        default: 0,
       },
       TotAssessableIncome2: {
         type: DataTypes.FLOAT,
-        allowNull: true,
+        default: 0,
       },
       Reliefs: {
         type: DataTypes.FLOAT,
-        allowNull: true,
+        default: 0,
       },
       Reliefs2: {
         type: DataTypes.FLOAT,
-        allowNull: true,
+        default: 0,
       },
       QP: {
         type: DataTypes.FLOAT,
-        allowNull: true,
+        default: 0,
       },
       Choosed_QP: {
         type: DataTypes.FLOAT,
-        allowNull: true,
+        default: 0,
       },
       totTaxCredit: {
         type: DataTypes.FLOAT,
-        allowNull: true,
+        default: 0,
       },
-      terminal: {
-        type: DataTypes.FLOAT,
-        allowNull: true,
-      },
-      capitalGain: {
-        type: DataTypes.FLOAT,
-        allowNull: true,
-      },
-      WHT: {
-        type: DataTypes.FLOAT,
-        allowNull: true,
+      taxpayerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Taxpayers",
+          key: "id",
+        },
       },
     }
     // {

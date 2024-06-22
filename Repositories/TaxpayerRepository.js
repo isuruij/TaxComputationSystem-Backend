@@ -24,6 +24,7 @@ const sendMail = require("../utils/sendMail");
 const sendVerificationMail = require("../utils/sendVerificationMail");
 const { where } = require("sequelize");
 const { sequelize, DataTypes } = require("../models/index");
+const totalTax = require("../models/totalTax");
 
 //register taxpayer
 module.exports.addTaxpayer = async (obj) => {
@@ -81,7 +82,18 @@ module.exports.addTaxpayer = async (obj) => {
       WHT: "0",
       taxpayerId: res.dataValues.id,
     });
+    await totalTax.create({
+      taxableAmount: "0",
+      taxableAmount2: "0",
+      incomeTax: "0",
+      incomeTax2: "0",
+      TerminalTax: "0",
+      CapitalTax: "0",
+      WHTNotDeductTax: "0",
+      taxpayerId: res.dataValues.id,
+    });
 
+    console.log("logged in");
     sendMail(data.name, data.email, data.emailToken);
     return { status: true, id: res.dataValues.id };
   } catch (error) {

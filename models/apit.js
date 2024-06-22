@@ -12,11 +12,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       apit: {
         type: DataTypes.FLOAT,
-        allowNull: true,
+        default: 0,
       },
       apit2: {
         type: DataTypes.FLOAT,
-        allowNull: true,
+        default: 0,
       },
       docname: {
         type: DataTypes.STRING,
@@ -48,16 +48,16 @@ module.exports = (sequelize, DataTypes) => {
             transaction: options.transaction,
           });
 
-          const oldValue = previousRecord.apit;
-          const newValue = record.apit;
-          const oldValue2 = previousRecord.apit2;
-          const newValue2 = record.apit2;
+          const oldValue = previousRecord.apit || 0;
+          const newValue = record.apit || 0;
+          const oldValue2 = previousRecord.apit2 || 0;
+          const newValue2 = record.apit2 || 0;
 
           // Update sumOfCat table
           await sumOfCat.update(
             {
               totTaxCredit: sequelize.literal(
-                `totTaxCredit + ${newValue} + ${newValue2} - ${oldValue} - ${oldValue2}`
+                `totTaxCredit + ${newValue} + ${newValue2}- ${oldValue} - ${oldValue2}`
               ),
             },
             {
@@ -67,11 +67,18 @@ module.exports = (sequelize, DataTypes) => {
           );
         },
         afterCreate: async (record, options) => {
+          let value = record.apit;
+          let value2 = record.apit2;
+          if (!record.apit) {
+            value = 0;
+          } else if (!record.apit2) {
+            value2 = 0;
+          }
           // Update sumOfCat table
           await sumOfCat.update(
             {
               totTaxCredit: sequelize.literal(
-                `totTaxCredit + ${record.apit} + ${record.apit2}`
+                `totTaxCredit + ${value}  + ${value2}`
               ),
             },
             {

@@ -103,7 +103,7 @@ module.exports.postTaxDetails = async (dataObject) => {
     const upsertBusinessIncome = async (amountKey, note, id) => {
       const columnName =
         amountKey === "amount" ? "businessIncome" : "businessIncome2";
-      if (dataObject[amountKey][1]) {
+      if (!dataObject[amountKey][1]) {
         dataObject[amountKey][1] = 0;
       }
       let [existingRow, created] = await businessIncome.findOrCreate({
@@ -134,7 +134,7 @@ module.exports.postTaxDetails = async (dataObject) => {
     const upsertInvestmentIncome = async (amountKey, note, id) => {
       const columnName =
         amountKey === "amount" ? "investmentIncome" : "investmentIncome2";
-      if (dataObject[amountKey][2]) {
+      if (!dataObject[amountKey][2]) {
         dataObject[amountKey][2] = 0;
       }
       let [existingRow, created] = await investmentIncome.findOrCreate({
@@ -165,7 +165,7 @@ module.exports.postTaxDetails = async (dataObject) => {
     const upsertreliefForRentIncome = async (amountKey, note, id) => {
       const columnName =
         amountKey === "amount" ? "reliefForRentIncome" : "reliefForRentIncome2";
-      if (dataObject[amountKey][3]) {
+      if (!dataObject[amountKey][3]) {
         dataObject[amountKey][3] = 0;
       }
       let [existingRow, created] = await reliefForRentIncome.findOrCreate({
@@ -196,7 +196,7 @@ module.exports.postTaxDetails = async (dataObject) => {
     const upsertotherIncome = async (amountKey, note, id) => {
       const columnName =
         amountKey === "amount" ? "otherIncome" : "otherIncome2";
-      if (dataObject[amountKey][4]) {
+      if (!dataObject[amountKey][4]) {
         dataObject[amountKey][4] = 0;
       }
       let [existingRow, created] = await otherIncome.findOrCreate({
@@ -229,7 +229,7 @@ module.exports.postTaxDetails = async (dataObject) => {
         amountKey === "amount"
           ? "reliefForExpenditure"
           : "reliefForExpenditure2";
-      if (dataObject[amountKey][5]) {
+      if (!dataObject[amountKey][5]) {
         dataObject[amountKey][5] = 0;
       }
       let [existingRow, created] = await reliefForExpenditure.findOrCreate({
@@ -260,7 +260,7 @@ module.exports.postTaxDetails = async (dataObject) => {
     const upsertqualifyingPayments = async (amountKey, note, id) => {
       const columnName =
         amountKey === "amount" ? "qualifyingPayments" : "qualifyingPayments2";
-      if (dataObject[amountKey][6]) {
+      if (!dataObject[amountKey][6]) {
         dataObject[amountKey][6] = 0;
       }
       let [existingRow, created] = await qualifyingPayments.findOrCreate({
@@ -290,7 +290,7 @@ module.exports.postTaxDetails = async (dataObject) => {
     // 8.update apit table
     const upsertapit = async (amountKey, note, id) => {
       const columnName = amountKey === "amount" ? "apit" : "apit2";
-      if (dataObject[amountKey][7]) {
+      if (!dataObject[amountKey][7]) {
         dataObject[amountKey][7] = 0;
       }
       let [existingRow, created] = await apit.findOrCreate({
@@ -323,7 +323,7 @@ module.exports.postTaxDetails = async (dataObject) => {
         amountKey === "amount"
           ? "whtOnInvestmentIncome"
           : "whtOnInvestmentIncome2";
-      if (dataObject[amountKey][8]) {
+      if (!dataObject[amountKey][8]) {
         dataObject[amountKey][8] = 0;
       }
       let [existingRow, created] = await whtOnInvestmentIncome.findOrCreate({
@@ -356,7 +356,7 @@ module.exports.postTaxDetails = async (dataObject) => {
         amountKey === "amount"
           ? "whtOnServiceFeeReceived"
           : "whtOnServiceFeeReceived2";
-      if (dataObject[amountKey][9]) {
+      if (!dataObject[amountKey][9]) {
         dataObject[amountKey][9] = 0;
       }
       let [existingRow, created] = await whtOnServiceFeeReceived.findOrCreate({
@@ -395,7 +395,7 @@ module.exports.postTaxDetails = async (dataObject) => {
         amountKey === "amount"
           ? "selfAssessmentPayment"
           : "selfAssessmentPayment2";
-      if (dataObject[amountKey][10]) {
+      if (!dataObject[amountKey][10]) {
         dataObject[amountKey][10] = 0;
       }
       let [existingRow, created] = await selfAssessmentPayment.findOrCreate({
@@ -426,7 +426,7 @@ module.exports.postTaxDetails = async (dataObject) => {
     const upsertterminalBenefits = async (amountKey, note, id) => {
       const columnName =
         amountKey === "amount" ? "terminalBenefits" : "terminalBenefits2";
-      if (dataObject[amountKey][11]) {
+      if (!dataObject[amountKey][11]) {
         dataObject[amountKey][11] = 0;
       }
       let [existingRow, created] = await terminalBenefits.findOrCreate({
@@ -457,7 +457,7 @@ module.exports.postTaxDetails = async (dataObject) => {
     const upsertcapitalValueGain = async (amountKey, note, id) => {
       const columnName =
         amountKey === "amount" ? "capitalValueGain" : "capitalValueGain2";
-      if (dataObject[amountKey][12]) {
+      if (!dataObject[amountKey][12]) {
         dataObject[amountKey][12] = 0;
       }
       let [existingRow, created] = await capitalValueGain.findOrCreate({
@@ -490,7 +490,7 @@ module.exports.postTaxDetails = async (dataObject) => {
         amountKey === "amount"
           ? "whtWhichIsNotDeducted"
           : "whtWhichIsNotDeducted2";
-      if (dataObject[amountKey][13]) {
+      if (!dataObject[amountKey][13]) {
         dataObject[amountKey][13] = 0;
       }
       let [existingRow, created] = await whtWhichIsNotDeducted.findOrCreate({
