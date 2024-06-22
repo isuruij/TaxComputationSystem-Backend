@@ -18,6 +18,7 @@ const {
   SuperAdmin,
 } = require("../models");
 const bcrypt = require("bcrypt");
+const { sequelize, DataTypes } = require("../models/index");
 
 //get username and is verified details to dataentry dashboard
 module.exports.getusernames = async () => {
@@ -71,31 +72,30 @@ module.exports.postTaxDetails = async (dataObject) => {
     const upsertEmploymentIncome = async (amountKey, note, id) => {
       const columnName =
         amountKey === "amount" ? "employmentIncome" : "employmentIncome2";
-      if (dataObject[amountKey][0]) {
-        let [existingRow, created] = await employmentIncome.findOrCreate({
-          where: { taxpayerId: id },
-          defaults: {
-            [columnName]: dataObject[amountKey][0],
-            eI_Note: note,
-            taxpayerId: id,
-          },
+      if (!dataObject[amountKey][0]) {
+        dataObject[amountKey][0] = 0;
+      }
+      let [existingRow, created] = await employmentIncome.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][0],
+          eI_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][0],
+          eI_Note: note,
         });
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][0],
-            eI_Note: note,
-          });
-          console.log(`Employment income row updated:`, existingRow.toJSON());
-        } else {
-          console.log(`Employment income row created:`, existingRow.toJSON());
-        }
+        console.log(`Employment income row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`Employment income row created:`, existingRow.toJSON());
       }
     };
     // Update or create employment income entries for amount and amount2
-    if (dataObject.amount[0]) {
+    if (dataObject.amount[0] || dataObject.amount2[0]) {
       await upsertEmploymentIncome("amount", dataObject.note[0], id);
-    }
-    if (dataObject.amount2[0]) {
       await upsertEmploymentIncome("amount2", dataObject.note[0], id);
     }
 
@@ -104,30 +104,29 @@ module.exports.postTaxDetails = async (dataObject) => {
       const columnName =
         amountKey === "amount" ? "businessIncome" : "businessIncome2";
       if (dataObject[amountKey][1]) {
-        let [existingRow, created] = await businessIncome.findOrCreate({
-          where: { taxpayerId: id },
-          defaults: {
-            [columnName]: dataObject[amountKey][1],
-            bI_Note: note,
-            taxpayerId: id,
-          },
+        dataObject[amountKey][1] = 0;
+      }
+      let [existingRow, created] = await businessIncome.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][1],
+          bI_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][1],
+          bI_Note: note,
         });
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][1],
-            bI_Note: note,
-          });
-          console.log(`Business income row updated:`, existingRow.toJSON());
-        } else {
-          console.log(`Business income row created:`, existingRow.toJSON());
-        }
+        console.log(`Business income row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`Business income row created:`, existingRow.toJSON());
       }
     };
     // Update or create business income entries for amount and amount2
-    if (dataObject.amount[1]) {
+    if (dataObject.amount[1] || dataObject.amount2[1]) {
       await upsertBusinessIncome("amount", dataObject.note[1], id);
-    }
-    if (dataObject.amount2[1]) {
       await upsertBusinessIncome("amount2", dataObject.note[1], id);
     }
 
@@ -136,30 +135,29 @@ module.exports.postTaxDetails = async (dataObject) => {
       const columnName =
         amountKey === "amount" ? "investmentIncome" : "investmentIncome2";
       if (dataObject[amountKey][2]) {
-        let [existingRow, created] = await investmentIncome.findOrCreate({
-          where: { taxpayerId: id },
-          defaults: {
-            [columnName]: dataObject[amountKey][2],
-            iI_Note: note,
-            taxpayerId: id,
-          },
+        dataObject[amountKey][2] = 0;
+      }
+      let [existingRow, created] = await investmentIncome.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][2],
+          iI_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][2],
+          iI_Note: note,
         });
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][2],
-            iI_Note: note,
-          });
-          console.log(`investment income row updated:`, existingRow.toJSON());
-        } else {
-          console.log(`investment income row created:`, existingRow.toJSON());
-        }
+        console.log(`investment income row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`investment income row created:`, existingRow.toJSON());
       }
     };
     // Update or create InvestmentIncome entries for amount and amount2
-    if (dataObject.amount[2]) {
+    if (dataObject.amount[2] || dataObject.amount2[2]) {
       await upsertInvestmentIncome("amount", dataObject.note[2], id);
-    }
-    if (dataObject.amount2[2]) {
       await upsertInvestmentIncome("amount2", dataObject.note[2], id);
     }
 
@@ -168,30 +166,29 @@ module.exports.postTaxDetails = async (dataObject) => {
       const columnName =
         amountKey === "amount" ? "reliefForRentIncome" : "reliefForRentIncome2";
       if (dataObject[amountKey][3]) {
-        let [existingRow, created] = await reliefForRentIncome.findOrCreate({
-          where: { taxpayerId: id },
-          defaults: {
-            [columnName]: dataObject[amountKey][3],
-            rRI_Note: note,
-            taxpayerId: id,
-          },
+        dataObject[amountKey][3] = 0;
+      }
+      let [existingRow, created] = await reliefForRentIncome.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][3],
+          rRI_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][3],
+          rRI_Note: note,
         });
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][3],
-            rRI_Note: note,
-          });
-          console.log(`reliefForRentIncome row updated:`, existingRow.toJSON());
-        } else {
-          console.log(`reliefForRentIncome row created:`, existingRow.toJSON());
-        }
+        console.log(`reliefForRentIncome row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`reliefForRentIncome row created:`, existingRow.toJSON());
       }
     };
     // Update or create reliefForRentIncome entries for amount and amount2
-    if (dataObject.amount[3]) {
+    if (dataObject.amount[3] || dataObject.amount2[3]) {
       await upsertreliefForRentIncome("amount", dataObject.note[3], id);
-    }
-    if (dataObject.amount2[3]) {
       await upsertreliefForRentIncome("amount2", dataObject.note[3], id);
     }
 
@@ -200,30 +197,29 @@ module.exports.postTaxDetails = async (dataObject) => {
       const columnName =
         amountKey === "amount" ? "otherIncome" : "otherIncome2";
       if (dataObject[amountKey][4]) {
-        let [existingRow, created] = await otherIncome.findOrCreate({
-          where: { taxpayerId: id },
-          defaults: {
-            [columnName]: dataObject[amountKey][4],
-            oI_Note: note,
-            taxpayerId: id,
-          },
+        dataObject[amountKey][4] = 0;
+      }
+      let [existingRow, created] = await otherIncome.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][4],
+          oI_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][4],
+          oI_Note: note,
         });
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][4],
-            oI_Note: note,
-          });
-          console.log(`otherIncome row updated:`, existingRow.toJSON());
-        } else {
-          console.log(`otherIncome row created:`, existingRow.toJSON());
-        }
+        console.log(`otherIncome row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`otherIncome row created:`, existingRow.toJSON());
       }
     };
     // Update or create otherIncomee entries for amount and amount2
-    if (dataObject.amount[4]) {
+    if (dataObject.amount[4] || dataObject.amount2[4]) {
       await upsertotherIncome("amount", dataObject.note[4], id);
-    }
-    if (dataObject.amount2[4]) {
       await upsertotherIncome("amount2", dataObject.note[4], id);
     }
 
@@ -234,36 +230,29 @@ module.exports.postTaxDetails = async (dataObject) => {
           ? "reliefForExpenditure"
           : "reliefForExpenditure2";
       if (dataObject[amountKey][5]) {
-        let [existingRow, created] = await reliefForExpenditure.findOrCreate({
-          where: { taxpayerId: id },
-          defaults: {
-            [columnName]: dataObject[amountKey][5],
-            rE_Note: note,
-            taxpayerId: id,
-          },
+        dataObject[amountKey][5] = 0;
+      }
+      let [existingRow, created] = await reliefForExpenditure.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][5],
+          rE_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][5],
+          rE_Note: note,
         });
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][5],
-            rE_Note: note,
-          });
-          console.log(
-            `reliefForExpenditure row updated:`,
-            existingRow.toJSON()
-          );
-        } else {
-          console.log(
-            `reliefForExpenditure row created:`,
-            existingRow.toJSON()
-          );
-        }
+        console.log(`reliefForExpenditure row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`reliefForExpenditure row created:`, existingRow.toJSON());
       }
     };
     // Update or create reliefForExpenditure entries for amount and amount2
-    if (dataObject.amount[5]) {
+    if (dataObject.amount[5] || dataObject.amount2[5]) {
       await upsertreliefForExpenditure("amount", dataObject.note[5], id);
-    }
-    if (dataObject.amount2[5]) {
       await upsertreliefForExpenditure("amount2", dataObject.note[5], id);
     }
 
@@ -272,30 +261,29 @@ module.exports.postTaxDetails = async (dataObject) => {
       const columnName =
         amountKey === "amount" ? "qualifyingPayments" : "qualifyingPayments2";
       if (dataObject[amountKey][6]) {
-        let [existingRow, created] = await qualifyingPayments.findOrCreate({
-          where: { taxpayerId: id },
-          defaults: {
-            [columnName]: dataObject[amountKey][6],
-            qP_Note: note,
-            taxpayerId: id,
-          },
+        dataObject[amountKey][6] = 0;
+      }
+      let [existingRow, created] = await qualifyingPayments.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][6],
+          qP_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][6],
+          qP_Note: note,
         });
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][6],
-            qP_Note: note,
-          });
-          console.log(`qualifyingPayments row updated:`, existingRow.toJSON());
-        } else {
-          console.log(`qualifyingPayments row created:`, existingRow.toJSON());
-        }
+        console.log(`qualifyingPayments row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`qualifyingPayments row created:`, existingRow.toJSON());
       }
     };
     // Update or create qualifyingPayments entries for amount and amount2
-    if (dataObject.amount[6]) {
+    if (dataObject.amount[6] || dataObject.amount2[6]) {
       await upsertqualifyingPayments("amount", dataObject.note[6], id);
-    }
-    if (dataObject.amount2[6]) {
       await upsertqualifyingPayments("amount2", dataObject.note[6], id);
     }
 
@@ -303,30 +291,29 @@ module.exports.postTaxDetails = async (dataObject) => {
     const upsertapit = async (amountKey, note, id) => {
       const columnName = amountKey === "amount" ? "apit" : "apit2";
       if (dataObject[amountKey][7]) {
-        let [existingRow, created] = await apit.findOrCreate({
-          where: { taxpayerId: id },
-          defaults: {
-            [columnName]: dataObject[amountKey][7],
-            aPIT_Note: note,
-            taxpayerId: id,
-          },
+        dataObject[amountKey][7] = 0;
+      }
+      let [existingRow, created] = await apit.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][7],
+          aPIT_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][7],
+          aPIT_Note: note,
         });
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][7],
-            aPIT_Note: note,
-          });
-          console.log(`apit row updated:`, existingRow.toJSON());
-        } else {
-          console.log(`apit row created:`, existingRow.toJSON());
-        }
+        console.log(`apit row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`apit row created:`, existingRow.toJSON());
       }
     };
     // Update or create apit entries for amount and amount2
-    if (dataObject.amount[7]) {
+    if (dataObject.amount[7] || dataObject.amount2[7]) {
       await upsertapit("amount", dataObject.note[7], id);
-    }
-    if (dataObject.amount2[7]) {
       await upsertapit("amount2", dataObject.note[7], id);
     }
 
@@ -337,36 +324,29 @@ module.exports.postTaxDetails = async (dataObject) => {
           ? "whtOnInvestmentIncome"
           : "whtOnInvestmentIncome2";
       if (dataObject[amountKey][8]) {
-        let [existingRow, created] = await whtOnInvestmentIncome.findOrCreate({
-          where: { taxpayerId: id },
-          defaults: {
-            [columnName]: dataObject[amountKey][8],
-            wHT_II_Note: note,
-            taxpayerId: id,
-          },
+        dataObject[amountKey][8] = 0;
+      }
+      let [existingRow, created] = await whtOnInvestmentIncome.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][8],
+          wHT_II_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][8],
+          wHT_II_Note: note,
         });
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][8],
-            wHT_II_Note: note,
-          });
-          console.log(
-            `whtOnInvestmentIncome row updated:`,
-            existingRow.toJSON()
-          );
-        } else {
-          console.log(
-            `whtOnInvestmentIncome row created:`,
-            existingRow.toJSON()
-          );
-        }
+        console.log(`whtOnInvestmentIncome row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`whtOnInvestmentIncome row created:`, existingRow.toJSON());
       }
     };
     // Update or create whtOnInvestmentIncome entries for amount and amount2
-    if (dataObject.amount[8]) {
+    if (dataObject.amount[8] || dataObject.amount2[8]) {
       await upsertwhtOnInvestmentIncome("amount", dataObject.note[8], id);
-    }
-    if (dataObject.amount2[8]) {
       await upsertwhtOnInvestmentIncome("amount2", dataObject.note[8], id);
     }
 
@@ -377,38 +357,35 @@ module.exports.postTaxDetails = async (dataObject) => {
           ? "whtOnServiceFeeReceived"
           : "whtOnServiceFeeReceived2";
       if (dataObject[amountKey][9]) {
-        let [existingRow, created] = await whtOnServiceFeeReceived.findOrCreate(
-          {
-            where: { taxpayerId: id },
-            defaults: {
-              [columnName]: dataObject[amountKey][9],
-              wHT_SFR_Note: note,
-              taxpayerId: id,
-            },
-          }
+        dataObject[amountKey][9] = 0;
+      }
+      let [existingRow, created] = await whtOnServiceFeeReceived.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][9],
+          wHT_SFR_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][9],
+          wHT_SFR_Note: note,
+        });
+        console.log(
+          `whtOnServiceFeeReceived row updated:`,
+          existingRow.toJSON()
         );
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][9],
-            wHT_SFR_Note: note,
-          });
-          console.log(
-            `whtOnServiceFeeReceived row updated:`,
-            existingRow.toJSON()
-          );
-        } else {
-          console.log(
-            `whtOnServiceFeeReceived row created:`,
-            existingRow.toJSON()
-          );
-        }
+      } else {
+        console.log(
+          `whtOnServiceFeeReceived row created:`,
+          existingRow.toJSON()
+        );
       }
     };
     // Update or create whtOnServiceFeeReceived entries for amount and amount2
-    if (dataObject.amount[9]) {
+    if (dataObject.amount[9] || dataObject.amount2[9]) {
       await upsertwhtOnServiceFeeReceived("amount", dataObject.note[9], id);
-    }
-    if (dataObject.amount2[9]) {
       await upsertwhtOnServiceFeeReceived("amount2", dataObject.note[9], id);
     }
 
@@ -419,36 +396,29 @@ module.exports.postTaxDetails = async (dataObject) => {
           ? "selfAssessmentPayment"
           : "selfAssessmentPayment2";
       if (dataObject[amountKey][10]) {
-        let [existingRow, created] = await selfAssessmentPayment.findOrCreate({
-          where: { taxpayerId: id },
-          defaults: {
-            [columnName]: dataObject[amountKey][10],
-            sAP_Note: note,
-            taxpayerId: id,
-          },
+        dataObject[amountKey][10] = 0;
+      }
+      let [existingRow, created] = await selfAssessmentPayment.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][10],
+          sAP_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][10],
+          sAP_Note: note,
         });
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][10],
-            sAP_Note: note,
-          });
-          console.log(
-            `selfAssessmentPayment row updated:`,
-            existingRow.toJSON()
-          );
-        } else {
-          console.log(
-            `selfAssessmentPayment row created:`,
-            existingRow.toJSON()
-          );
-        }
+        console.log(`selfAssessmentPayment row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`selfAssessmentPayment row created:`, existingRow.toJSON());
       }
     };
     // Update or create selfAssessmentPayment entries for amount and amount2
-    if (dataObject.amount[10]) {
+    if (dataObject.amount[10] || dataObject.amount2[10]) {
       await upsertselfAssessmentPayment("amount", dataObject.note[10], id);
-    }
-    if (dataObject.amount2[10]) {
       await upsertselfAssessmentPayment("amount2", dataObject.note[10], id);
     }
 
@@ -457,30 +427,29 @@ module.exports.postTaxDetails = async (dataObject) => {
       const columnName =
         amountKey === "amount" ? "terminalBenefits" : "terminalBenefits2";
       if (dataObject[amountKey][11]) {
-        let [existingRow, created] = await terminalBenefits.findOrCreate({
-          where: { taxpayerId: id },
-          defaults: {
-            [columnName]: dataObject[amountKey][11],
-            tB_Note: note,
-            taxpayerId: id,
-          },
+        dataObject[amountKey][11] = 0;
+      }
+      let [existingRow, created] = await terminalBenefits.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][11],
+          tB_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][11],
+          tB_Note: note,
         });
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][11],
-            tB_Note: note,
-          });
-          console.log(`terminalBenefits row updated:`, existingRow.toJSON());
-        } else {
-          console.log(`terminalBenefits row created:`, existingRow.toJSON());
-        }
+        console.log(`terminalBenefits row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`terminalBenefits row created:`, existingRow.toJSON());
       }
     };
     // Update or create terminalBenefits entries for amount and amount2
-    if (dataObject.amount[11]) {
+    if (dataObject.amount[11] || dataObject.amount2[11]) {
       await upsertterminalBenefits("amount", dataObject.note[11], id);
-    }
-    if (dataObject.amount2[11]) {
       await upsertterminalBenefits("amount2", dataObject.note[11], id);
     }
 
@@ -489,30 +458,29 @@ module.exports.postTaxDetails = async (dataObject) => {
       const columnName =
         amountKey === "amount" ? "capitalValueGain" : "capitalValueGain2";
       if (dataObject[amountKey][12]) {
-        let [existingRow, created] = await capitalValueGain.findOrCreate({
-          where: { taxpayerId: id },
-          defaults: {
-            [columnName]: dataObject[amountKey][12],
-            cVnG_Note: note,
-            taxpayerId: id,
-          },
+        dataObject[amountKey][12] = 0;
+      }
+      let [existingRow, created] = await capitalValueGain.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][12],
+          cVnG_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][12],
+          cVnG_Note: note,
         });
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][12],
-            cVnG_Note: note,
-          });
-          console.log(`capitalValueGain row updated:`, existingRow.toJSON());
-        } else {
-          console.log(`capitalValueGain row created:`, existingRow.toJSON());
-        }
+        console.log(`capitalValueGain row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`capitalValueGain row created:`, existingRow.toJSON());
       }
     };
     // Update or create capitalValueGain entries for amount and amount2
-    if (dataObject.amount[12]) {
+    if (dataObject.amount[12] || dataObject.amount2[12]) {
       await upsertcapitalValueGain("amount", dataObject.note[12], id);
-    }
-    if (dataObject.amount2[12]) {
       await upsertcapitalValueGain("amount2", dataObject.note[12], id);
     }
 
@@ -523,36 +491,29 @@ module.exports.postTaxDetails = async (dataObject) => {
           ? "whtWhichIsNotDeducted"
           : "whtWhichIsNotDeducted2";
       if (dataObject[amountKey][13]) {
-        let [existingRow, created] = await whtWhichIsNotDeducted.findOrCreate({
-          where: { taxpayerId: id },
-          defaults: {
-            [columnName]: dataObject[amountKey][13],
-            wHT_WND_Note: note,
-            taxpayerId: id,
-          },
+        dataObject[amountKey][13] = 0;
+      }
+      let [existingRow, created] = await whtWhichIsNotDeducted.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          [columnName]: dataObject[amountKey][13],
+          wHT_WND_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][13],
+          wHT_WND_Note: note,
         });
-        if (!created) {
-          existingRow = await existingRow.update({
-            [columnName]: dataObject[amountKey][13],
-            wHT_WND_Note: note,
-          });
-          console.log(
-            `whtWhichIsNotDeducted row updated:`,
-            existingRow.toJSON()
-          );
-        } else {
-          console.log(
-            `whtWhichIsNotDeducted row created:`,
-            existingRow.toJSON()
-          );
-        }
+        console.log(`whtWhichIsNotDeducted row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`whtWhichIsNotDeducted row created:`, existingRow.toJSON());
       }
     };
     // Update or create whtWhichIsNotDeducted entries for amount and amount2
-    if (dataObject.amount[13]) {
+    if (dataObject.amount[13] || dataObject.amount2[13]) {
       await upsertwhtWhichIsNotDeducted("amount", dataObject.note[13], id);
-    }
-    if (dataObject.amount2[13]) {
       await upsertwhtWhichIsNotDeducted("amount2", dataObject.note[13], id);
     }
 
@@ -601,6 +562,13 @@ module.exports.fileUpload = async (userId, files) => {
     //dataObject.UserId is a string and want to convert to integer to compare
     let id = parseInt(userId, 10);
     console.log(id, files, files[0].id, files.length);
+
+    //Update number of submissions in taxpayer table
+    const numSub = files.length;
+    const row = await Taxpayer.update(
+      { numOfSubmissions: sequelize.literal(`numOfSubmissions + ${numSub}`) },
+      { where: { id: id } }
+    );
 
     for (let i = 0; i < files.length; i++) {
       //01.Employment Income table

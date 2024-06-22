@@ -50,12 +50,17 @@ module.exports = (sequelize, DataTypes) => {
 
           const previousIncome = previousRecord.businessIncome;
           const newIncome = record.businessIncome;
+          const previousIncome2 = previousRecord.businessIncome2;
+          const newIncome2 = record.businessIncome2;
 
           // Update sumOfCat table
           await sumOfCat.update(
             {
               TotAssessableIncome: sequelize.literal(
                 `TotAssessableIncome + ${newIncome} - ${previousIncome}`
+              ),
+              TotAssessableIncome2: sequelize.literal(
+                `TotAssessableIncome2 + ${newIncome2} - ${previousIncome2}`
               ),
             },
             {
@@ -69,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
         //   await sumOfCat.update(
         //     {
         //       TotAssessableIncome: sequelize.literal(
-        //         `TotAssessableIncome + ${record.employmentIncome}`
+        //         `TotAssessableIncome + ${record.businessIncome}`
         //       ),
         //     },
         //     {
@@ -79,11 +84,19 @@ module.exports = (sequelize, DataTypes) => {
         //   );
         // },
         afterDestroy: async (record, options) => {
+          // Fetch the previous value
+          const previousRecord = await record.constructor.findOne({
+            where: { incomeId: record.incomeId },
+            transaction: options.transaction,
+          });
           // Update sumOfCat table
           await sumOfCat.update(
             {
               TotAssessableIncome: sequelize.literal(
-                `TotAssessableIncome - ${record.employmentIncome}`
+                `TotAssessableIncome - ${previousRecord.businessIncome}`
+              ),
+              TotAssessableIncome2: sequelize.literal(
+                `TotAssessableIncome2 - ${previousRecord.businessIncome2}`
               ),
             },
             {

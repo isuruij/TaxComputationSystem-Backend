@@ -22,6 +22,8 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const sendMail = require("../utils/sendMail");
 const sendVerificationMail = require("../utils/sendVerificationMail");
+const { where } = require("sequelize");
+const { sequelize, DataTypes } = require("../models/index");
 
 //register taxpayer
 module.exports.addTaxpayer = async (obj) => {
@@ -61,9 +63,18 @@ module.exports.addTaxpayer = async (obj) => {
       otherIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
+    await reliefForRentIncome.create({
+      reliefForRentIncome: "0",
+      reliefForRentIncome2: "0",
+      taxpayerId: res.dataValues.id,
+    });
     await sumOfCat.create({
       TotAssessableIncome: "0",
-      TotQPnR: "0",
+      TotAssessableIncome2: "0",
+      Reliefs: 2250000.0,
+      Reliefs2: 300000.0,
+      QP: "0",
+      Choosed_QP: "0",
       totTaxCredit: "0",
       terminal: "0",
       capitalGain: "0",
@@ -385,6 +396,13 @@ module.exports.fileUpload = async (userId, files) => {
     //dataObject.UserId is a string and want to convert to integer to compare
     let id = parseInt(userId, 10);
     console.log(id, files, files[0].id, files.length);
+
+    //Update number of submissions in taxpayer table
+    const numSub = files.length;
+    const row = await Taxpayer.update(
+      { numOfSubmissions: sequelize.literal(`numOfSubmissions + ${numSub}`) },
+      { where: { id: id } }
+    );
 
     for (let i = 0; i < files.length; i++) {
       //01.Employment Income table
