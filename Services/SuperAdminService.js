@@ -121,7 +121,15 @@ module.exports.fetchTaxpayer = async (userId) => {
     const taxpayerName = await  SuperAdminRepository.fetchTaxpayer(userId);
     return taxpayerName;
   } catch (error) {
-    throw new Error(`Error while deleting taxpayer: ${error.message}`);
+    throw new Error(`Error while geting taxpayer: ${error.message}`);
+  }
+};
+module.exports.updateNoOfSubmissions = async (userId) => {
+  try {
+    await SuperAdminRepository.updateNoOfSubmissions(userId);
+    return res.json({ message: "No of Submissions updated successfully" });
+  } catch (error) {
+    throw new Error(`Error while toggling approval status: ${error.message}`);
   }
 };
 

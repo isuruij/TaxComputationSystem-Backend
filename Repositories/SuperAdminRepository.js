@@ -203,6 +203,23 @@ module.exports.fetchTaxpayer = async (userId) => {
 };
 
 
+
+module.exports.updateNoOfSubmissions = async (userId) => {
+  try {
+    const taxpayer = await Taxpayer.findOne({ where: { id :userId } });
+    if (!taxpayer) {
+      throw new Error('Taxpayer not found');
+    }
+    taxpayer.numOfSubmissions -= 1;
+    await taxpayer.save();
+    return taxpayer;
+  } catch (error) {
+    throw new Error(`Error while updating number of submissions: ${error.message}`);
+  }
+};
+
+
+
 //submissionList
 
 

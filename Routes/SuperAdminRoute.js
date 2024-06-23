@@ -23,6 +23,7 @@ router.delete("/deletetaxpayers/:id",JwtService.roleBasedAuth(["superAdmin"]), S
 router.put("/updateUserApprovalStatus",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.toggleApproval);
 
 router.get("/fetchTaxpayer/:userId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.fetchTaxpayer)
+router.put("/updateNoOfSubmissions/:userId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateNoOfSubmissions)
 
 //get income details
 router.get('/getbusinessincome/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getBusinessIncomeByTaxpayerId);

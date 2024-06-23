@@ -153,6 +153,15 @@ module.exports.fetchTaxpayer = async (req, res) => {
   }
 };
 
+module.exports.updateNoOfSubmissions = async (req, res) => {
+  try {
+    await SuperAdminService.updateNoOfSubmissions(req.params.userId);
+    return res.json({ message: "No of Submissions updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 //SubmissionList
 module.exports.getBusinessIncome = async (req, res) => {
