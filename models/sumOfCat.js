@@ -32,7 +32,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         default: 0,
       },
-      totTaxCredit: {
+      TaxCredit: {
+        type: DataTypes.FLOAT,
+        default: 0,
+      },
+      TaxCredit2: {
         type: DataTypes.FLOAT,
         default: 0,
       },
@@ -44,44 +48,32 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
-    }
-    // {
-    //   hooks: {
-    //     beforeUpdate: async (sumOfCatInstance, options) => {
-    //       // Check if TotAssessableIncome or TotAssessableIncome2 have changed
-    //       if (
-    //         sumOfCatInstance.changed("TotAssessableIncome") ||
-    //         sumOfCatInstance.changed("TotAssessableIncome2")
-    //       ) {
-    //         // const previousIncome =
-    //         //   sumOfCatInstance.previous("TotAssessableIncome") || 0;
-    //         const newIncome = sumOfCatInstance.TotAssessableIncome || 0;
-    //         // const previousIncome2 =
-    //         //   sumOfCatInstance.previous("TotAssessableIncome2") || 0;
-    //         const newIncome2 = sumOfCatInstance.TotAssessableIncome2 || 0;
-    //         const QP = sumOfCatInstance.QP || 0;
+    },
+    {
+      hooks: {
+        beforeUpdate: async (sumOfCatInstance, options) => {
+          const totAssessableIncome = sumOfCatInstance.TotAssessableIncome || 0;
+          const totAssessableIncome2 =
+            sumOfCatInstance.TotAssessableIncome2 || 0;
+          const reliefs = sumOfCatInstance.Reliefs || 0;
+          const reliefs2 = sumOfCatInstance.Reliefs2 || 0;
+          const qp = sumOfCatInstance.QP || 0;
 
-    //         // logic to update Qualifying payment fields
-    //         if ((newIncome + newIncome2) / 3 >= 75000) {
-    //           if (QP > 75000) {
-    //             sumOfCatInstance.Choosed_QP = 75000.0;
-    //           } else {
-    //             sumOfCatInstance.Choosed_QP = QP;
-    //           }
-    //         } else if ((newIncome + newIncome2) / 3 < 75000) {
-    //           if (QP > (newIncome + newIncome2) / 3) {
-    //             sumOfCatInstance.Choosed_QP = (newIncome + newIncome2) / 3;
-    //           } else {
-    //             sumOfCatInstance.Choosed_QP = QP;
-    //           }
-    //         }
-    //       }
-    //     },
-    //   },
-    //   sequelize, // We need to pass the sequelize connection
-    //   modelName: "sumOfCat", // Name of the model
-    //   tableName: "sumOfCat", // Name of the table in the database
-    // }
+          // Calculate [(TotAssessableIncome + TotAssessableIncome2) - (Reliefs + Reliefs2)] / 3
+          const calculatedValue =
+            (totAssessableIncome +
+              totAssessableIncome2 -
+              (reliefs + reliefs2)) /
+            3;
+
+          // Additional value to compare
+          const govLimit = 75000.0;
+
+          // Store the lowest value between calculatedValue, qp, and Govlimit in Choosed_QP
+          sumOfCatInstance.Choosed_QP = Math.min(calculatedValue, qp, govLimit);
+        },
+      },
+    }
   );
 
   return sumOfCat;

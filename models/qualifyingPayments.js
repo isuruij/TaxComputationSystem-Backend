@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: true,
       },
-      qualifyingPayments2: {
-        type: DataTypes.FLOAT,
-        allowNull: true,
-      },
       docname: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -48,13 +44,12 @@ module.exports = (sequelize, DataTypes) => {
             transaction: options.transaction,
           });
 
-          const newIncome = record.qualifyingPayments;
-          const newIncome2 = record.qualifyingPayments2;
+          const newIncome = record.qualifyingPayments || 0.0;
 
           // Update sumOfCat table
           await sumOfCat.update(
             {
-              QP: sequelize.literal(`${newIncome} + ${newIncome2}`),
+              QP: sequelize.literal(`${newIncome}`),
             },
             {
               where: { taxpayerId: record.taxpayerId },
@@ -63,12 +58,11 @@ module.exports = (sequelize, DataTypes) => {
           );
         },
         afterCreate: async (record, options) => {
+          const value = record.qualifyingPayments || 0.0;
           // Update sumOfCat table
           await sumOfCat.update(
             {
-              QP: sequelize.literal(
-                `${record.qualifyingPayments} + ${record.qualifyingPayments2}`
-              ),
+              QP: sequelize.literal(`${value}`),
             },
             {
               where: { taxpayerId: record.taxpayerId },
@@ -77,11 +71,6 @@ module.exports = (sequelize, DataTypes) => {
           );
         },
         afterDestroy: async (record, options) => {
-          // Fetch the previous value
-          const previousRecord = await record.constructor.findOne({
-            where: { incomeId: record.incomeId },
-            transaction: options.transaction,
-          });
           // Update sumOfCat table
           await sumOfCat.update(
             {

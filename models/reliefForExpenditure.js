@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: true,
       },
-      reliefForExpenditure2: {
-        type: DataTypes.FLOAT,
-        allowNull: true,
-      },
       docname: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -48,8 +44,8 @@ module.exports = (sequelize, DataTypes) => {
             transaction: options.transaction,
           });
 
-          const previousIncome = previousRecord.reliefForExpenditure;
-          const newIncome = record.reliefForExpenditure;
+          const previousIncome = previousRecord.reliefForExpenditure || 0.0;
+          const newIncome = record.reliefForExpenditure || 0.0;
 
           if (newIncome - 900000 > 0 && previousIncome - 900000 < 0) {
             // Update sumOfCat table
@@ -91,6 +87,9 @@ module.exports = (sequelize, DataTypes) => {
           }
         },
         afterCreate: async (record, options) => {
+          if (!record.reliefForExpenditure) {
+            return;
+          }
           if (record.reliefForExpenditure - 900000 > 0) {
             // Update sumOfCat table
             await sumOfCat.update(

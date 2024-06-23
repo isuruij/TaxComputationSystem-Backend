@@ -56,8 +56,11 @@ module.exports = (sequelize, DataTypes) => {
           // Update sumOfCat table
           await sumOfCat.update(
             {
-              totTaxCredit: sequelize.literal(
-                `totTaxCredit + ${newValue} + ${newValue2} - ${oldValue} - ${oldValue2}`
+              TaxCredit: sequelize.literal(
+                `TaxCredit + ${newValue} - ${oldValue}`
+              ),
+              TaxCredit2: sequelize.literal(
+                `TaxCredit2 + ${newValue2} - ${oldValue2}`
               ),
             },
             {
@@ -67,19 +70,13 @@ module.exports = (sequelize, DataTypes) => {
           );
         },
         afterCreate: async (record, options) => {
-          let value = record.whtOnInvestmentIncome;
-          let value2 = record.whtOnInvestmentIncome2;
-          if (!record.whtOnInvestmentIncome) {
-            value = 0;
-          } else if (!record.whtOnInvestmentIncome2) {
-            value2 = 0;
-          }
+          let value = record.whtOnInvestmentIncome || 0.0;
+          let value2 = record.whtOnInvestmentIncome2 || 0.0;
           // Update sumOfCat table
           await sumOfCat.update(
             {
-              totTaxCredit: sequelize.literal(
-                `totTaxCredit + ${value}  + ${value2}`
-              ),
+              TaxCredit: sequelize.literal(`TaxCredit + ${value}`),
+              TaxCredit2: sequelize.literal(`TaxCredit2 + ${value2}`),
             },
             {
               where: { taxpayerId: record.taxpayerId },
@@ -96,8 +93,11 @@ module.exports = (sequelize, DataTypes) => {
           // Update sumOfCat table
           await sumOfCat.update(
             {
-              totTaxCredit: sequelize.literal(
-                `totTaxCredit - ${previousRecord.whtOnInvestmentIncome}- ${previousRecord.whtOnInvestmentIncome2}`
+              TaxCredit: sequelize.literal(
+                `TaxCredit - ${previousRecord.whtOnInvestmentIncome}`
+              ),
+              TaxCredit2: sequelize.literal(
+                `TaxCredit2 - ${previousRecord.whtOnInvestmentIncome2}`
               ),
             },
             {

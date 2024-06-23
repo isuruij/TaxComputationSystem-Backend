@@ -235,14 +235,14 @@ module.exports.postTaxDetails = async (dataObject) => {
       let [existingRow, created] = await reliefForExpenditure.findOrCreate({
         where: { taxpayerId: id },
         defaults: {
-          [columnName]: dataObject[amountKey][5],
+          reliefForExpenditure: dataObject[amountKey][5],
           rE_Note: note,
           taxpayerId: id,
         },
       });
       if (!created) {
         existingRow = await existingRow.update({
-          [columnName]: dataObject[amountKey][5],
+          reliefForExpenditure: dataObject[amountKey][5],
           rE_Note: note,
         });
         console.log(`reliefForExpenditure row updated:`, existingRow.toJSON());
@@ -253,27 +253,24 @@ module.exports.postTaxDetails = async (dataObject) => {
     // Update or create reliefForExpenditure entries for amount and amount2
     if (dataObject.amount[5] || dataObject.amount2[5]) {
       await upsertreliefForExpenditure("amount", dataObject.note[5], id);
-      await upsertreliefForExpenditure("amount2", dataObject.note[5], id);
     }
 
     // 7.update qualifingPayments table
     const upsertqualifyingPayments = async (amountKey, note, id) => {
-      const columnName =
-        amountKey === "amount" ? "qualifyingPayments" : "qualifyingPayments2";
       if (!dataObject[amountKey][6]) {
         dataObject[amountKey][6] = 0;
       }
       let [existingRow, created] = await qualifyingPayments.findOrCreate({
         where: { taxpayerId: id },
         defaults: {
-          [columnName]: dataObject[amountKey][6],
+          qualifyingPayments: dataObject[amountKey][6],
           qP_Note: note,
           taxpayerId: id,
         },
       });
       if (!created) {
         existingRow = await existingRow.update({
-          [columnName]: dataObject[amountKey][6],
+          qualifyingPayments: dataObject[amountKey][6],
           qP_Note: note,
         });
         console.log(`qualifyingPayments row updated:`, existingRow.toJSON());
@@ -284,7 +281,6 @@ module.exports.postTaxDetails = async (dataObject) => {
     // Update or create qualifyingPayments entries for amount and amount2
     if (dataObject.amount[6] || dataObject.amount2[6]) {
       await upsertqualifyingPayments("amount", dataObject.note[6], id);
-      await upsertqualifyingPayments("amount2", dataObject.note[6], id);
     }
 
     // 8.update apit table
@@ -424,22 +420,20 @@ module.exports.postTaxDetails = async (dataObject) => {
 
     // 12.update terminalBenefits table
     const upsertterminalBenefits = async (amountKey, note, id) => {
-      const columnName =
-        amountKey === "amount" ? "terminalBenefits" : "terminalBenefits2";
       if (!dataObject[amountKey][11]) {
         dataObject[amountKey][11] = 0;
       }
       let [existingRow, created] = await terminalBenefits.findOrCreate({
         where: { taxpayerId: id },
         defaults: {
-          [columnName]: dataObject[amountKey][11],
+          terminalBenefits: dataObject[amountKey][11],
           tB_Note: note,
           taxpayerId: id,
         },
       });
       if (!created) {
         existingRow = await existingRow.update({
-          [columnName]: dataObject[amountKey][11],
+          terminalBenefits: dataObject[amountKey][11],
           tB_Note: note,
         });
         console.log(`terminalBenefits row updated:`, existingRow.toJSON());
@@ -450,27 +444,24 @@ module.exports.postTaxDetails = async (dataObject) => {
     // Update or create terminalBenefits entries for amount and amount2
     if (dataObject.amount[11] || dataObject.amount2[11]) {
       await upsertterminalBenefits("amount", dataObject.note[11], id);
-      await upsertterminalBenefits("amount2", dataObject.note[11], id);
     }
 
     // 13.update capitalValueGain table
     const upsertcapitalValueGain = async (amountKey, note, id) => {
-      const columnName =
-        amountKey === "amount" ? "capitalValueGain" : "capitalValueGain2";
       if (!dataObject[amountKey][12]) {
         dataObject[amountKey][12] = 0;
       }
       let [existingRow, created] = await capitalValueGain.findOrCreate({
         where: { taxpayerId: id },
         defaults: {
-          [columnName]: dataObject[amountKey][12],
+          capitalValueGain: dataObject[amountKey][12],
           cVnG_Note: note,
           taxpayerId: id,
         },
       });
       if (!created) {
         existingRow = await existingRow.update({
-          [columnName]: dataObject[amountKey][12],
+          capitalValueGain: dataObject[amountKey][12],
           cVnG_Note: note,
         });
         console.log(`capitalValueGain row updated:`, existingRow.toJSON());
@@ -481,29 +472,24 @@ module.exports.postTaxDetails = async (dataObject) => {
     // Update or create capitalValueGain entries for amount and amount2
     if (dataObject.amount[12] || dataObject.amount2[12]) {
       await upsertcapitalValueGain("amount", dataObject.note[12], id);
-      await upsertcapitalValueGain("amount2", dataObject.note[12], id);
     }
 
     // 14.update whtWhichIsNotDeducted table
     const upsertwhtWhichIsNotDeducted = async (amountKey, note, id) => {
-      const columnName =
-        amountKey === "amount"
-          ? "whtWhichIsNotDeducted"
-          : "whtWhichIsNotDeducted2";
       if (!dataObject[amountKey][13]) {
         dataObject[amountKey][13] = 0;
       }
       let [existingRow, created] = await whtWhichIsNotDeducted.findOrCreate({
         where: { taxpayerId: id },
         defaults: {
-          [columnName]: dataObject[amountKey][13],
+          whtWhichIsNotDeducted: dataObject[amountKey][13],
           wHT_WND_Note: note,
           taxpayerId: id,
         },
       });
       if (!created) {
         existingRow = await existingRow.update({
-          [columnName]: dataObject[amountKey][13],
+          whtWhichIsNotDeducted: dataObject[amountKey][13],
           wHT_WND_Note: note,
         });
         console.log(`whtWhichIsNotDeducted row updated:`, existingRow.toJSON());
@@ -514,7 +500,6 @@ module.exports.postTaxDetails = async (dataObject) => {
     // Update or create whtWhichIsNotDeducted entries for amount and amount2
     if (dataObject.amount[13] || dataObject.amount2[13]) {
       await upsertwhtWhichIsNotDeducted("amount", dataObject.note[13], id);
-      await upsertwhtWhichIsNotDeducted("amount2", dataObject.note[13], id);
     }
 
     return { status: true };

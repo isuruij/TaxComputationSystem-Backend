@@ -17,6 +17,7 @@ const {
   whtWhichIsNotDeducted,
   Notification,
   sumOfCat,
+  totalTax,
 } = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
@@ -24,7 +25,6 @@ const sendMail = require("../utils/sendMail");
 const sendVerificationMail = require("../utils/sendVerificationMail");
 const { where } = require("sequelize");
 const { sequelize, DataTypes } = require("../models/index");
-const totalTax = require("../models/totalTax");
 
 //register taxpayer
 module.exports.addTaxpayer = async (obj) => {
@@ -69,6 +69,7 @@ module.exports.addTaxpayer = async (obj) => {
       reliefForRentIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
+
     await sumOfCat.create({
       TotAssessableIncome: "0",
       TotAssessableIncome2: "0",
@@ -76,12 +77,14 @@ module.exports.addTaxpayer = async (obj) => {
       Reliefs2: 300000.0,
       QP: "0",
       Choosed_QP: "0",
-      totTaxCredit: "0",
+      TaxCredit: "0",
+      TaxCredit2: "0",
       terminal: "0",
       capitalGain: "0",
       WHT: "0",
       taxpayerId: res.dataValues.id,
     });
+
     await totalTax.create({
       taxableAmount: "0",
       taxableAmount2: "0",

@@ -34,6 +34,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: true,
     },
+    taxpayerId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Taxpayers",
+        key: "id",
+      },
+    },
   });
 
   return totalTax;

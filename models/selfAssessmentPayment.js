@@ -56,8 +56,11 @@ module.exports = (sequelize, DataTypes) => {
           // Update sumOfCat table
           await sumOfCat.update(
             {
-              totTaxCredit: sequelize.literal(
-                `totTaxCredit + ${newValue} + ${newValue2} - ${oldValue} - ${oldValue2}`
+              TaxCredit: sequelize.literal(
+                `TaxCredit + ${newValue} - ${oldValue}`
+              ),
+              TaxCredit2: sequelize.literal(
+                `TaxCredit2 + ${newValue2} - ${oldValue2}`
               ),
             },
             {
@@ -67,19 +70,13 @@ module.exports = (sequelize, DataTypes) => {
           );
         },
         afterCreate: async (record, options) => {
-          let value = record.selfAssessmentPayment;
-          let value2 = record.selfAssessmentPayment2;
-          if (!record.selfAssessmentPayment) {
-            value = 0;
-          } else if (!record.selfAssessmentPayment2) {
-            value2 = 0;
-          }
+          let value = record.selfAssessmentPayment || 0.0;
+          let value2 = record.selfAssessmentPayment2 || 0.0;
           // Update sumOfCat table
           await sumOfCat.update(
             {
-              totTaxCredit: sequelize.literal(
-                `totTaxCredit + ${value}  + ${value2}`
-              ),
+              TaxCredit: sequelize.literal(`TaxCredit + ${value}`),
+              TaxCredit2: sequelize.literal(`TaxCredit2 + ${value2}`),
             },
             {
               where: { taxpayerId: record.taxpayerId },
@@ -96,8 +93,11 @@ module.exports = (sequelize, DataTypes) => {
           // Update sumOfCat table
           await sumOfCat.update(
             {
-              totTaxCredit: sequelize.literal(
-                `totTaxCredit - ${previousRecord.selfAssessmentPayment}- ${previousRecord.selfAssessmentPayment2}`
+              TaxCredit: sequelize.literal(
+                `TaxCredit - ${previousRecord.selfAssessmentPayment}`
+              ),
+              TaxCredit2: sequelize.literal(
+                `TaxCredit2 - ${previousRecord.selfAssessmentPayment2}`
               ),
             },
             {
