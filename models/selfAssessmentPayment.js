@@ -7,16 +7,28 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     selfAssessmentPayment: {
-      type: DataTypes.DOUBLE,
-      allowNull: false,
+      type: DataTypes.FLOAT,
+      allowNull: true,
     },
-    sAP_docname: {
+    docname: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+    },
+    filePath: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     sAP_Note: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+    },
+    isverified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    isnewsubmission: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   });
 

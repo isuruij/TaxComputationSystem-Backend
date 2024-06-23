@@ -28,7 +28,7 @@ module.exports.postTaxDetails = async (req, res) => {
     const result = await DataEntryService.postTaxDetails(req.body);
     if (result.status) {
       console.log(result.status);
-      return res.json({ Status: "Success" });
+      return res.json({ Status: "Data uploaded Successfully" });
     } else {
       console.log(result.message);
       return res.json({ Status: "Failed", Message: result.message });
@@ -69,6 +69,38 @@ module.exports.getUserDetails = async (req, res) => {
       return res.status(400).json({ Status: "NotSuccess" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+//Doc upload part
+module.exports.fileUpload = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const files = req.files;
+    const ids = req.body.fileIds;
+
+    // Check if no files were uploaded
+    if (!files || files.length === 0) {
+      return res.status(400).json({ Status: "No files selected" });
+    }
+
+    // Ensure ids is an array even if there's only one ID
+    const idsArray = Array.isArray(ids) ? ids : [ids];
+
+    // Combine files and their respective IDs
+    const fileData = files.map((file, index) => ({
+      ...file,
+      id: idsArray[index],
+    }));
+
+    // Call the service to handle the file data
+    await DataEntryService.fileUpload(userId, fileData);
+
+    // Respond to the client
+    return res.json({ Status: "Files uploaded successfully!" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Error uploading files" });
   }
 };

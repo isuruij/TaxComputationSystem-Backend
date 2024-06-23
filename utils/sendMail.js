@@ -19,7 +19,7 @@ const sendMail = (name, email, emailToken) => {
     html: `<p>Hello ${name}, verify your email address by clicking on this</p>
         <br>
         <br>
-        <a href="http://localhost:5173/verify-email?emailToken=${emailToken}">Click here to verify</a>
+        <a href="${process.env.FRONTEND_BASE_URL}/verify-email?emailToken=${emailToken}">Click here to verify</a>
         `,
   };
 

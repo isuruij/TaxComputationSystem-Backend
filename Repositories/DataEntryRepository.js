@@ -14,7 +14,10 @@ const {
   terminalBenefits,
   capitalValueGain,
   whtWhichIsNotDeducted,
+  SecondAdmin,
+  SuperAdmin
 } = require("../models");
+const bcrypt = require("bcrypt");
 
 //get username and is verified details to dataentry dashboard
 module.exports.getusernames = async () => {
@@ -47,7 +50,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           employmentIncome: dataObject.amount[0],
           eI_Note: dataObject.note[0],
           taxpayerId: id,
-          eI_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it
@@ -72,7 +75,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           businessIncome: dataObject.amount[1],
           bI_Note: dataObject.note[1],
           taxpayerId: id,
-          bI_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -97,7 +100,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           investmentIncome: dataObject.amount[2],
           iI_Note: dataObject.note[2],
           taxpayerId: id,
-          iI_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -125,7 +128,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           otherIncome: dataObject.amount[3],
           oI_Note: dataObject.note[3],
           taxpayerId: id,
-          oI_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -150,7 +153,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           reliefForRentIncome: dataObject.amount[4],
           rRI_Note: dataObject.note[4],
           taxpayerId: id,
-          rRI_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -181,7 +184,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           reliefForExpenditure: dataObject.amount[5],
           rE_Note: dataObject.note[5],
           taxpayerId: id,
-          rE_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -212,7 +215,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           qualifyingPayments: dataObject.amount[5],
           qP_Note: dataObject.note[5],
           taxpayerId: id,
-          qP_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -240,7 +243,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           apit: dataObject.amount[7],
           aPIT_Note: dataObject.note[7],
           taxpayerId: id,
-          aPIT_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -265,7 +268,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           whtOnInvestmentIncome: dataObject.amount[8],
           wHT_II_Note: dataObject.note[8],
           taxpayerId: id,
-          wHT_II_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -291,7 +294,7 @@ module.exports.postTaxDetails = async (dataObject) => {
             whtOnServiceFeeReceived: dataObject.amount[9],
             wHT_SFR_Note: dataObject.note[9],
             taxpayerId: id,
-            wHT_SFR_docname: "",
+            docname: "",
           },
         });
       // If the row was not created (already existed), update it using update()
@@ -323,7 +326,7 @@ module.exports.postTaxDetails = async (dataObject) => {
             selfAssessmentPayment: dataObject.amount[10],
             sAP_Note: dataObject.note[10],
             taxpayerId: id,
-            sAP_docname: "",
+            docname: "",
           },
         }
       );
@@ -355,7 +358,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           terminalBenefits: dataObject.amount[11],
           tB_Note: dataObject.note[11],
           taxpayerId: id,
-          tB_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -383,7 +386,7 @@ module.exports.postTaxDetails = async (dataObject) => {
           capitalValueGain: dataObject.amount[12],
           cVnG_Note: dataObject.note[12],
           taxpayerId: id,
-          cVnG_docname: "",
+          docname: "",
         },
       });
       // If the row was not created (already existed), update it using update()
@@ -412,7 +415,7 @@ module.exports.postTaxDetails = async (dataObject) => {
             whtWhichIsNotDeducted: dataObject.amount[13],
             wHT_WND_Note: dataObject.note[13],
             taxpayerId: id,
-            wHT_WND_docname: "",
+            docname: "",
           },
         }
       );
@@ -470,3 +473,455 @@ module.exports.getUserDetails = async (userId) => {
     return { status: false };
   }
 };
+
+////////////////////////////////////////////////////////////
+
+// file upload part
+module.exports.fileUpload = async (userId, files) => {
+  try {
+    //dataObject.UserId is a string and want to convert to integer to compare
+    let id = parseInt(userId, 10);
+    console.log(id, files, files[0].id, files.length);
+
+    for (let i = 0; i < files.length; i++) {
+      //01.Employment Income table
+      if (files[i].id == 1) {
+        // 1.update employment income table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] = await employmentIncome.findOrCreate({
+          where: { taxpayerId: id }, // to find the existing row
+          defaults: {
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+            taxpayerId: id,
+          },
+        });
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log("Employemnet income row updated:", existingRow1.toJSON());
+        } else {
+          console.log("Employemnet income row created:", existingRow1.toJSON());
+        }
+      }
+
+      //02.Bussiness Income table
+      if (files[i].id == 2) {
+        // 1.update business Income table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] = await businessIncome.findOrCreate({
+          where: { taxpayerId: id }, // to find the existing row
+          defaults: {
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+            taxpayerId: id,
+          },
+        });
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log("business income row updated:", existingRow1.toJSON());
+        } else {
+          console.log("business income row created:", existingRow1.toJSON());
+        }
+      }
+
+      //03.investment Income table
+      if (files[i].id == 3) {
+        // 1.update investment Income table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] = await investmentIncome.findOrCreate({
+          where: { taxpayerId: id }, // to find the existing row
+          defaults: {
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+            taxpayerId: id,
+          },
+        });
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log("investment income row updated:", existingRow1.toJSON());
+        } else {
+          console.log("investment income row created:", existingRow1.toJSON());
+        }
+      }
+
+      //04.other Income table
+      if (files[i].id == 4) {
+        // 1.update other  Income table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] = await otherIncome.findOrCreate({
+          where: { taxpayerId: id }, // to find the existing row
+          defaults: {
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+            taxpayerId: id,
+          },
+        });
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log("other income row updated:", existingRow1.toJSON());
+        } else {
+          console.log("other income row created:", existingRow1.toJSON());
+        }
+      }
+
+      //05.reliefForRentIncome table
+      if (files[i].id == 5) {
+        // 1.update reliefForRentIncome table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] = await reliefForRentIncome.findOrCreate({
+          where: { taxpayerId: id }, // to find the existing row
+          defaults: {
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+            taxpayerId: id,
+          },
+        });
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log(
+            "reliefForRentIncome row updated:",
+            existingRow1.toJSON()
+          );
+        } else {
+          console.log(
+            "reliefForRentIncome row created:",
+            existingRow1.toJSON()
+          );
+        }
+      }
+
+      //06.reliefForExpenditure table
+      if (files[i].id == 6) {
+        // 1.update reliefForExpenditure table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] = await reliefForExpenditure.findOrCreate({
+          where: { taxpayerId: id }, // to find the existing row
+          defaults: {
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+            taxpayerId: id,
+          },
+        });
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log(
+            "reliefForExpenditure row updated:",
+            existingRow1.toJSON()
+          );
+        } else {
+          console.log(
+            "reliefForExpenditure row created:",
+            existingRow1.toJSON()
+          );
+        }
+      }
+
+      //07.qualifyingPayments table
+      if (files[i].id == 7) {
+        // 1.update qualifyingPaymentse table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] = await qualifyingPayments.findOrCreate({
+          where: { taxpayerId: id }, // to find the existing row
+          defaults: {
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+            taxpayerId: id,
+          },
+        });
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log("qualifyingPayments row updated:", existingRow1.toJSON());
+        } else {
+          console.log("qualifyingPayments row created:", existingRow1.toJSON());
+        }
+      }
+
+      //08.apit table
+      if (files[i].id == 8) {
+        // 1.update apit table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] = await apit.findOrCreate({
+          where: { taxpayerId: id }, // to find the existing row
+          defaults: {
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+            taxpayerId: id,
+          },
+        });
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log("apit row updated:", existingRow1.toJSON());
+        } else {
+          console.log("apit income row created:", existingRow1.toJSON());
+        }
+      }
+
+      //09.whtOnInvestmentIncome table
+      if (files[i].id == 9) {
+        // 1.update whtOnInvestmentIncome table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] = await whtOnInvestmentIncome.findOrCreate(
+          {
+            where: { taxpayerId: id }, // to find the existing row
+            defaults: {
+              filePath: files[i].path,
+              docname: files[i].filename,
+              isnewsubmission: 1,
+              taxpayerId: id,
+            },
+          }
+        );
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log(
+            "whtOnInvestmentIncome row updated:",
+            existingRow1.toJSON()
+          );
+        } else {
+          console.log(
+            "whtOnInvestmentIncome row created:",
+            existingRow1.toJSON()
+          );
+        }
+      }
+
+      //10.whtOnServiceFeeReceived table
+      if (files[i].id == 10) {
+        // 1.update whtOnServiceFeeReceived table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] =
+          await whtOnServiceFeeReceived.findOrCreate({
+            where: { taxpayerId: id }, // to find the existing row
+            defaults: {
+              filePath: files[i].path,
+              docname: files[i].filename,
+              isnewsubmission: 1,
+              taxpayerId: id,
+            },
+          });
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log(
+            "whtOnServiceFeeReceived row updated:",
+            existingRow1.toJSON()
+          );
+        } else {
+          console.log(
+            "whtOnServiceFeeReceived row created:",
+            existingRow1.toJSON()
+          );
+        }
+      }
+
+      //11.selfAssessmentPayment table
+      if (files[i].id == 11) {
+        // 1.update selfAssessmentPayment table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] = await selfAssessmentPayment.findOrCreate(
+          {
+            where: { taxpayerId: id }, // to find the existing row
+            defaults: {
+              filePath: files[i].path,
+              docname: files[i].filename,
+              isnewsubmission: 1,
+              taxpayerId: id,
+            },
+          }
+        );
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log(
+            "selfAssessmentPayment row updated:",
+            existingRow1.toJSON()
+          );
+        } else {
+          console.log(
+            "selfAssessmentPayment row created:",
+            existingRow1.toJSON()
+          );
+        }
+      }
+
+      //12.terminalBenefits table
+      if (files[i].id == 12) {
+        // 1.update business Income table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] = await terminalBenefits.findOrCreate({
+          where: { taxpayerId: id }, // to find the existing row
+          defaults: {
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+            taxpayerId: id,
+          },
+        });
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log("terminalBenefits row updated:", existingRow1.toJSON());
+        } else {
+          console.log("terminalBenefits row created:", existingRow1.toJSON());
+        }
+      }
+
+      //13.capitalValueGain table
+      if (files[i].id == 13) {
+        // 1.update capitalValueGain table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] = await capitalValueGain.findOrCreate({
+          where: { taxpayerId: id }, // to find the existing row
+          defaults: {
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+            taxpayerId: id,
+          },
+        });
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log("capitalValueGain row updated:", existingRow1.toJSON());
+        } else {
+          console.log("capitalValueGain row created:", existingRow1.toJSON());
+        }
+      }
+
+      //14.whtWhichIsNotDeducted table
+      if (files[i].id == 14) {
+        // 1.update business Income table
+        // First, attempt to find the existing row
+        let [existingRow1, created1] = await whtWhichIsNotDeducted.findOrCreate(
+          {
+            where: { taxpayerId: id }, // to find the existing row
+            defaults: {
+              filePath: files[i].path,
+              docname: files[i].filename,
+              isnewsubmission: 1,
+              taxpayerId: id,
+            },
+          }
+        );
+        // If the row was not created (already existed), update it
+        if (!created1) {
+          existingRow1 = await existingRow1.update({
+            filePath: files[i].path,
+            docname: files[i].filename,
+            isnewsubmission: 1,
+          });
+          console.log(
+            "whtWhichIsNotDeducted row updated:",
+            existingRow1.toJSON()
+          );
+        } else {
+          console.log(
+            "whtWhichIsNotDeducted row created:",
+            existingRow1.toJSON()
+          );
+        }
+      }
+    }
+  } catch (error) {
+    throw new Error("Error saving or updating file: " + error.message);
+  }
+};
+
+
+module.exports.addSecondAdmin = async (obj) => {
+  try {
+    
+    const existingUser1 = await SecondAdmin.findOne({
+      where: { userName: obj.userName },
+    });
+    console.log("in repos")
+
+    const existingUser2 = await SuperAdmin.findOne({
+      where: { userName: obj.userName },
+    });
+    if (existingUser1 || existingUser2) {
+      return { status: false, message: "already registered user" };
+    }
+    const hashedPw = await bcrypt.hash(obj.password.toString(), 10);
+    var data = obj;
+    data.password = hashedPw;
+    data.password = obj.password;
+    const res = await SecondAdmin.create(data);
+
+    return { status: true, id: res.dataValues.id };
+  } catch (error) {
+    console.log(error.message);
+    return { status: false };
+  }
+};
+
+

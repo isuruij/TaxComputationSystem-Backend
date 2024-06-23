@@ -7,16 +7,28 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     reliefForExpenditure: {
-      type: DataTypes.DOUBLE,
-      allowNull: false,
+      type: DataTypes.FLOAT,
+      allowNull: true,
     },
-    rE_docname: {
+    docname: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+    },
+    filePath: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     rE_Note: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+    },
+    isverified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    isnewsubmission: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   });
 

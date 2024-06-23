@@ -223,36 +223,35 @@ module.exports.updatePassword = async (req, res) => {
   }
 };
 
-// thimira file upload part(Under development)
-module.exports.fileUpload = async (req, res, next) => {
+// thimira file upload
+module.exports.fileUpload = async (req, res) => {
   try {
-    console.log("this is controller");
-    const userId = req.params.id;
+    const userId = req.params.userId;
     const files = req.files;
+    const ids = req.body.fileIds;
 
-    console.log(userId);
-    console.log(files);
+    // Check if no files were uploaded
+    if (!files || files.length === 0) {
+      return res.status(400).json({ Status: "No files selected" });
+    }
 
-    const filesArray = [];
-    files.forEach((file) => {
-      // Extract file information and add it to filesArray
-      const fileInfo = {
-        filename: file.filename,
-        mimetype: file.mimetype,
-        path: file.path,
-        size: file.size,
-      };
-      filesArray.push(fileInfo);
-    });
-    console.log("Uploaded files:");
-    console.log(filesArray);
+    // Ensure ids is an array even if there's only one ID
+    const idsArray = Array.isArray(ids) ? ids : [ids];
 
-    await TaxpayerService.fileUpload(userId, filesArray);
+    // Combine files and their respective IDs
+    const fileData = files.map((file, index) => ({
+      ...file,
+      id: idsArray[index],
+    }));
 
-    res.status(200).json({ message: "Files uploaded successfully" });
+    // Call the service to handle the file data
+    await TaxpayerService.fileUpload(userId, fileData);
+
+    // Respond to the client
+    return res.json({ Status: "Files uploaded successfully!" });
   } catch (error) {
-    console.error("Error uploading files:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error(error);
+    return res.status(500).json({ error: "Error uploading files" });
   }
 };
 
@@ -270,5 +269,43 @@ module.exports.getUserDetails = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+//get tax calculations(under development)
+module.exports.getTaxCalDetails = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+
+    const result = await TaxpayerService.getTaxCalDetails(id);
+    if (result.status) {
+      return res.json({ Status: "Success", Data: result.data });
+    } else {
+      return res.status(400).json({ Status: "NotSuccess" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+module.exports.getNotifications = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const result = await TaxpayerService.getNotifications(req.params.id);
+
+    console.log(result);
+    return res.status(200).json(result);
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+module.exports.updateNotificationStatus = async (req, res) => {
+  try {
+    const result = await TaxpayerService.updateNotificationStatus(req.body.id);
+    return res.status(200).json(result);
+  } catch (error) {
+    return { status: false };
   }
 };
