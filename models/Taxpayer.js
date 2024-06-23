@@ -102,7 +102,7 @@ module.exports = (sequelize, DataTypes) => {
     Taxpayer.hasMany(models.totalTax, {
       foreignKey: "taxpayerId",
     });
-    Taxpayer.hasMany(models.sumOfCat, {
+    Taxpayer.hasOne(models.sumOfCat, {
       foreignKey: "taxpayerId",
     });
   };
