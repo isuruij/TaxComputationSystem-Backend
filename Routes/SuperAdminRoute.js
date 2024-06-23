@@ -22,6 +22,8 @@ router.get("/getBusinessIncome/",SuperAdminController.getBusinessIncome);
 router.delete("/deletetaxpayers/:id", SuperAdminController.deleteTaxpayer);
 router.put("/updateUserApprovalStatus", SuperAdminController.toggleApproval);
 
+router.get("/fetchTaxpayer/:userId", SuperAdminController.fetchTaxpayer)
+
 //get income details
 router.get('/getbusinessincome/:taxpayerId', SuperAdminController.getBusinessIncomeByTaxpayerId);
 router.get('/getemployeeincome/:taxpayerId', SuperAdminController.getEmployeeIncomeByTaxpayerId);

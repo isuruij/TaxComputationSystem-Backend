@@ -116,10 +116,10 @@ module.exports.getTaxpayers = async () => {
   }
 };
 
-module.exports.deleteTaxpayer = async (taxpayerId) => {
+module.exports.fetchTaxpayer = async (userId) => {
   try {
-    await SuperAdminRepository.deleteTaxpayer(taxpayerId);
-    return { message: 'Taxpayer deleted successfully' };
+    const taxpayerName = await  SuperAdminRepository.fetchTaxpayer(userId);
+    return taxpayerName;
   } catch (error) {
     throw new Error(`Error while deleting taxpayer: ${error.message}`);
   }
@@ -133,6 +133,10 @@ module.exports.toggleApproval = async (taxpayerId,value) => {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
 };
+
+
+
+
 
 //submissionlist
 module.exports.getBusinessIncome = async (req, res) => {

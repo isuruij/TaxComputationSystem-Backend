@@ -189,6 +189,19 @@ module.exports.toggleApproval = async (taxpayerId, value) => {
   }
 };
 
+module.exports.fetchTaxpayer = async (userId) => {
+  try {
+    const existTaxpayer = await Taxpayer.findOne({ where: { id: userId } });
+    if (existTaxpayer) {
+      return existTaxpayer.name;
+    } else {
+      throw new Error('Taxpayer not found');
+    }
+  } catch (error) {
+    throw new Error(`Error while fetching taxpayer: ${error.message}`);
+  }
+};
+
 
 //submissionList
 

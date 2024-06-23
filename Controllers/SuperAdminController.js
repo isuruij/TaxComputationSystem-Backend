@@ -144,6 +144,16 @@ module.exports.toggleApproval = async (req, res) => {
   }
 };
 
+module.exports.fetchTaxpayer = async (req, res) => {
+  try {
+    const taxpayerName = await SuperAdminService.fetchTaxpayer(req.params.userId);
+    return res.json(taxpayerName);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 //SubmissionList
 module.exports.getBusinessIncome = async (req, res) => {
   try {
