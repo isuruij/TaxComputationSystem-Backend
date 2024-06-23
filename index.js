@@ -39,7 +39,6 @@ app.use("/api/SuperAdmin", SuperAdminRoutes);
  
 db.sequelize.sync({force:true}).then(() => { 
   app.listen(3000, () => {
-    console.log("Server running on port 3000"); 
+    console.log("Server running on port 3000");
   });
-}); 
- 
+});

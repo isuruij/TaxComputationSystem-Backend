@@ -26,6 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     
   });
 
+  
+
   const insertInitialData = async () => {
     const count = await Policies.count();
     if (count === 0) {

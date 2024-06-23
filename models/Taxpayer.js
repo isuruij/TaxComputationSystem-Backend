@@ -99,6 +99,12 @@ module.exports = (sequelize, DataTypes) => {
     Taxpayer.hasMany(models.whtWhichIsNotDeducted, {
       foreignKey: "taxpayerId",
     });
+    Taxpayer.hasMany(models.totalTax, {
+      foreignKey: "taxpayerId",
+    });
+    Taxpayer.hasOne(models.sumOfCat, {
+      foreignKey: "taxpayerId",
+    });
   };
 
   return Taxpayer;

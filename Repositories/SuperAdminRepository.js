@@ -577,20 +577,7 @@ module.exports.deletePolicy = async (data) => {
 };
 
 
-module.exports.optionalpolicy = async () => {
-  try {
-    // Query the database for records matching the given parameters
-    const types = await Policies.findAll({
-      where: {
-        optional: true,
-      },
-    });
-    return { status: true, data: types };
-  } catch (error) {
-    console.error(`Error in repository: ${error.message}`);
-    return { status: false, message: error.message };
-  }
-};
+
 
 module.exports.policy = async () => {
   try {
