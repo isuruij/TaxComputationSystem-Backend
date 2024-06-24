@@ -30,6 +30,9 @@ router.get("/getusersubmission", DataEntryController.getUserSubmission);
 //Get user name and tin number
 router.get("/getUserDetails/:id", DataEntryController.getUserDetails);
 
+//under development
+router.get("/getTaxCalDetails/:id", DataEntryController.getTaxCalDetails);
+
 //Upload files into database
 router.post(
   "/fileUpload/:userId",

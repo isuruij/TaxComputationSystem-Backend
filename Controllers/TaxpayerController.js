@@ -259,7 +259,6 @@ module.exports.fileUpload = async (req, res) => {
 module.exports.getUserDetails = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
 
     const result = await TaxpayerService.getUserDetails(id);
     if (result.status) {
@@ -276,11 +275,13 @@ module.exports.getUserDetails = async (req, res) => {
 module.exports.getTaxCalDetails = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
-
     const result = await TaxpayerService.getTaxCalDetails(id);
     if (result.status) {
-      return res.json({ Status: "Success", Data: result.data });
+      return res.json({
+        Status: "Success",
+        Data: result.data,
+        Data2: result.data2,
+      });
     } else {
       return res.status(400).json({ Status: "NotSuccess" });
     }
@@ -294,7 +295,7 @@ module.exports.getNotifications = async (req, res) => {
     console.log(req.params.id);
     const result = await TaxpayerService.getNotifications(req.params.id);
 
-    console.log(result);
+    // console.log(result.data);
     return res.status(200).json(result);
   } catch (error) {
     return { status: false };

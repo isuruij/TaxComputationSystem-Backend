@@ -851,14 +851,35 @@ module.exports.getUserDetails = async (userId) => {
 //thimira get tax calculations(under development)
 module.exports.getTaxCalDetails = async (userId) => {
   try {
-    const result = await Taxpayer.findOne({
-      attributes: ["name", "tin"],
-      where: { id: userId },
+    const result = await totalTax.findOne({
+      attributes: [
+        "taxableAmount",
+        "taxableAmount2",
+        "incomeTax",
+        "incomeTax2",
+        "TerminalTax",
+        "CapitalTax",
+        "WHTNotDeductTax",
+        "createdAt",
+      ],
+      where: { taxpayerId: userId },
     });
-    if (!result) {
+    const result2 = await sumOfCat.findOne({
+      attributes: [
+        "TotAssessableIncome",
+        "TotAssessableIncome2",
+        "Reliefs",
+        "Reliefs2",
+        "Choosed_QP",
+        "TaxCredit",
+        "TaxCredit2",
+      ],
+      where: { taxpayerId: userId },
+    });
+    if (!result || !result2) {
       return { status: false };
     }
-    return { status: true, data: result };
+    return { status: true, data: result, data2: result2 };
   } catch (error) {
     return { status: false };
   }

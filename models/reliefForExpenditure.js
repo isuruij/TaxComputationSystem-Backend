@@ -85,6 +85,17 @@ module.exports = (sequelize, DataTypes) => {
               }
             );
           }
+          // Trigger the beforeUpdate hook on sumOfCat model
+          const sumOfCatInstance = await sumOfCat.findOne({
+            where: { taxpayerId: record.taxpayerId },
+            transaction: options.transaction,
+          });
+          if (sumOfCatInstance) {
+            await sumOfCatInstance.update(
+              {},
+              { transaction: options.transaction }
+            );
+          }
         },
         afterCreate: async (record, options) => {
           if (!record.reliefForExpenditure) {
@@ -113,6 +124,17 @@ module.exports = (sequelize, DataTypes) => {
                 where: { taxpayerId: record.taxpayerId },
                 transaction: options.transaction,
               }
+            );
+          }
+          // Trigger the beforeUpdate hook on sumOfCat model
+          const sumOfCatInstance = await sumOfCat.findOne({
+            where: { taxpayerId: record.taxpayerId },
+            transaction: options.transaction,
+          });
+          if (sumOfCatInstance) {
+            await sumOfCatInstance.update(
+              {},
+              { transaction: options.transaction }
             );
           }
         },
@@ -145,6 +167,17 @@ module.exports = (sequelize, DataTypes) => {
                 where: { taxpayerId: record.taxpayerId },
                 transaction: options.transaction,
               }
+            );
+          }
+          // Trigger the beforeUpdate hook on sumOfCat model
+          const sumOfCatInstance = await sumOfCat.findOne({
+            where: { taxpayerId: record.taxpayerId },
+            transaction: options.transaction,
+          });
+          if (sumOfCatInstance) {
+            await sumOfCatInstance.update(
+              {},
+              { transaction: options.transaction }
             );
           }
         },

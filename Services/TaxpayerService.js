@@ -174,7 +174,7 @@ module.exports.getTaxCalDetails = async (userId) => {
     const values = await TaxpayerRepository.getTaxCalDetails(userId);
 
     if (values.status) {
-      return { status: true, data: values.data };
+      return { status: true, data: values.data, data2: values.data2 };
     } else {
       return { status: false };
     }
