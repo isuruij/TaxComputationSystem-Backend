@@ -1,3 +1,4 @@
+const { json } = require("body-parser");
 const TaxpayerService = require("../Services/TaxpayerService");
 const { Taxpayer } = require("../models");
 
@@ -271,7 +272,7 @@ module.exports.getUserDetails = async (req, res) => {
   }
 };
 
-//get tax calculations(under development)
+//get tax calculations
 module.exports.getTaxCalDetails = async (req, res) => {
   try {
     const id = req.params.id;
@@ -287,6 +288,26 @@ module.exports.getTaxCalDetails = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+//generate Tax Report
+module.exports.generateTaxReport = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await TaxpayerService.generateTaxReport(id);
+
+    if (result.status) {
+      // res.download(result.filePath);
+      return res.json({
+        Status: "Successfully Generated",
+        Data: result.filePath,
+      });
+    } else {
+      return res.status(400).json({ Status: result.msg });
+    }
+  } catch (error) {
+    res.status(500).send("Error generating tax report");
   }
 };
 

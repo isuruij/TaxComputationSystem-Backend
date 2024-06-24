@@ -183,6 +183,24 @@ module.exports.getTaxCalDetails = async (userId) => {
   }
 };
 
+//generate tax report
+module.exports.generateTaxReport = async (userId) => {
+  try {
+    if (!userId) {
+      return { status: false };
+    }
+    const values = await TaxpayerRepository.generateTaxReport(userId);
+
+    if (values.status) {
+      return { status: true, filePath: values.filePath };
+    } else {
+      return { status: false, msg: values.msg };
+    }
+  } catch (error) {
+    return { status: false, msg: "Error generateTaxReport in service" };
+  }
+};
+
 module.exports.getNotifications = async (id) => {
   try {
     const created = await TaxpayerRepository.getNotifications(id);
