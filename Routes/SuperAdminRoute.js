@@ -70,6 +70,10 @@ router.post('/createPolicy',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminC
 
 router.get("/authtsuperAdmin", JwtService.authtsuperAdmin, SuperAdminController.authtsuperAdmin);
 
+router.get('/getadminlist',SuperAdminController.getadminlist);
+
+router.delete('/deleteAdmin/:adminId/:isSuperAdmin',SuperAdminController.deleteAdmin);
+
 
  
 
