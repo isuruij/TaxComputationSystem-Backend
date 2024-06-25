@@ -20,7 +20,6 @@ module.exports.addSuperAdmin = async (req, res) => {
     const result = await SuperAdminService.addSuperAdmin(req.body);
 
     if (result.status) {
-      res.cookie("token", result.token);
       return res.json({ Status: "Success" });
     } else if (result.message == "already registered user") {
       return res.json({ status: false, message: "already registered user" });

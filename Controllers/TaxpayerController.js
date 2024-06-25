@@ -1,3 +1,4 @@
+const { json } = require("body-parser");
 const TaxpayerService = require("../Services/TaxpayerService");
 const { Taxpayer } = require("../models");
 
@@ -230,6 +231,11 @@ module.exports.fileUpload = async (req, res) => {
     const files = req.files;
     const ids = req.body.fileIds;
 
+    // Check if no files were uploaded
+    if (!files || files.length === 0) {
+      return res.status(400).json({ Status: "No files selected" });
+    }
+
     // Ensure ids is an array even if there's only one ID
     const idsArray = Array.isArray(ids) ? ids : [ids];
 
@@ -243,10 +249,10 @@ module.exports.fileUpload = async (req, res) => {
     await TaxpayerService.fileUpload(userId, fileData);
 
     // Respond to the client
-    res.send("Files uploaded successfully!");
+    return res.json({ Status: "Files uploaded successfully!" });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error uploading files");
+    return res.status(500).json({ error: "Error uploading files" });
   }
 };
 
@@ -254,7 +260,6 @@ module.exports.fileUpload = async (req, res) => {
 module.exports.getUserDetails = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
 
     const result = await TaxpayerService.getUserDetails(id);
     if (result.status) {
@@ -267,28 +272,61 @@ module.exports.getUserDetails = async (req, res) => {
   }
 };
 
+//get tax calculations
+module.exports.getTaxCalDetails = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await TaxpayerService.getTaxCalDetails(id);
+    if (result.status) {
+      return res.json({
+        Status: "Success",
+        Data: result.data,
+        Data2: result.data2,
+      });
+    } else {
+      return res.status(400).json({ Status: "NotSuccess" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+//generate Tax Report
+module.exports.generateTaxReport = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await TaxpayerService.generateTaxReport(id);
+
+    if (result.status) {
+      // res.download(result.filePath);
+      return res.json({
+        Status: "Successfully Generated",
+        Data: result.filePath,
+      });
+    } else {
+      return res.status(400).json({ Status: result.msg });
+    }
+  } catch (error) {
+    res.status(500).send("Error generating tax report");
+  }
+};
 
 module.exports.getNotifications = async (req, res) => {
   try {
-    
     console.log(req.params.id);
     const result = await TaxpayerService.getNotifications(req.params.id);
-    
-    console.log(result);
-    return res.status(200).json(result);
 
+    // console.log(result.data);
+    return res.status(200).json(result);
   } catch (error) {
     return { status: false };
   }
 };
 
-
 module.exports.updateNotificationStatus = async (req, res) => {
   try {
-    
     const result = await TaxpayerService.updateNotificationStatus(req.body.id);
     return res.status(200).json(result);
-
   } catch (error) {
     return { status: false };
   }

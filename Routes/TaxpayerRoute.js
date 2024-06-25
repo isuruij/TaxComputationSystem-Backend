@@ -84,8 +84,17 @@ router.post(
 
 router.get("/getUserDetails/:id", TaxpayerController.getUserDetails);
 
-router.get('/getNotifications/:id',TaxpayerController.getNotifications);
+//Get tax details for view
+router.get("/getTaxCalDetails/:id", TaxpayerController.getTaxCalDetails);
 
-router.patch('/updateNotificationStatus',TaxpayerController.updateNotificationStatus);
+//Generate tax report
+router.get("/generate-report/:id", TaxpayerController.generateTaxReport);
+
+router.get("/getNotifications/:id", TaxpayerController.getNotifications);
+
+router.patch(
+  "/updateNotificationStatus",
+  TaxpayerController.updateNotificationStatus
+);
 
 module.exports = router;

@@ -165,14 +165,46 @@ module.exports.getUserDetails = async (userId) => {
   }
 };
 
+//get tax calculations(under development)
+module.exports.getTaxCalDetails = async (userId) => {
+  try {
+    if (!userId) {
+      return { status: false };
+    }
+    const values = await TaxpayerRepository.getTaxCalDetails(userId);
+
+    if (values.status) {
+      return { status: true, data: values.data, data2: values.data2 };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+//generate tax report
+module.exports.generateTaxReport = async (userId) => {
+  try {
+    if (!userId) {
+      return { status: false };
+    }
+    const values = await TaxpayerRepository.generateTaxReport(userId);
+
+    if (values.status) {
+      return { status: true, filePath: values.filePath };
+    } else {
+      return { status: false, msg: values.msg };
+    }
+  } catch (error) {
+    return { status: false, msg: "Error generateTaxReport in service" };
+  }
+};
 
 module.exports.getNotifications = async (id) => {
   try {
-    
     const created = await TaxpayerRepository.getNotifications(id);
     return created;
-    
-
   } catch (error) {
     return { status: false, message: error.message };
   }
@@ -180,11 +212,8 @@ module.exports.getNotifications = async (id) => {
 
 module.exports.updateNotificationStatus = async (id) => {
   try {
-    
     const created = await TaxpayerRepository.updateNotificationStatus(id);
     return created;
-    
-
   } catch (error) {
     return { status: false, message: error.message };
   }

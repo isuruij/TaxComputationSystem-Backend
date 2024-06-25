@@ -16,11 +16,17 @@ const {
   capitalValueGain,
   whtWhichIsNotDeducted,
   Notification,
+  sumOfCat,
+  totalTax,
+  TaxSummaryReport,
 } = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const sendMail = require("../utils/sendMail");
 const sendVerificationMail = require("../utils/sendVerificationMail");
+const { where } = require("sequelize");
+const { sequelize, DataTypes } = require("../models/index");
+const { generateTaxReport } = require("../Services/pdfService");
 
 //register taxpayer
 module.exports.addTaxpayer = async (obj) => {
@@ -42,21 +48,57 @@ module.exports.addTaxpayer = async (obj) => {
     // add intial values to income tables
     await businessIncome.create({
       businessIncome: "0",
+      businessIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
     await employmentIncome.create({
       employmentIncome: "0",
+      employmentIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
     await investmentIncome.create({
       investmentIncome: "0",
+      investmentIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
     await otherIncome.create({
       otherIncome: "0",
+      otherIncome2: "0",
+      taxpayerId: res.dataValues.id,
+    });
+    await reliefForRentIncome.create({
+      reliefForRentIncome: "0",
+      reliefForRentIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
 
+    await sumOfCat.create({
+      TotAssessableIncome: "0",
+      TotAssessableIncome2: "0",
+      Reliefs: 2250000.0,
+      Reliefs2: 300000.0,
+      QP: "0",
+      Choosed_QP: "0",
+      TaxCredit: "0",
+      TaxCredit2: "0",
+      terminal: "0",
+      capitalGain: "0",
+      WHT: "0",
+      taxpayerId: res.dataValues.id,
+    });
+
+    await totalTax.create({
+      taxableAmount: "0",
+      taxableAmount2: "0",
+      incomeTax: "0",
+      incomeTax2: "0",
+      TerminalTax: "0",
+      CapitalTax: "0",
+      WHTNotDeductTax: "0",
+      taxpayerId: res.dataValues.id,
+    });
+
+    console.log("logged in");
     sendMail(data.name, data.email, data.emailToken);
     return { status: true, id: res.dataValues.id };
   } catch (error) {
@@ -251,22 +293,38 @@ module.exports.getuserincomedetails = async (id) => {
 
 module.exports.updateincomedetails = async (obj) => {
   try {
-    await businessIncome.update(
-      { businessIncome: obj.businessIncome },
-      { where: { taxpayerId: obj.id } }
-    );
-    await employmentIncome.update(
-      { employmentIncome: obj.employmentIncome },
-      { where: { taxpayerId: obj.id } }
-    );
-    await investmentIncome.update(
-      { investmentIncome: obj.investmentIncome },
-      { where: { taxpayerId: obj.id } }
-    );
-    await otherIncome.update(
-      { otherIncome: obj.otherIncome },
-      { where: { taxpayerId: obj.id } }
-    );
+    const bussinessrow = await businessIncome.findOne({
+      where: { taxpayerId: obj.id },
+    });
+    if (bussinessrow) {
+      await bussinessrow.update({ businessIncome: obj.businessIncome });
+    }
+
+    const employmentIncomerow = await employmentIncome.findOne({
+      where: { taxpayerId: obj.id },
+    });
+    if (employmentIncomerow) {
+      await employmentIncomerow.update({
+        employmentIncome: obj.employmentIncome,
+      });
+    }
+
+    const investmentIncomerow = await investmentIncome.findOne({
+      where: { taxpayerId: obj.id },
+    });
+    if (investmentIncomerow) {
+      await investmentIncomerow.update({
+        investmentIncome: obj.investmentIncome,
+      });
+    }
+
+    const otherIncomerow = await otherIncome.findOne({
+      where: { taxpayerId: obj.id },
+    });
+    if (investmentIncomerow) {
+      await otherIncomerow.update({ otherIncome: obj.otherIncome });
+    }
+
     return { status: true };
   } catch (error) {
     return { status: false };
@@ -355,6 +413,13 @@ module.exports.fileUpload = async (userId, files) => {
     //dataObject.UserId is a string and want to convert to integer to compare
     let id = parseInt(userId, 10);
     console.log(id, files, files[0].id, files.length);
+
+    //Update number of submissions in taxpayer table
+    const numSub = files.length;
+    const row = await Taxpayer.update(
+      { numOfSubmissions: sequelize.literal(`numOfSubmissions + ${numSub}`) },
+      { where: { id: id } }
+    );
 
     for (let i = 0; i < files.length; i++) {
       //01.Employment Income table
@@ -785,6 +850,100 @@ module.exports.getUserDetails = async (userId) => {
   }
 };
 
+//thimira get tax calculations(under development)
+module.exports.getTaxCalDetails = async (userId) => {
+  try {
+    const result = await totalTax.findOne({
+      attributes: [
+        "taxableAmount",
+        "taxableAmount2",
+        "incomeTax",
+        "incomeTax2",
+        "TerminalTax",
+        "CapitalTax",
+        "WHTNotDeductTax",
+        "createdAt",
+      ],
+      where: { taxpayerId: userId },
+    });
+    const result2 = await sumOfCat.findOne({
+      attributes: [
+        "TotAssessableIncome",
+        "TotAssessableIncome2",
+        "Reliefs",
+        "Reliefs2",
+        "Choosed_QP",
+        "TaxCredit",
+        "TaxCredit2",
+      ],
+      where: { taxpayerId: userId },
+    });
+    if (!result || !result2) {
+      return { status: false };
+    }
+    return { status: true, data: result, data2: result2 };
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+//generate tax report
+module.exports.generateTaxReport = async (userId) => {
+  try {
+    const SumOfCat = await sumOfCat.findOne({ where: { taxpayerId: userId } });
+    const taxpayer = await Taxpayer.findByPk(userId);
+    const TotalTax = await totalTax.findOne({ where: { taxpayerId: userId } });
+    const amount1 = await employmentIncome.findOne({
+      where: { taxpayerId: userId },
+    });
+    const amount2 = await businessIncome.findOne({
+      where: { taxpayerId: userId },
+    });
+    const amount3 = await investmentIncome.findOne({
+      where: { taxpayerId: userId },
+    });
+    const amount4 = await reliefForRentIncome.findOne({
+      where: { taxpayerId: userId },
+    });
+    const amount5 = await otherIncome.findOne({
+      where: { taxpayerId: userId },
+    });
+    const Amounts = [amount1, amount2, amount3, amount4, amount5];
+    if (!taxpayer || !SumOfCat || !TotalTax) {
+      return { status: false, msg: "Taxpayer or related data not found" };
+    }
+    const result = await generateTaxReport(
+      taxpayer,
+      SumOfCat,
+      TotalTax,
+      Amounts
+    );
+
+    //update taxSummary report table
+    const [taxSummaryReport, created] = await TaxSummaryReport.findOrCreate({
+      where: { taxpayerId: userId },
+      defaults: {
+        path: result,
+        isVerified: false,
+        taxpayerId: userId,
+      },
+    });
+    if (!created) {
+      await taxSummaryReport.update({
+        path: result,
+        isVerified: false,
+      });
+      console.log(`Tax summary report updated for taxpayerId: ${userId}`);
+    } else {
+      // New record was created
+      console.log(`New tax summary report created for taxpayerId: ${userId}`);
+    }
+    console.log(result);
+    return { status: true, filePath: result };
+  } catch (error) {
+    return { status: false, msg: "Error generating PDF in repo" };
+  }
+};
 
 module.exports.getNotifications = async (id) => {
   try {
@@ -798,7 +957,7 @@ module.exports.getNotifications = async (id) => {
       return {
         message: notification.dataValues.message,
         isViewed: notification.dataValues.isViewed,
-        id:notification.dataValues.notificationId
+        id: notification.dataValues.notificationId,
       };
     });
 
@@ -814,22 +973,20 @@ module.exports.getNotifications = async (id) => {
     //   { isViewed: false },
     //   { where: { taxpayerId: id } }
     // );
-    return { status: true, data: messages,count:unviewedCount };
+    return { status: true, data: messages, count: unviewedCount };
   } catch (error) {
     console.error(`Error fetching notifications: ${error}`);
     return { status: false };
   }
 };
 
-
 module.exports.updateNotificationStatus = async (id) => {
   try {
-
     await Notification.update(
       { isViewed: true },
       { where: { notificationId: id } }
     );
-    return { status: true};
+    return { status: true };
   } catch (error) {
     console.error(`Error: ${error}`);
     return { status: false };

@@ -28,7 +28,7 @@ module.exports.postTaxDetails = async (req, res) => {
     const result = await DataEntryService.postTaxDetails(req.body);
     if (result.status) {
       console.log(result.status);
-      return res.json({ Status: "Success" });
+      return res.json({ Status: "Data uploaded Successfully" });
     } else {
       console.log(result.message);
       return res.json({ Status: "Failed", Message: result.message });
@@ -69,6 +69,25 @@ module.exports.getUserDetails = async (req, res) => {
       return res.status(400).json({ Status: "NotSuccess" });
     }
   } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+//get tax calculations(under development)
+module.exports.getTaxCalDetails = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await DataEntryService.getTaxCalDetails(id);
+    if (result.status) {
+      return res.json({
+        Status: "Success",
+        Data: result.data,
+        Data2: result.data2,
+      });
+    } else {
+      return res.status(400).json({ Status: "NotSuccess" });
+    }
+  } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -79,6 +98,11 @@ module.exports.fileUpload = async (req, res) => {
     const userId = req.params.userId;
     const files = req.files;
     const ids = req.body.fileIds;
+
+    // Check if no files were uploaded
+    if (!files || files.length === 0) {
+      return res.status(400).json({ Status: "No files selected" });
+    }
 
     // Ensure ids is an array even if there's only one ID
     const idsArray = Array.isArray(ids) ? ids : [ids];
@@ -93,9 +117,9 @@ module.exports.fileUpload = async (req, res) => {
     await DataEntryService.fileUpload(userId, fileData);
 
     // Respond to the client
-    res.send("Files uploaded successfully!");
+    return res.json({ Status: "Files uploaded successfully!" });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error uploading files");
+    return res.status(500).json({ error: "Error uploading files" });
   }
 };
