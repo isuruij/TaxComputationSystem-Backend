@@ -85,20 +85,15 @@ module.exports = (sequelize, DataTypes) => {
     Taxpayer.hasMany(models.qualifyingPayments, { foreignKey: "taxpayerId" });
     Taxpayer.hasMany(models.reliefForExpenditure, { foreignKey: "taxpayerId" });
     Taxpayer.hasMany(models.reliefForRentIncome, { foreignKey: "taxpayerId" });
-    Taxpayer.hasMany(models.selfAssessmentPayment, {
-      foreignKey: "taxpayerId",
-    });
+    Taxpayer.hasMany(models.selfAssessmentPayment, {foreignKey: "taxpayerId",});
     Taxpayer.hasMany(models.TaxSummaryReport, { foreignKey: "taxpayerId" });
     Taxpayer.hasMany(models.terminalBenefits, { foreignKey: "taxpayerId" });
-    Taxpayer.hasMany(models.whtOnInvestmentIncome, {
-      foreignKey: "taxpayerId",
-    });
-    Taxpayer.hasMany(models.whtOnServiceFeeReceived, {
-      foreignKey: "taxpayerId",
-    });
-    Taxpayer.hasMany(models.whtWhichIsNotDeducted, {
-      foreignKey: "taxpayerId",
-    });
+    Taxpayer.hasMany(models.whtOnInvestmentIncome, {foreignKey: "taxpayerId",});
+    Taxpayer.hasMany(models.whtOnServiceFeeReceived, {foreignKey: "taxpayerId", });
+    Taxpayer.hasMany(models.whtWhichIsNotDeducted, {foreignKey: "taxpayerId",});
+    Taxpayer.hasMany(models.EmailInbox, {foreignKey: 'taxpayerId',as: 'EmailInboxes'});
+    Taxpayer.hasMany(models.EmailSent, {foreignKey: 'taxpayerId',as: 'EmailSents'});
+
   };
 
   return Taxpayer;

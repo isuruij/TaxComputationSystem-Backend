@@ -802,3 +802,76 @@ module.exports.updateSubmissionStatusSelfAssessmentPayment = async (incomeId) =>
     throw new Error(`Error while approving Self Assessment Payment: ${error.message}`);
   }
 };
+
+
+//mailbox
+const { EmailInbox } = require('../models');
+
+module.exports.getinboxMail = async () => {
+  try {
+    const inboxMail = await EmailInbox.findAll({
+      include: [{
+        model: Taxpayer, // Assumes Taxpayer is already associated in the EmailInbox model
+        as: 'Taxpayer',
+        attributes: ['name', 'email', 'id'], // Specify the fields you want to include from the Taxpayer table
+      }]
+    });
+
+    console.log(inboxMail);
+    return inboxMail;
+  } catch (error) {
+    throw new Error(`Error while fetching inboxMail: ${error.message}`);
+  }
+};
+
+
+module.exports.deletetInboxmail = async (emailId) => {
+  try {
+    //check wether taxpayerid exsits
+    const existEmail =  await EmailInbox.findOne({where: {emailId: emailId}});
+    if(existEmail){
+        await EmailInbox.destroy({where: {emailId: emailId}});
+    }else{
+        return {message: "email do not found" };  
+    }
+    
+  } catch (error) {
+    throw new Error(`Error while deleting email: ${error.message}`);
+  }
+};
+
+
+const { EmailSent } = require('../models');
+
+module.exports.getSentMail = async () => {
+  try {
+    const SentMail = await EmailSent.findAll({
+      include: [{
+        model: Taxpayer, // Assumes Taxpayer is already associated in the EmailInbox model
+        as: 'Taxpayer',
+        attributes: ['name', 'email', 'id'], // Specify the fields you want to include from the Taxpayer table
+      }]
+    });
+
+    console.log(SentMail);
+    return SentMail;
+  } catch (error) {
+    throw new Error(`Error while fetching inboxMail: ${error.message}`);
+  }
+};
+
+
+module.exports.deleteSentMail = async (emailId) => {
+  try {
+    //check wether taxpayerid exsits
+    const existEmail =  await EmailInbox.findOne({where: {emailId: emailId}});
+    if(existEmail){
+        await EmailSent.destroy({where: {emailId: emailId}});
+    }else{
+        return {message: "email do not found" };  
+    }
+    
+  } catch (error) {
+    throw new Error(`Error while deleting email: ${error.message}`);
+  }
+};
