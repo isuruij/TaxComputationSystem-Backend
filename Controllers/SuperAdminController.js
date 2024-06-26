@@ -163,6 +163,25 @@ module.exports.updateNoOfSubmissions = async (req, res) => {
 };
 
 
+module.exports.downloadDocument = async (req, res) => {
+  try {
+    
+    const file = await SuperAdminService.downloadDocument(req.params.docname);
+
+    // Setting headers to inform the browser about the file type and prompt a download with the original filename
+    res.set({
+      'Content-Type': file.contentType,
+      'Content-Disposition': `attachment; filename=${file.fileName}`
+    });
+
+    res.send(file.content);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
 //SubmissionList
 module.exports.getBusinessIncome = async (req, res) => {
   try {

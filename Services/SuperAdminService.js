@@ -124,6 +124,15 @@ module.exports.fetchTaxpayer = async (userId) => {
     throw new Error(`Error while geting taxpayer: ${error.message}`);
   }
 };
+
+module.exports.toggleApproval = async (taxpayerId,value) => {
+  try {
+    await SuperAdminRepository.toggleApproval(taxpayerId,value);
+    return { message: 'Approval status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling approval status: ${error.message}`);
+  }
+};
 module.exports.updateNoOfSubmissions = async (userId) => {
   try {
     await SuperAdminRepository.updateNoOfSubmissions(userId);
@@ -133,12 +142,14 @@ module.exports.updateNoOfSubmissions = async (userId) => {
   }
 };
 
-module.exports.toggleApproval = async (taxpayerId,value) => {
+
+module.exports.downloadDocument = async (docname) => {
   try {
-    await SuperAdminRepository.toggleApproval(taxpayerId,value);
-    return { message: 'Approval status toggled successfully' };
+    // Fetching the document data using a repository function
+    const file = await SuperAdminRepository.downloadDocument(docname);
+    return file;
   } catch (error) {
-    throw new Error(`Error while toggling approval status: ${error.message}`);
+    throw new Error(`Error while downloading document: ${error.message}`);
   }
 };
 

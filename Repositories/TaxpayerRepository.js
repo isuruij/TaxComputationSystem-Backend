@@ -911,3 +911,126 @@ module.exports.updateNotificationStatus = async (id) => {
     return { status: false };
   }
 };
+
+
+//get income details
+module.exports.getBusinessIncomeByTaxpayerId = async (id) => {
+  try{
+    return await businessIncome.findAll({ where: { taxpayerId: id } });
+  }catch (error){
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getBusinessIncomeByTaxpayerId = async (id) => {
+  try {
+    return await businessIncome.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getEmploymentIncomeByTaxpayerId = async (id) => {
+  try {
+    return await employmentIncome.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getInvestmentIncomeByTaxpayerId = async (id) => {
+  try {
+    return await investmentIncome.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getOtherIncomeByTaxpayerId = async (id) => {
+  try {
+    return await otherIncome.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getCapitalValueGainByTaxpayerId = async (id) => {
+  try {
+    return await capitalValueGain.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getReliefForExpenditureByTaxpayerId = async (id) => {
+  try {
+    return await reliefForExpenditure.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getReliefForRentIncomeByTaxpayerId = async (id) => {
+  try {
+    return await reliefForRentIncome.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getQualifyingPaymentsByTaxpayerId = async (id) => {
+  try {
+    return await qualifyingPayments.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getTerminalBenefitsByTaxpayerId = async (id) => {
+  try {
+    return await terminalBenefits.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getWhtOnInvestmentIncomeByTaxpayerId = async (id) => {
+  try {
+    return await whtOnInvestmentIncome.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getWhtOnServiceFeeReceivedByTaxpayerId = async (id) => {
+  try {
+    return await whtOnServiceFeeReceived.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getWhtWhichIsNotDeductedByTaxpayerId = async (id) => {
+  try {
+    return await whtWhichIsNotDeducted.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getApitByTaxpayerId = async (id) => {
+  try {
+    return await apit.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+
+module.exports.getSelfAssessmentPaymentByTaxpayerId = async (id) => {
+  try {
+    return await selfAssessmentPayment.findAll({ where: { taxpayerId: id } });
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
+

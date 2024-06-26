@@ -22,8 +22,11 @@ router.get("/getBusinessIncome/",JwtService.roleBasedAuth(["superAdmin"]),SuperA
 router.delete("/deletetaxpayers/:id",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.deleteTaxpayer);
 router.put("/updateUserApprovalStatus",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.toggleApproval);
 
-router.get("/fetchTaxpayer/:userId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.fetchTaxpayer)
-router.put("/updateNoOfSubmissions/:userId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateNoOfSubmissions)
+router.get("/fetchTaxpayer/:userId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.fetchTaxpayer);
+router.put("/updateNoOfSubmissions/:userId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateNoOfSubmissions);
+
+router.get("/downloadDocument/:docname", SuperAdminController.downloadDocument);
+
 
 //get income details
 router.get('/getbusinessincome/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getBusinessIncomeByTaxpayerId);
@@ -36,7 +39,7 @@ router.get('/getreliefforexpenditure/:taxpayerId',JwtService.roleBasedAuth(["sup
 router.get('/getreliefforrentincome/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getReliefForRentIncome);
 router.get('/getselfassessmentpayment/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getSelfAssessmentPayment);
 router.get('/getTerminalBenefits/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getTerminalBenefits);
-router.get('/getwhtoninvestmentincome/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]),JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getWhtOnInvestmentIncome);
+router.get('/getwhtoninvestmentincome/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.getWhtOnInvestmentIncome);
 router.get('/getwhtonservicefeereceived/:taxpayerId', JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.getWhtOnServiceFeeReceived);
 router.get('/getwhtwhichisnotdeducted/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getWhtWhichIsNotDeducted);
 router.get('/getqualifyingpayments/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getQualifyingPayments);
