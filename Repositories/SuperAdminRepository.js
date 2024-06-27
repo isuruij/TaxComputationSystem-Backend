@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { SuperAdmin, SecondAdmin, Notification,Policies } = require("../models");
+const { SuperAdmin, SecondAdmin,Notification,Policies,EmailSent } = require("../models");
 const jwt = require("jsonwebtoken");
 const sendRequestAgainDocument = require("../utils/sendRequestAgainDocuments");
 const sendRequestDocuments = require("../utils/sendRequestDocuments");
@@ -858,7 +858,6 @@ module.exports.deletetInboxmail = async (emailId) => {
 };
 
 
-const { EmailSent } = require('../models');
 
 module.exports.getSentMail = async () => {
   try {
@@ -890,5 +889,30 @@ module.exports.deleteSentMail = async (emailId) => {
     
   } catch (error) {
     throw new Error(`Error while deleting email: ${error.message}`);
+  }
+};
+
+module.exports.addsendmail = async (to, subject, body) => {
+  try {
+    // Check whether taxpayerId exists
+    const taxpayer = await Taxpayer.findOne({ where: { email: to } }); // Assuming that `to` contains the email and Taxpayer model has an email field
+
+    // if (!taxpayer) {
+    //   throw new Error('Taxpayer with the given email does not exist');
+    // }
+
+    // Create a new EmailSent record
+    const newEmail = await EmailSent.create({
+      sender: "isuruijs@gmail.com", // Replace with the actual sender email or get it dynamically
+      recipient: to,
+      subject: subject,
+      message: body,
+      taxpayerId: 1 // Use the taxpayerId from the found taxpayer
+    });
+    console.log(newEmail)
+
+    return newEmail;
+  } catch (error) {
+    throw new Error(`Error while adding email: ${error.message}`);
   }
 };

@@ -657,11 +657,10 @@ module.exports.deleteSentMail = async (emailId) => {
 const composeMail = require("../utils/composeMail");
 
 
-
-
 module.exports.composemail = async (data) => {
   try {
     composeMail(data.to, data.subject, data.body);
+    SuperAdminRepository.addsendmail(data.to, data.subject, data.body);
     return { message: 'Email deleted successfully' };
   } catch (error) {
     throw new Error(`Error while deleting sentmail: ${error.message}`);

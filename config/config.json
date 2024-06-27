@@ -1,14 +1,14 @@
 {
   "development": {
-    "username": "root",
-    "password": "Ananda2010!",
-    "database": "employee_db", 
-    "host": "localhost",
+    "username": "admintax",
+    "password": "12345678Tax#",
+    "database": "employee_db",
+    "host": "admintax2.mysql.database.azure.com",
     "dialect": "mysql",
     "port": 3306
   },
   "test": {
-    "username": "root", 
+    "username": "root",
     "password": null,
     "database": "database_test",
     "host": "127.0.0.1",
