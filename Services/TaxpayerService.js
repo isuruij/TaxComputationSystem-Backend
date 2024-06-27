@@ -138,10 +138,10 @@ module.exports.updatePassword = async (token, data) => {
 };
 
 // thimira file upload part
-module.exports.fileUpload = async (userId, fileData) => {
+module.exports.fileUpload = async (userId, fileData, host, protocol) => {
   try {
     // Process the files as needed (e.g., save to the database)
-    await TaxpayerRepository.fileUpload(userId, fileData);
+    await TaxpayerRepository.fileUpload(userId, fileData, host, protocol);
   } catch (error) {
     throw new Error("Error processing files: " + error.message);
   }
@@ -184,15 +184,18 @@ module.exports.getTaxCalDetails = async (userId) => {
 };
 
 //generate tax report
-module.exports.generateTaxReport = async (userId) => {
+module.exports.generateTaxReport = async (userId, protocol, host) => {
   try {
     if (!userId) {
       return { status: false };
     }
-    const values = await TaxpayerRepository.generateTaxReport(userId);
-
+    const values = await TaxpayerRepository.generateTaxReport(
+      userId,
+      protocol,
+      host
+    );
     if (values.status) {
-      return { status: true, filePath: values.filePath };
+      return { status: true, filepath: values.filepath };
     } else {
       return { status: false, msg: values.msg };
     }
@@ -205,6 +208,19 @@ module.exports.getNotifications = async (id) => {
   try {
     const created = await TaxpayerRepository.getNotifications(id);
     return created;
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.getCalculatedTax = async (id) => {
+  try {
+    const created = await TaxpayerRepository.getCalculatedTax(id);
+    if (created.status) {
+      return { status: true, data: created.data };
+    } else {
+      return { status: false };
+    }
   } catch (error) {
     return { status: false, message: error.message };
   }

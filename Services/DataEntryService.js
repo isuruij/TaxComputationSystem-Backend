@@ -79,10 +79,10 @@ module.exports.getTaxCalDetails = async (userId) => {
 };
 
 //file upload part
-module.exports.fileUpload = async (userId, fileData) => {
+module.exports.fileUpload = async (userId, fileData, host, protocol) => {
   try {
     // Process the files as needed (e.g., save to the database)
-    await DataEntryRepository.fileUpload(userId, fileData);
+    await DataEntryRepository.fileUpload(userId, fileData, host, protocol);
   } catch (error) {
     throw new Error("Error processing files: " + error.message);
   }

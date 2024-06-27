@@ -95,6 +95,8 @@ module.exports.getTaxCalDetails = async (req, res) => {
 //Doc upload part
 module.exports.fileUpload = async (req, res) => {
   try {
+    const protocol = req.protocol;
+    const host = req.get("host");
     const userId = req.params.userId;
     const files = req.files;
     const ids = req.body.fileIds;
@@ -114,7 +116,7 @@ module.exports.fileUpload = async (req, res) => {
     }));
 
     // Call the service to handle the file data
-    await DataEntryService.fileUpload(userId, fileData);
+    await DataEntryService.fileUpload(userId, fileData, host, protocol);
 
     // Respond to the client
     return res.json({ Status: "Files uploaded successfully!" });

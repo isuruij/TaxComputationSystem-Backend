@@ -1,6 +1,7 @@
 const { json } = require("body-parser");
 const TaxpayerService = require("../Services/TaxpayerService");
 const { Taxpayer } = require("../models");
+const path = require("path");
 
 module.exports.addTaxpayer = async (req, res) => {
   try {
@@ -227,6 +228,8 @@ module.exports.updatePassword = async (req, res) => {
 // thimira file upload
 module.exports.fileUpload = async (req, res) => {
   try {
+    const protocol = req.protocol;
+    const host = req.get("host");
     const userId = req.params.userId;
     const files = req.files;
     const ids = req.body.fileIds;
@@ -246,7 +249,7 @@ module.exports.fileUpload = async (req, res) => {
     }));
 
     // Call the service to handle the file data
-    await TaxpayerService.fileUpload(userId, fileData);
+    await TaxpayerService.fileUpload(userId, fileData, host, protocol);
 
     // Respond to the client
     return res.json({ Status: "Files uploaded successfully!" });
@@ -295,13 +298,14 @@ module.exports.getTaxCalDetails = async (req, res) => {
 module.exports.generateTaxReport = async (req, res) => {
   try {
     const id = req.params.id;
-    const result = await TaxpayerService.generateTaxReport(id);
+    const protocol = req.protocol;
+    const host = req.get("host");
 
+    const result = await TaxpayerService.generateTaxReport(id, protocol, host);
     if (result.status) {
-      // res.download(result.filePath);
       return res.json({
         Status: "Successfully Generated",
-        Data: result.filePath,
+        filepath: result.filepath,
       });
     } else {
       return res.status(400).json({ Status: result.msg });
@@ -310,6 +314,23 @@ module.exports.generateTaxReport = async (req, res) => {
     res.status(500).send("Error generating tax report");
   }
 };
+
+//tax report download
+// module.exports.taxReportDownload = async (req, res) => {
+//   try {
+//     const { id, filename } = req.params;
+//     const filePath = path.join(__dirname, "public", "files", id, filename);
+
+//     res.download(filePath, filename, (err) => {
+//       if (err) {
+//         console.error("Error downloading file:", err);
+//         return res.status(500).json({ Status: "Error downloading file" });
+//       }
+//     });
+//   } catch (error) {
+//     res.status(500).send("Error downloading tax report");
+//   }
+// };
 
 module.exports.getNotifications = async (req, res) => {
   try {
@@ -320,6 +341,22 @@ module.exports.getNotifications = async (req, res) => {
     return res.status(200).json(result);
   } catch (error) {
     return { status: false };
+  }
+};
+
+module.exports.getCalculatedTax = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const result = await TaxpayerService.getCalculatedTax(req.params.id);
+    if (result.status) {
+      return res
+        .status(200)
+        .json({ Status: "successfully fetched", Data: result });
+    } else {
+      return res.status(400).json({ Status: "Error fetching taxes" });
+    }
+  } catch (error) {
+    return res.status(500).send("Error fetching taxes");
   }
 };
 

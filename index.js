@@ -5,9 +5,10 @@ const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
-//to file upload
-const multer = require("multer");
 const path = require("path");
+//to file upload
+// const multer = require("multer");
+// const path = require("path");
 
 const db = require("./models");
 
@@ -15,7 +16,10 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/uploads", express.static("uploads")); // Serve uploaded files statically
+// app.use("/uploads", express.static("uploads")); // Serve uploaded files statically
+
+// Serve static files from the 'public' directory for file download process
+app.use("/files", express.static(path.join(__dirname, "public", "files")));
 
 //middleware
 app.use(
@@ -23,6 +27,7 @@ app.use(
     origin: process.env.FRONTEND_BASE_URL,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
+    exposedHeaders: ["Content-Disposition"],
   })
 );
 
