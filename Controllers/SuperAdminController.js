@@ -673,6 +673,60 @@ module.exports.updateSubmissionStatusreliefForExpenditure = async (req, res) => 
 
 
 
+//Mailbox
+module.exports.getinboxMail = async (req, res) => {
+  try {
+    const inboxMail = await SuperAdminService.getinboxMail()
+    return res.json(inboxMail);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+};
+
+module.exports.deletetInboxmail = async (req, res) => {
+  try {
+    await SuperAdminService.deletetInboxmail(req.params.emailId)
+    return res.json({ message: "Inboxmail deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+module.exports.getSentMail = async (req, res) => {
+  try {
+    const sentMail = await SuperAdminService.getSentMail()
+    return res.json(sentMail);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+};
+
+module.exports.deleteSentMail = async (req, res) => {
+  try {
+    await SuperAdminService.deleteSentMail(req.params.emailId)
+    return res.json({ message: "sentmail deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+module.exports.composemail = async (req, res) => {
+  try {
+    console.log(req.body)
+    await SuperAdminService.composemail(req.body)
+    return res.json({ message: "mail sent" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
 
 
 
