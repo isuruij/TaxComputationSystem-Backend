@@ -83,8 +83,11 @@ router.post(
 
 router.get("/getUserDetails/:id", TaxpayerController.getUserDetails);
 
-//under development
+//Get tax details for view
 router.get("/getTaxCalDetails/:id", TaxpayerController.getTaxCalDetails);
+
+//Generate tax report
+router.get("/generate-report/:id", TaxpayerController.generateTaxReport);
 
 router.get("/getNotifications/:id", TaxpayerController.getNotifications);
 

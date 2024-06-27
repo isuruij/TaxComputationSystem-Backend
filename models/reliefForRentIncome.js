@@ -74,6 +74,17 @@ module.exports = (sequelize, DataTypes) => {
               transaction: options.transaction,
             }
           );
+          // Trigger the beforeUpdate hook on sumOfCat model
+          const sumOfCatInstance = await sumOfCat.findOne({
+            where: { taxpayerId: record.taxpayerId },
+            transaction: options.transaction,
+          });
+          if (sumOfCatInstance) {
+            await sumOfCatInstance.update(
+              {},
+              { transaction: options.transaction }
+            );
+          }
         },
         // afterCreate: async (record, options) => {
         //   // Update sumOfCat table
@@ -116,6 +127,17 @@ module.exports = (sequelize, DataTypes) => {
               transaction: options.transaction,
             }
           );
+          // Trigger the beforeUpdate hook on sumOfCat model
+          const sumOfCatInstance = await sumOfCat.findOne({
+            where: { taxpayerId: record.taxpayerId },
+            transaction: options.transaction,
+          });
+          if (sumOfCatInstance) {
+            await sumOfCatInstance.update(
+              {},
+              { transaction: options.transaction }
+            );
+          }
         },
       },
     }
