@@ -143,17 +143,6 @@ module.exports.updateNoOfSubmissions = async (userId) => {
 };
 
 
-module.exports.downloadDocument = async (docname) => {
-  try {
-    // Fetching the document data using a repository function
-    const file = await SuperAdminRepository.downloadDocument(docname);
-    return file;
-  } catch (error) {
-    throw new Error(`Error while downloading document: ${error.message}`);
-  }
-};
-
-
 
 
 

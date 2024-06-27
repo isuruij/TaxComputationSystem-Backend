@@ -25,7 +25,7 @@ router.put("/updateUserApprovalStatus",JwtService.roleBasedAuth(["superAdmin"]),
 router.get("/fetchTaxpayer/:userId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.fetchTaxpayer);
 router.put("/updateNoOfSubmissions/:userId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateNoOfSubmissions);
 
-router.get("/downloadDocument/:docname", SuperAdminController.downloadDocument);
+
 
 
 //get income details

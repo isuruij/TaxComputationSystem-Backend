@@ -217,23 +217,6 @@ module.exports.updateNoOfSubmissions = async (userId) => {
 };
 
 
-const fs = require('fs').promises;
-const path = require('path');
-
-module.exports.downloadDocument = async (docname) => {
-  try {
-    const filePath = path.join(__dirname, '..', 'public', 'Images', docname);
-    const content = await fs.readFile(filePath);
-    
-    return {
-      content: content,
-      contentType: 'application/pdf',  // Assuming the file is a PDF; adjust as needed
-      fileName: docname
-    };
-  } catch (error) {
-    throw new Error(`Failed to read file from path ${filePath}: ${error.message}`);
-  }
-};
 
 
 
