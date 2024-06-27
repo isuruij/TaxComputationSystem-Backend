@@ -1,4 +1,3 @@
-const { json } = require("body-parser");
 const TaxpayerService = require("../Services/TaxpayerService");
 const { Taxpayer } = require("../models");
 
@@ -260,6 +259,7 @@ module.exports.fileUpload = async (req, res) => {
 module.exports.getUserDetails = async (req, res) => {
   try {
     const id = req.params.id;
+    console.log(id);
 
     const result = await TaxpayerService.getUserDetails(id);
     if (result.status) {
@@ -272,17 +272,15 @@ module.exports.getUserDetails = async (req, res) => {
   }
 };
 
-//get tax calculations
+//get tax calculations(under development)
 module.exports.getTaxCalDetails = async (req, res) => {
   try {
     const id = req.params.id;
+    console.log(id);
+
     const result = await TaxpayerService.getTaxCalDetails(id);
     if (result.status) {
-      return res.json({
-        Status: "Success",
-        Data: result.data,
-        Data2: result.data2,
-      });
+      return res.json({ Status: "Success", Data: result.data });
     } else {
       return res.status(400).json({ Status: "NotSuccess" });
     }
@@ -291,32 +289,12 @@ module.exports.getTaxCalDetails = async (req, res) => {
   }
 };
 
-//generate Tax Report
-module.exports.generateTaxReport = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const result = await TaxpayerService.generateTaxReport(id);
-
-    if (result.status) {
-      // res.download(result.filePath);
-      return res.json({
-        Status: "Successfully Generated",
-        Data: result.filePath,
-      });
-    } else {
-      return res.status(400).json({ Status: result.msg });
-    }
-  } catch (error) {
-    res.status(500).send("Error generating tax report");
-  }
-};
-
 module.exports.getNotifications = async (req, res) => {
   try {
     console.log(req.params.id);
     const result = await TaxpayerService.getNotifications(req.params.id);
 
-    // console.log(result.data);
+    console.log(result);
     return res.status(200).json(result);
   } catch (error) {
     return { status: false };

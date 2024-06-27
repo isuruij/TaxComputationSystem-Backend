@@ -60,24 +60,6 @@ module.exports.getUserDetails = async (userId) => {
   }
 };
 
-//get tax calculations(under development)
-module.exports.getTaxCalDetails = async (userId) => {
-  try {
-    if (!userId) {
-      return { status: false };
-    }
-    const values = await DataEntryRepository.getTaxCalDetails(userId);
-
-    if (values.status) {
-      return { status: true, data: values.data, data2: values.data2 };
-    } else {
-      return { status: false };
-    }
-  } catch (error) {
-    return { status: false };
-  }
-};
-
 //file upload part
 module.exports.fileUpload = async (userId, fileData) => {
   try {

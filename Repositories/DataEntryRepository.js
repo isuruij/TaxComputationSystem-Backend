@@ -16,8 +16,6 @@ const {
   whtWhichIsNotDeducted,
   SecondAdmin,
   SuperAdmin,
-  totalTax,
-  sumOfCat,
 } = require("../models");
 const bcrypt = require("bcrypt");
 const { sequelize, DataTypes } = require("../models/index");
@@ -536,43 +534,6 @@ module.exports.getUserDetails = async (userId) => {
       return { status: false };
     }
     return { status: true, data: result };
-  } catch (error) {
-    return { status: false };
-  }
-};
-
-//thimira get tax calculations(under development)
-module.exports.getTaxCalDetails = async (userId) => {
-  try {
-    const result = await totalTax.findOne({
-      attributes: [
-        "taxableAmount",
-        "taxableAmount2",
-        "incomeTax",
-        "incomeTax2",
-        "TerminalTax",
-        "CapitalTax",
-        "WHTNotDeductTax",
-        "createdAt",
-      ],
-      where: { taxpayerId: userId },
-    });
-    const result2 = await sumOfCat.findOne({
-      attributes: [
-        "TotAssessableIncome",
-        "TotAssessableIncome2",
-        "Reliefs",
-        "Reliefs2",
-        "Choosed_QP",
-        "TaxCredit",
-        "TaxCredit2",
-      ],
-      where: { taxpayerId: userId },
-    });
-    if (!result || !result2) {
-      return { status: false };
-    }
-    return { status: true, data: result, data2: result2 };
   } catch (error) {
     return { status: false };
   }

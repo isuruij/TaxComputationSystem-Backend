@@ -18,7 +18,6 @@ const {
   Notification,
   sumOfCat,
   totalTax,
-  TaxSummaryReport,
 } = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
@@ -26,7 +25,6 @@ const sendMail = require("../utils/sendMail");
 const sendVerificationMail = require("../utils/sendVerificationMail");
 const { where } = require("sequelize");
 const { sequelize, DataTypes } = require("../models/index");
-const { generateTaxReport } = require("../Services/pdfService");
 
 //register taxpayer
 module.exports.addTaxpayer = async (obj) => {
@@ -853,95 +851,16 @@ module.exports.getUserDetails = async (userId) => {
 //thimira get tax calculations(under development)
 module.exports.getTaxCalDetails = async (userId) => {
   try {
-    const result = await totalTax.findOne({
-      attributes: [
-        "taxableAmount",
-        "taxableAmount2",
-        "incomeTax",
-        "incomeTax2",
-        "TerminalTax",
-        "CapitalTax",
-        "WHTNotDeductTax",
-        "createdAt",
-      ],
-      where: { taxpayerId: userId },
+    const result = await Taxpayer.findOne({
+      attributes: ["name", "tin"],
+      where: { id: userId },
     });
-    const result2 = await sumOfCat.findOne({
-      attributes: [
-        "TotAssessableIncome",
-        "TotAssessableIncome2",
-        "Reliefs",
-        "Reliefs2",
-        "Choosed_QP",
-        "TaxCredit",
-        "TaxCredit2",
-      ],
-      where: { taxpayerId: userId },
-    });
-    if (!result || !result2) {
+    if (!result) {
       return { status: false };
     }
-    return { status: true, data: result, data2: result2 };
+    return { status: true, data: result };
   } catch (error) {
     return { status: false };
-  }
-};
-
-//generate tax report
-module.exports.generateTaxReport = async (userId) => {
-  try {
-    const SumOfCat = await sumOfCat.findOne({ where: { taxpayerId: userId } });
-    const taxpayer = await Taxpayer.findByPk(userId);
-    const TotalTax = await totalTax.findOne({ where: { taxpayerId: userId } });
-    const amount1 = await employmentIncome.findOne({
-      where: { taxpayerId: userId },
-    });
-    const amount2 = await businessIncome.findOne({
-      where: { taxpayerId: userId },
-    });
-    const amount3 = await investmentIncome.findOne({
-      where: { taxpayerId: userId },
-    });
-    const amount4 = await reliefForRentIncome.findOne({
-      where: { taxpayerId: userId },
-    });
-    const amount5 = await otherIncome.findOne({
-      where: { taxpayerId: userId },
-    });
-    const Amounts = [amount1, amount2, amount3, amount4, amount5];
-    if (!taxpayer || !SumOfCat || !TotalTax) {
-      return { status: false, msg: "Taxpayer or related data not found" };
-    }
-    const result = await generateTaxReport(
-      taxpayer,
-      SumOfCat,
-      TotalTax,
-      Amounts
-    );
-
-    //update taxSummary report table
-    const [taxSummaryReport, created] = await TaxSummaryReport.findOrCreate({
-      where: { taxpayerId: userId },
-      defaults: {
-        path: result,
-        isVerified: false,
-        taxpayerId: userId,
-      },
-    });
-    if (!created) {
-      await taxSummaryReport.update({
-        path: result,
-        isVerified: false,
-      });
-      console.log(`Tax summary report updated for taxpayerId: ${userId}`);
-    } else {
-      // New record was created
-      console.log(`New tax summary report created for taxpayerId: ${userId}`);
-    }
-    console.log(result);
-    return { status: true, filePath: result };
-  } catch (error) {
-    return { status: false, msg: "Error generating PDF in repo" };
   }
 };
 
