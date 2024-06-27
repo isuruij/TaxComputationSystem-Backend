@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: true,
       },
-      investmentIncome2: {
-        type: DataTypes.FLOAT,
-        allowNull: true,
-      },
       docname: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -50,17 +46,12 @@ module.exports = (sequelize, DataTypes) => {
 
           const previousIncome = previousRecord.investmentIncome;
           const newIncome = record.investmentIncome;
-          const previousIncome2 = previousRecord.investmentIncome2;
-          const newIncome2 = record.investmentIncome2;
 
           // Update sumOfCat table
           await sumOfCat.update(
             {
               TotAssessableIncome: sequelize.literal(
                 `TotAssessableIncome + ${newIncome} - ${previousIncome}`
-              ),
-              TotAssessableIncome2: sequelize.literal(
-                `TotAssessableIncome2 + ${newIncome2} - ${previousIncome2}`
               ),
             },
             {
@@ -85,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
         //   await sumOfCat.update(
         //     {
         //       TotAssessableIncome: sequelize.literal(
-        //         `TotAssessableIncome + ${record.investmentIncome}`
+        //         `TotAssessableIncome + ${record.employmentIncome}`
         //       ),
         //     },
         //     {
@@ -95,19 +86,11 @@ module.exports = (sequelize, DataTypes) => {
         //   );
         // },
         afterDestroy: async (record, options) => {
-          // Fetch the previous value
-          const previousRecord = await record.constructor.findOne({
-            where: { incomeId: record.incomeId },
-            transaction: options.transaction,
-          });
           // Update sumOfCat table
           await sumOfCat.update(
             {
               TotAssessableIncome: sequelize.literal(
-                `TotAssessableIncome - ${previousRecord.investmentIncome}`
-              ),
-              TotAssessableIncome2: sequelize.literal(
-                `TotAssessableIncome2 - ${previousRecord.investmentIncome2}`
+                `TotAssessableIncome - ${record.employmentIncome}`
               ),
             },
             {

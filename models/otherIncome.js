@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: true,
       },
-      otherIncome2: {
-        type: DataTypes.FLOAT,
-        allowNull: true,
-      },
       docname: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -50,17 +46,12 @@ module.exports = (sequelize, DataTypes) => {
 
           const previousIncome = previousRecord.otherIncome;
           const newIncome = record.otherIncome;
-          const previousIncome2 = previousRecord.otherIncome2;
-          const newIncome2 = record.otherIncome2;
 
           // Update sumOfCat table
           await sumOfCat.update(
             {
               TotAssessableIncome: sequelize.literal(
                 `TotAssessableIncome + ${newIncome} - ${previousIncome}`
-              ),
-              TotAssessableIncome2: sequelize.literal(
-                `TotAssessableIncome2 + ${newIncome2} - ${previousIncome2}`
               ),
             },
             {
@@ -85,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
         //   await sumOfCat.update(
         //     {
         //       TotAssessableIncome: sequelize.literal(
-        //         `TotAssessableIncome + ${record.otherIncome}`
+        //         `TotAssessableIncome + ${record.employmentIncome}`
         //       ),
         //     },
         //     {
@@ -95,19 +86,11 @@ module.exports = (sequelize, DataTypes) => {
         //   );
         // },
         afterDestroy: async (record, options) => {
-          // Fetch the previous value
-          const previousRecord = await record.constructor.findOne({
-            where: { incomeId: record.incomeId },
-            transaction: options.transaction,
-          });
           // Update sumOfCat table
           await sumOfCat.update(
             {
               TotAssessableIncome: sequelize.literal(
-                `TotAssessableIncome - ${previousRecord.otherIncome}`
-              ),
-              TotAssessableIncome2: sequelize.literal(
-                `TotAssessableIncome2 - ${previousRecord.otherIncome2}`
+                `TotAssessableIncome - ${record.employmentIncome}`
               ),
             },
             {

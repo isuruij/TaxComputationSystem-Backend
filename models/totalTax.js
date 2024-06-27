@@ -6,41 +6,21 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
     },
+    taxName: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     taxableAmount: {
       type: DataTypes.FLOAT,
       allowNull: true,
     },
-    taxableAmount2: {
+    tax: {
       type: DataTypes.FLOAT,
       allowNull: true,
     },
-    incomeTax: {
+    paid: {
       type: DataTypes.FLOAT,
       allowNull: true,
-    },
-    incomeTax2: {
-      type: DataTypes.FLOAT,
-      allowNull: true,
-    },
-    TerminalTax: {
-      type: DataTypes.FLOAT,
-      allowNull: true,
-    },
-    CapitalTax: {
-      type: DataTypes.FLOAT,
-      allowNull: true,
-    },
-    WHTNotDeductTax: {
-      type: DataTypes.FLOAT,
-      allowNull: true,
-    },
-    taxpayerId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Taxpayers",
-        key: "id",
-      },
     },
   });
 

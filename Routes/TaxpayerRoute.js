@@ -86,7 +86,11 @@ router.get(
   TaxpayerController.getNotifications
 );
 
-router.patch("/updatePassword", TaxpayerController.updatePassword);
+router.patch(
+  "/updatePassword",
+  JwtService.roleBasedAuth(["taxpayer"]),
+  TaxpayerController.updatePassword
+);
 
 //Upload files into database
 router.post(
@@ -112,7 +116,14 @@ router.get("/getCalculatedTax/:id", TaxpayerController.getCalculatedTax);
 
 router.patch(
   "/updateNotificationStatus",
+  JwtService.roleBasedAuth(["taxpayer"]),
   TaxpayerController.updateNotificationStatus
+);
+
+router.get(
+  "/authtaxpayer",
+  JwtService.authtaxpayer,
+  TaxpayerController.authenticateUser
 );
 
 module.exports = router;

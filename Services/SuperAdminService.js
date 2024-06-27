@@ -446,22 +446,5 @@ module.exports.policy = async () => {
 };
 
 
-module.exports.optionalpolicy = async () => {
-  try {
-    const created = await SuperAdminRepository.optionalpolicy();
-    return created;
-  } catch (error) {
-    console.error(`Error in service: ${error.message}`);
-    return { status: false, message: error.message };
-  }
-};
 
 
-module.exports.updateoptionalpolicy = async (data) => {
-  try {
-    const created = await SuperAdminRepository.updateoptionalpolicy(data);
-    return created;
-  } catch (error) {
-    return { status: false, message: error.message };
-  }
-};
