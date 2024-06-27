@@ -92,6 +92,8 @@ router.get("/generate-report/:id", TaxpayerController.generateTaxReport);
 
 router.get("/getNotifications/:id", TaxpayerController.getNotifications);
 
+router.get("/getCalculatedTax/:id", TaxpayerController.getCalculatedTax);
+
 router.patch(
   "/updateNotificationStatus",
   TaxpayerController.updateNotificationStatus

@@ -323,6 +323,22 @@ module.exports.getNotifications = async (req, res) => {
   }
 };
 
+module.exports.getCalculatedTax = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const result = await TaxpayerService.getCalculatedTax(req.params.id);
+    if (result.status) {
+      return res
+        .status(200)
+        .json({ Status: "successfully fetched", Data: result.data, Data2: result.data2 });
+    } else {
+      return res.status(400).json({ Status: "Error fetching taxes" });
+    }
+  } catch (error) {
+    return res.status(500).send("Error fetching taxes");
+}
+};
+
 module.exports.updateNotificationStatus = async (req, res) => {
   try {
     const result = await TaxpayerService.updateNotificationStatus(req.body.id);

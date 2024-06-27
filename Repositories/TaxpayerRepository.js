@@ -48,27 +48,27 @@ module.exports.addTaxpayer = async (obj) => {
     // add intial values to income tables
     await businessIncome.create({
       businessIncome: "0",
-      businessIncome2: "0",
+      // businessIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
     await employmentIncome.create({
       employmentIncome: "0",
-      employmentIncome2: "0",
+      // employmentIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
     await investmentIncome.create({
       investmentIncome: "0",
-      investmentIncome2: "0",
+      // investmentIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
     await otherIncome.create({
       otherIncome: "0",
-      otherIncome2: "0",
+      // otherIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
     await reliefForRentIncome.create({
       reliefForRentIncome: "0",
-      reliefForRentIncome2: "0",
+      // reliefForRentIncome2: "0",
       taxpayerId: res.dataValues.id,
     });
 
@@ -366,6 +366,52 @@ module.exports.getNotifications = async (id) => {
     console.log(messages);
 
     return { status: true, data: messages };
+  } catch (error) {
+    console.error(`Error fetching notifications: ${error}`);
+    return { status: false };
+  }
+};
+
+module.exports.getCalculatedTax = async (id) => {
+  try {
+    const tax = await totalTax.findOne({
+      attributes: [
+        "incomeTax",
+        "incomeTax2",
+        "TerminalTax",
+        "CapitalTax",
+        "WHTNotDeductTax",
+      ],
+      where: { taxpayerId: id },
+    });
+    console.log(tax);
+    const apit = await apit.findOne({
+      attributes: [
+        "apit",
+      ],
+      where: { taxpayerId: id },
+    }) || 0;
+    const whtOnInvestmentIncome = await whtOnInvestmentIncome.findOne({
+      attributes: [
+        "whtOnInvestmentIncome",
+      ],
+      where: { taxpayerId: id },
+    }) || 0;
+    const whtOnServiceFeeReceived = await whtOnServiceFeeReceived.findOne({
+      attributes: [
+        "whtOnServiceFeeReceived",
+      ],
+      where: { taxpayerId: id },
+    }) || 0;
+    const selfAssessmentPayment = await selfAssessmentPayment.findOne({
+      attributes: [
+        "selfAssessmentPayment",
+      ],
+      where: { taxpayerId: id },
+    }) || 0;
+    const amonts = [apit, whtOnInvestmentIncome, whtOnServiceFeeReceived, selfAssessmentPayment];
+
+    return { status: true, data: tax, data2: amonts };
   } catch (error) {
     console.error(`Error fetching notifications: ${error}`);
     return { status: false };

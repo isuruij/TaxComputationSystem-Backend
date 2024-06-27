@@ -128,6 +128,19 @@ module.exports.getNotifications = async (id) => {
   }
 };
 
+module.exports.getCalculatedTax = async (id) => {
+  try {
+    const created = await TaxpayerRepository.getCalculatedTax(id);
+    if (created.status) {
+      return { status: true, data: created.data, data2: created.data2 };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false, message: error.message};
+}
+};
+
 module.exports.updatePassword = async (token, data) => {
   try {
     const created = await TaxpayerRepository.updatePassword(token, data);
