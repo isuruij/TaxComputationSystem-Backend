@@ -138,10 +138,10 @@ module.exports.updatePassword = async (token, data) => {
 };
 
 // thimira file upload part
-module.exports.fileUpload = async (userId, fileData) => {
+module.exports.fileUpload = async (userId, fileData, host, protocol) => {
   try {
     // Process the files as needed (e.g., save to the database)
-    await TaxpayerRepository.fileUpload(userId, fileData);
+    await TaxpayerRepository.fileUpload(userId, fileData, host, protocol);
   } catch (error) {
     throw new Error("Error processing files: " + error.message);
   }
@@ -183,10 +183,44 @@ module.exports.getTaxCalDetails = async (userId) => {
   }
 };
 
+//generate tax report
+module.exports.generateTaxReport = async (userId, protocol, host) => {
+  try {
+    if (!userId) {
+      return { status: false };
+    }
+    const values = await TaxpayerRepository.generateTaxReport(
+      userId,
+      protocol,
+      host
+    );
+    if (values.status) {
+      return { status: true, filepath: values.filepath };
+    } else {
+      return { status: false, msg: values.msg };
+    }
+  } catch (error) {
+    return { status: false, msg: "Error generateTaxReport in service" };
+  }
+};
+
 module.exports.getNotifications = async (id) => {
   try {
     const created = await TaxpayerRepository.getNotifications(id);
     return created;
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.getCalculatedTax = async (id) => {
+  try {
+    const created = await TaxpayerRepository.getCalculatedTax(id);
+    if (created.status) {
+      return { status: true, data: created.data };
+    } else {
+      return { status: false };
+    }
   } catch (error) {
     return { status: false, message: error.message };
   }
@@ -198,5 +232,123 @@ module.exports.updateNotificationStatus = async (id) => {
     return created;
   } catch (error) {
     return { status: false, message: error.message };
+  }
+};
+
+
+// get income details
+
+
+
+
+module.exports.getBusinessIncomeByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getBusinessIncomeByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching business income');
+  }
+};
+
+module.exports.getEmploymentIncomeByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getEmploymentIncomeByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching employment income');
+  }
+};
+
+module.exports.getInvestmentIncomeByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getInvestmentIncomeByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching investment income');
+  }
+};
+
+module.exports.getOtherIncomeByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getOtherIncomeByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching other income');
+  }
+};
+
+module.exports.getCapitalValueGainByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getCapitalValueGainByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching capital value gain');
+  }
+};
+
+module.exports.getReliefForExpenditureByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getReliefForExpenditureByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching relief for expenditure');
+  }
+};
+
+module.exports.getReliefForRentIncomeByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getReliefForRentIncomeByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching relief for rent income');
+  }
+};
+
+module.exports.getQualifyingPaymentsByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getQualifyingPaymentsByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching qualifying payments');
+  }
+};
+
+module.exports.getTerminalBenefitsByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getTerminalBenefitsByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching terminal benefits');
+  }
+};
+
+module.exports.getWhtOnInvestmentIncomeByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getWhtOnInvestmentIncomeByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching withholding tax on investment income');
+  }
+};
+
+module.exports.getWhtOnServiceFeeReceivedByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getWhtOnServiceFeeReceivedByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching withholding tax on service fee received');
+  }
+};
+
+module.exports.getWhtWhichIsNotDeductedByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getWhtWhichIsNotDeductedByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching withholding tax which is not deducted');
+  }
+};
+
+module.exports.getApitByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getApitByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching APIT');
+  }
+};
+
+module.exports.getSelfAssessmentPaymentByTaxpayerId = async (id) => {
+  try {
+    return await TaxpayerRepository.getSelfAssessmentPaymentByTaxpayerId(id);
+  } catch (error) {
+    throw new Error('Error fetching self-assessment payment');
   }
 };

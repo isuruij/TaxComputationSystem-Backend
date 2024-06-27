@@ -15,7 +15,9 @@ const {
   capitalValueGain,
   whtWhichIsNotDeducted,
   SecondAdmin,
-  SuperAdmin
+  SuperAdmin,
+  totalTax,
+  sumOfCat,
 } = require("../models");
 const bcrypt = require("bcrypt");
 
@@ -474,24 +476,74 @@ module.exports.getUserDetails = async (userId) => {
   }
 };
 
+//thimira get tax calculations(under development)
+module.exports.getTaxCalDetails = async (userId) => {
+  try {
+    const result = await totalTax.findOne({
+      attributes: [
+        "taxableAmount",
+        "taxableAmount2",
+        "incomeTax",
+        "incomeTax2",
+        "TerminalTax",
+        "CapitalTax",
+        "WHTNotDeductTax",
+        "createdAt",
+      ],
+      where: { taxpayerId: userId },
+    });
+    const result2 = await sumOfCat.findOne({
+      attributes: [
+        "TotAssessableIncome",
+        "TotAssessableIncome2",
+        "Reliefs",
+        "Reliefs2",
+        "Choosed_QP",
+        "TaxCredit",
+        "TaxCredit2",
+      ],
+      where: { taxpayerId: userId },
+    });
+    if (!result || !result2) {
+      return { status: false };
+    }
+    return { status: true, data: result, data2: result2 };
+  } catch (error) {
+    return { status: false };
+  }
+};
+
 ////////////////////////////////////////////////////////////
 
 // file upload part
-module.exports.fileUpload = async (userId, files) => {
+module.exports.fileUpload = async (userId, files, host, protocol) => {
   try {
     //dataObject.UserId is a string and want to convert to integer to compare
     let id = parseInt(userId, 10);
-    console.log(id, files, files[0].id, files.length);
+    // console.log(id, files, files[0].path, files.length, host, protocol);
+
+    //Update number of submissions in taxpayer table
+    const numSub = files.length;
+    const row = await Taxpayer.update(
+      { numOfSubmissions: sequelize.literal(`numOfSubmissions + ${numSub}`) },
+      { where: { id: id } }
+    );
 
     for (let i = 0; i < files.length; i++) {
       //01.Employment Income table
       if (files[i].id == 1) {
         // 1.update employment income table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await employmentIncome.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -500,7 +552,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -514,10 +566,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 2) {
         // 1.update business Income table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await businessIncome.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -526,7 +584,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -540,10 +598,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 3) {
         // 1.update investment Income table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await investmentIncome.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -552,7 +616,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -566,10 +630,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 4) {
         // 1.update other  Income table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await otherIncome.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -578,7 +648,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -592,10 +662,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 5) {
         // 1.update reliefForRentIncome table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await reliefForRentIncome.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -604,7 +680,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -624,10 +700,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 6) {
         // 1.update reliefForExpenditure table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await reliefForExpenditure.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -636,7 +718,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -656,10 +738,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 7) {
         // 1.update qualifyingPaymentse table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await qualifyingPayments.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -668,7 +756,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -682,10 +770,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 8) {
         // 1.update apit table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await apit.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -694,7 +788,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -708,11 +802,17 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 9) {
         // 1.update whtOnInvestmentIncome table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await whtOnInvestmentIncome.findOrCreate(
           {
             where: { taxpayerId: id }, // to find the existing row
             defaults: {
-              filePath: files[i].path,
+              filePath: path,
               docname: files[i].filename,
               isnewsubmission: 1,
               taxpayerId: id,
@@ -722,7 +822,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -742,11 +842,17 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 10) {
         // 1.update whtOnServiceFeeReceived table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] =
           await whtOnServiceFeeReceived.findOrCreate({
             where: { taxpayerId: id }, // to find the existing row
             defaults: {
-              filePath: files[i].path,
+              filePath: path,
               docname: files[i].filename,
               isnewsubmission: 1,
               taxpayerId: id,
@@ -755,7 +861,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -775,11 +881,17 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 11) {
         // 1.update selfAssessmentPayment table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await selfAssessmentPayment.findOrCreate(
           {
             where: { taxpayerId: id }, // to find the existing row
             defaults: {
-              filePath: files[i].path,
+              filePath: path,
               docname: files[i].filename,
               isnewsubmission: 1,
               taxpayerId: id,
@@ -789,7 +901,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -809,10 +921,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 12) {
         // 1.update business Income table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await terminalBenefits.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -821,7 +939,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -835,10 +953,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 13) {
         // 1.update capitalValueGain table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await capitalValueGain.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -847,7 +971,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -861,11 +985,17 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 14) {
         // 1.update business Income table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await whtWhichIsNotDeducted.findOrCreate(
           {
             where: { taxpayerId: id }, // to find the existing row
             defaults: {
-              filePath: files[i].path,
+              filePath: path,
               docname: files[i].filename,
               isnewsubmission: 1,
               taxpayerId: id,
@@ -875,7 +1005,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -923,5 +1053,3 @@ module.exports.addSecondAdmin = async (obj) => {
     return { status: false };
   }
 };
-
-

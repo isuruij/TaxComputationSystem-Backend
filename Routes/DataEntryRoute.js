@@ -10,7 +10,13 @@ const storage = multer.diskStorage({
     cb(null, "./public/Images"); // Destination folder for uploaded files
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "_" + file.originalname;
+    // console.log(req.params);
+    const uniqueSuffix =
+      Date.now() +
+      "_TaxPayerID_" +
+      req.params.userId +
+      "_docs_" +
+      file.originalname;
     cb(null, uniqueSuffix);
   },
 });
@@ -29,6 +35,9 @@ router.get("/getusersubmission", DataEntryController.getUserSubmission);
 
 //Get user name and tin number
 router.get("/getUserDetails/:id", DataEntryController.getUserDetails);
+
+//get tax into taxview page
+router.get("/getTaxCalDetails/:id", DataEntryController.getTaxCalDetails);
 
 //Upload files into database
 router.post(
