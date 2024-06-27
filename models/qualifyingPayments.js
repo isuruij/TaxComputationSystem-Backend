@@ -38,32 +38,25 @@ module.exports = (sequelize, DataTypes) => {
     {
       hooks: {
         beforeUpdate: async (record, options) => {
+          // Fetch the previous value
+          const previousRecord = await record.constructor.findOne({
+            where: { reliefid: record.reliefid },
+            transaction: options.transaction,
+          });
+
           const newIncome = record.qualifyingPayments || 0.0;
 
           // Update sumOfCat table
           await sumOfCat.update(
             {
-              QP: newIncome,
+              QP: sequelize.literal(`${newIncome}`),
             },
             {
               where: { taxpayerId: record.taxpayerId },
               transaction: options.transaction,
             }
           );
-
-          // Trigger the beforeUpdate hook on sumOfCat model
-          const sumOfCatInstance = await sumOfCat.findOne({
-            where: { taxpayerId: record.taxpayerId },
-            transaction: options.transaction,
-          });
-          if (sumOfCatInstance) {
-            await sumOfCatInstance.update(
-              {},
-              { transaction: options.transaction }
-            );
-          }
         },
-
         afterCreate: async (record, options) => {
           const value = record.qualifyingPayments || 0.0;
           // Update sumOfCat table
@@ -76,17 +69,6 @@ module.exports = (sequelize, DataTypes) => {
               transaction: options.transaction,
             }
           );
-          // Trigger the beforeUpdate hook on sumOfCat model
-          const sumOfCatInstance = await sumOfCat.findOne({
-            where: { taxpayerId: record.taxpayerId },
-            transaction: options.transaction,
-          });
-          if (sumOfCatInstance) {
-            await sumOfCatInstance.update(
-              {},
-              { transaction: options.transaction }
-            );
-          }
         },
         afterDestroy: async (record, options) => {
           // Update sumOfCat table
@@ -99,18 +81,6 @@ module.exports = (sequelize, DataTypes) => {
               transaction: options.transaction,
             }
           );
-
-          // Trigger the beforeUpdate hook on sumOfCat model
-          const sumOfCatInstance = await sumOfCat.findOne({
-            where: { taxpayerId: record.taxpayerId },
-            transaction: options.transaction,
-          });
-          if (sumOfCatInstance) {
-            await sumOfCatInstance.update(
-              {},
-              { transaction: options.transaction }
-            );
-          }
         },
       },
     }

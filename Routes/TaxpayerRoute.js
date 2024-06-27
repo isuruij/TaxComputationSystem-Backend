@@ -45,12 +45,7 @@ router.post("/login", TaxpayerController.loginTaxpayer);
 
 router.patch("/verifyemail", TaxpayerController.verifyEmail);
 
-router.get(
-  "/getuserbasicdetails/:id",
-  JwtService.verifyuser,
-  JwtService.roleBasedAuth(["taxpayer", "superAdmin", "secondAdmin"]),
-  TaxpayerController.getBasicDetails
-);
+router.get("/getuserbasicdetails/:id",JwtService.verifyuser,JwtService.roleBasedAuth(["taxpayer", "superAdmin", "secondAdmin"]),TaxpayerController.getBasicDetails);
 
 router.patch(
   "/updatebasicdetails",
@@ -101,7 +96,7 @@ router.post(
 
 router.get("/getUserDetails/:id", TaxpayerController.getUserDetails);
 
-//Get tax details for view
+//under development
 router.get("/getTaxCalDetails/:id", TaxpayerController.getTaxCalDetails);
 
 //Generate tax report
@@ -125,5 +120,23 @@ router.get(
   JwtService.authtaxpayer,
   TaxpayerController.authenticateUser
 );
+
+router.get('/getbusinessincome/:id', TaxpayerController.getBusinessIncomeByTaxpayerId);
+router.get('/getemploymentincome/:id', TaxpayerController.getEmploymentIncomeByTaxpayerId);
+router.get('/getinvestmentincome/:id', TaxpayerController.getInvestmentIncomeByTaxpayerId);
+router.get('/getotherincome/:id', TaxpayerController.getOtherIncomeByTaxpayerId);
+router.get('/getcapitalvaluegain/:id', TaxpayerController.getCapitalValueGainByTaxpayerId);
+router.get('/getreliefforexpenditure/:id', TaxpayerController.getReliefForExpenditureByTaxpayerId);
+router.get('/getreliefforrentincome/:id', TaxpayerController.getReliefForRentIncomeByTaxpayerId);
+router.get('/getqualifyingpayments/:id', TaxpayerController.getQualifyingPaymentsByTaxpayerId);
+router.get('/getterminalbenefits/:id', TaxpayerController.getTerminalBenefitsByTaxpayerId);
+router.get('/getwhtoninvestmentincome/:id', TaxpayerController.getWhtOnInvestmentIncomeByTaxpayerId);
+router.get('/getwhtonservicefeereceived/:id', TaxpayerController.getWhtOnServiceFeeReceivedByTaxpayerId);
+router.get('/getwhtwhichisnotdeducted/:id', TaxpayerController.getWhtWhichIsNotDeductedByTaxpayerId);
+router.get('/getapit/:id', TaxpayerController.getApitByTaxpayerId);
+router.get('/getselfassessmentpayment/:id', TaxpayerController.getSelfAssessmentPaymentByTaxpayerId);
+
+
+
 
 module.exports = router;

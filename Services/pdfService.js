@@ -25,7 +25,7 @@ const generateTaxReport = async (taxpayer, sumOfCat, totalTax, Amounts) => {
 
       { text: `Created At: ${taxpayer.createdAt}`, style: "subheader" },
       { text: "\n" },
-      { text: "Total Assessable Income", style: "sectionHeader" },
+      { text: "Total Assessable Income", style: "sectionHeader" }, 
       {
         ul: [
           {

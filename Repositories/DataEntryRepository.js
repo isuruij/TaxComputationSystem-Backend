@@ -1053,5 +1053,3 @@ module.exports.addSecondAdmin = async (obj) => {
     return { status: false };
   }
 };
-
-

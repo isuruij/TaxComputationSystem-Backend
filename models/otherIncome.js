@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: true,
       },
+      otherIncome2: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
       docname: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -46,6 +50,8 @@ module.exports = (sequelize, DataTypes) => {
 
           const previousIncome = previousRecord.otherIncome;
           const newIncome = record.otherIncome;
+          const previousIncome2 = previousRecord.otherIncome2;
+          const newIncome2 = record.otherIncome2;
 
           // Update sumOfCat table
           await sumOfCat.update(
@@ -53,30 +59,22 @@ module.exports = (sequelize, DataTypes) => {
               TotAssessableIncome: sequelize.literal(
                 `TotAssessableIncome + ${newIncome} - ${previousIncome}`
               ),
+              TotAssessableIncome2: sequelize.literal(
+                `TotAssessableIncome2 + ${newIncome2} - ${previousIncome2}`
+              ),
             },
             {
               where: { taxpayerId: record.taxpayerId },
               transaction: options.transaction,
             }
           );
-          // Trigger the beforeUpdate hook on sumOfCat model
-          const sumOfCatInstance = await sumOfCat.findOne({
-            where: { taxpayerId: record.taxpayerId },
-            transaction: options.transaction,
-          });
-          if (sumOfCatInstance) {
-            await sumOfCatInstance.update(
-              {},
-              { transaction: options.transaction }
-            );
-          }
         },
         // afterCreate: async (record, options) => {
         //   // Update sumOfCat table
         //   await sumOfCat.update(
         //     {
         //       TotAssessableIncome: sequelize.literal(
-        //         `TotAssessableIncome + ${record.employmentIncome}`
+        //         `TotAssessableIncome + ${record.otherIncome}`
         //       ),
         //     },
         //     {
@@ -86,11 +84,19 @@ module.exports = (sequelize, DataTypes) => {
         //   );
         // },
         afterDestroy: async (record, options) => {
+          // Fetch the previous value
+          const previousRecord = await record.constructor.findOne({
+            where: { incomeId: record.incomeId },
+            transaction: options.transaction,
+          });
           // Update sumOfCat table
           await sumOfCat.update(
             {
               TotAssessableIncome: sequelize.literal(
-                `TotAssessableIncome - ${record.employmentIncome}`
+                `TotAssessableIncome - ${previousRecord.otherIncome}`
+              ),
+              TotAssessableIncome2: sequelize.literal(
+                `TotAssessableIncome2 - ${previousRecord.otherIncome2}`
               ),
             },
             {
@@ -98,17 +104,6 @@ module.exports = (sequelize, DataTypes) => {
               transaction: options.transaction,
             }
           );
-          // Trigger the beforeUpdate hook on sumOfCat model
-          const sumOfCatInstance = await sumOfCat.findOne({
-            where: { taxpayerId: record.taxpayerId },
-            transaction: options.transaction,
-          });
-          if (sumOfCatInstance) {
-            await sumOfCatInstance.update(
-              {},
-              { transaction: options.transaction }
-            );
-          }
         },
       },
     }
