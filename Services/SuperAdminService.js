@@ -614,3 +614,55 @@ module.exports.updateSubmissionStatusSelfAssessmentPayment = async (incomeId) =>
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
 };
+
+
+//Mailbox
+module.exports.getinboxMail = async () => {
+  try {
+    const inboxMail = await SuperAdminRepository.getinboxMail();
+    return inboxMail;
+  } catch (error) {
+    throw new Error(`Error while fetching inboxmail: ${error.message}`);
+  }
+};
+
+module.exports.deletetInboxmail = async (emailId) => {
+  try {
+    await SuperAdminRepository.deletetInboxmail(emailId);
+    return { message: 'Email deleted successfully' };
+  } catch (error) {
+    throw new Error(`Error while deleting inboxmail: ${error.message}`);
+  }
+};
+
+module.exports.getSentMail = async () => {
+  try {
+    const sentMail = await SuperAdminRepository.getSentMail();
+    return sentMail;
+  } catch (error) {
+    throw new Error(`Error while fetching sentmail: ${error.message}`);
+  }
+};
+
+module.exports.deleteSentMail = async (emailId) => {
+  try {
+    await SuperAdminRepository.deleteSentMail(emailId);
+    return { message: 'Email deleted successfully' };
+  } catch (error) {
+    throw new Error(`Error while deleting sentmail: ${error.message}`);
+  }
+};
+
+const composeMail = require("../utils/composeMail");
+
+
+
+
+module.exports.composemail = async (data) => {
+  try {
+    composeMail(data.to, data.subject, data.body);
+    return { message: 'Email deleted successfully' };
+  } catch (error) {
+    throw new Error(`Error while deleting sentmail: ${error.message}`);
+  }
+};

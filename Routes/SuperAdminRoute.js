@@ -95,6 +95,18 @@ router.post('/createPolicy',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminC
 router.get("/authtsuperAdmin", JwtService.authtsuperAdmin, SuperAdminController.authtsuperAdmin);
 
 
+//Mailbox
+
+router.get("/getinboxemail",SuperAdminController.getinboxMail);
+router.delete("/deletetInboxemail/:emailId", SuperAdminController.deletetInboxmail);
+
+
+router.get("/getsentemail",SuperAdminController.getSentMail);
+router.delete("/deleteSentemail/:emailId", SuperAdminController.deleteSentMail);
+
+router.post("/composemail", SuperAdminController.composemail);
+
+
  
 
 module.exports = router;
