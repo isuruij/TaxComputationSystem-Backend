@@ -73,7 +73,7 @@ module.exports.getUserDetails = async (req, res) => {
   }
 };
 
-//get tax calculations(under development)
+//get tax calculations
 module.exports.getTaxCalDetails = async (req, res) => {
   try {
     const id = req.params.id;
@@ -83,6 +83,24 @@ module.exports.getTaxCalDetails = async (req, res) => {
         Status: "Success",
         Data: result.data,
         Data2: result.data2,
+      });
+    } else {
+      return res.status(400).json({ Status: "NotSuccess" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+//get files from server
+module.exports.getfiles = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await DataEntryService.getfiles(id);
+    if (result.status) {
+      return res.json({
+        Status: "Success",
+        Data: result.data,
       });
     } else {
       return res.status(400).json({ Status: "NotSuccess" });

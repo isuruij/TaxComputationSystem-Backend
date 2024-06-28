@@ -60,7 +60,7 @@ module.exports.getUserDetails = async (userId) => {
   }
 };
 
-//get tax calculations(under development)
+//get tax calculations
 module.exports.getTaxCalDetails = async (userId) => {
   try {
     if (!userId) {
@@ -70,6 +70,24 @@ module.exports.getTaxCalDetails = async (userId) => {
 
     if (values.status) {
       return { status: true, data: values.data, data2: values.data2 };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+//get iles from server
+module.exports.getfiles = async (userId) => {
+  try {
+    if (!userId) {
+      return { status: false };
+    }
+    const values = await DataEntryRepository.getfiles(userId);
+
+    if (values.status) {
+      return { status: true, data: values.data };
     } else {
       return { status: false };
     }
