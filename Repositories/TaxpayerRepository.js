@@ -922,7 +922,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
 module.exports.getUserDetails = async (userId) => {
   try {
     const result = await Taxpayer.findOne({
-      attributes: ["name", "tin"],
+      attributes: ["name", "tin", "isVerifiedUser"],
       where: { id: userId },
     });
     if (!result) {

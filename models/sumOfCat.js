@@ -89,15 +89,23 @@ module.exports = (sequelize, DataTypes) => {
             totAssessableIncome -
             ((sumOfCatInstance.Choosed_QP || 0) * 9) / 12 -
             reliefs;
+          if (TotTaxableIncome <= 0) {
+            TotTaxableIncome = 0;
+          }
           let TotTaxableIncome2 =
             totAssessableIncome2 -
             ((sumOfCatInstance.Choosed_QP || 0) * 3) / 12 -
             reliefs2;
+          if (TotTaxableIncome2 <= 0) {
+            TotTaxableIncome2 = 0;
+          }
           let Tax = 0.0;
           let Tax2 = 0.0;
 
           //Calculate Income tax for 9months
-          if (TotTaxableIncome <= 2250000) {
+          if (TotTaxableIncome <= 0) {
+            Tax = 0;
+          } else if (TotTaxableIncome <= 2250000) {
             Tax = TotTaxableIncome * 0.06;
           } else if (TotTaxableIncome <= 4500000) {
             Tax = 2250000 * 0.06 + (TotTaxableIncome - 2250000) * 0.12;
@@ -120,7 +128,9 @@ module.exports = (sequelize, DataTypes) => {
           );
 
           //Calculate Income tax for 3months
-          if (TotTaxableIncome2 <= 125000) {
+          if (TotTaxableIncome2 <= 0) {
+            Tax = 0;
+          } else if (TotTaxableIncome2 <= 125000) {
             Tax2 = TotTaxableIncome2 * 0.06;
           } else if (TotTaxableIncome2 <= 250000) {
             Tax2 = 125000 * 0.06 + (TotTaxableIncome2 - 125000) * 0.12;

@@ -578,6 +578,23 @@ module.exports.getTaxCalDetails = async (userId) => {
   }
 };
 
+//get files from server
+module.exports.getfiles = async (userId) => {
+  try {
+    console.log("searching CombinedIncome");
+    const result = await CombinedIncome.findOne({
+      where: { taxpayerId: userId },
+    });
+    console.log(result);
+    if (!result) {
+      return { status: false };
+    }
+    return { status: true, data: result };
+  } catch (error) {
+    return { status: false };
+  }
+};
+
 ////////////////////////////////////////////////////////////
 
 // file upload part

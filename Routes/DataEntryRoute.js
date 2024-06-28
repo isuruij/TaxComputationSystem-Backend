@@ -47,6 +47,9 @@ router.get("/getUserDetails/:id", DataEntryController.getUserDetails);
 //get tax into taxview page
 router.get("/getTaxCalDetails/:id", DataEntryController.getTaxCalDetails);
 
+//get documents from server
+router.get("/getfiles/:id", DataEntryController.getfiles);
+
 //Upload files into database
 router.post(
   "/fileUpload/:userId",
