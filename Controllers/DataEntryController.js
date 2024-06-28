@@ -97,10 +97,12 @@ module.exports.getfiles = async (req, res) => {
   try {
     const id = req.params.id;
     const result = await DataEntryService.getfiles(id);
+    console.log(userId, result.data, result.user, result.status);
     if (result.status) {
       return res.json({
         Status: "Success",
         Data: result.data,
+        User: result.user,
       });
     } else {
       return res.status(400).json({ Status: "NotSuccess" });

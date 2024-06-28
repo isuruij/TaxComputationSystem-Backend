@@ -581,15 +581,83 @@ module.exports.getTaxCalDetails = async (userId) => {
 //get files from server
 module.exports.getfiles = async (userId) => {
   try {
-    console.log("searching CombinedIncome");
-    const result = await CombinedIncome.findOne({
+    const taxpayer = await taxpayer.findOne({
+      attributes: ["name", "tin"],
       where: { taxpayerId: userId },
     });
-    console.log(result);
-    if (!result) {
-      return { status: false };
-    }
-    return { status: true, data: result };
+    const table1 = await employmentIncome.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table2 = await businessIncome.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table3 = await investmentIncome.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table4 = await reliefForRentIncome.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table5 = await otherIncome.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table6 = await reliefForExpenditure.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table7 = await qualifyingPayments.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table8 = await apit.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table9 = await whtOnInvestmentIncome.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table10 = await whtOnServiceFeeReceived.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table11 = await selfAssessmentPayment.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table12 = await terminalBenefits.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table13 = await capitalValueGain.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table14 = await whtWhichIsNotDeducted.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const Data = [
+      table1,
+      table2,
+      table3,
+      table4,
+      table5,
+      table6,
+      table7,
+      table8,
+      table9,
+      table10,
+      table11,
+      table12,
+      table13,
+      table14,
+    ];
+    return { status: true, data: Data, user: taxpayer };
   } catch (error) {
     return { status: false };
   }
