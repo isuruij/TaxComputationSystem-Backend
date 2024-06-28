@@ -922,7 +922,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
 module.exports.getUserDetails = async (userId) => {
   try {
     const result = await Taxpayer.findOne({
-      attributes: ["name", "tin"],
+      attributes: ["name", "tin", "isVerifiedUser"],
       where: { id: userId },
     });
     if (!result) {
@@ -934,17 +934,38 @@ module.exports.getUserDetails = async (userId) => {
   }
 };
 
-//thimira get tax calculations(under development)
+//thimira get tax calculations
 module.exports.getTaxCalDetails = async (userId) => {
   try {
-    const result = await Taxpayer.findOne({
-      attributes: ["name", "tin"],
-      where: { id: userId },
+    const result = await totalTax.findOne({
+      attributes: [
+        "taxableAmount",
+        "taxableAmount2",
+        "incomeTax",
+        "incomeTax2",
+        "TerminalTax",
+        "CapitalTax",
+        "WHTNotDeductTax",
+        "createdAt",
+      ],
+      where: { taxpayerId: userId },
     });
-    if (!result) {
+    const result2 = await sumOfCat.findOne({
+      attributes: [
+        "TotAssessableIncome",
+        "TotAssessableIncome2",
+        "Reliefs",
+        "Reliefs2",
+        "Choosed_QP",
+        "TaxCredit",
+        "TaxCredit2",
+      ],
+      where: { taxpayerId: userId },
+    });
+    if (!result || !result2) {
       return { status: false };
     }
-    return { status: true, data: result };
+    return { status: true, data: result, data2: result2 };
   } catch (error) {
     return { status: false };
   }
@@ -1008,9 +1029,24 @@ module.exports.generateTaxReport = async (userId, protocol, host) => {
       // New record was created
       console.log(`New tax summary report created for taxpayerId: ${userId}`);
     }
-    return { status: true, filepath: fileUrl };
+    return { status: true };
   } catch (error) {
     return { status: false, msg: "Error generating PDF in repo" };
+  }
+};
+
+//download tax report
+module.exports.downloadSummaryReport = async (id) => {
+  try {
+    const result = await TaxSummaryReport.findOne({
+      attributes: ["isVerified", "path"],
+      where: { taxpayerId: id },
+    });
+
+    return { status: true, data: result };
+  } catch (error) {
+    console.error(`Error fetching notifications: ${error}`);
+    return { status: false };
   }
 };
 
@@ -1083,12 +1119,11 @@ module.exports.updateNotificationStatus = async (id) => {
   }
 };
 
-
 //get income details
 module.exports.getBusinessIncomeByTaxpayerId = async (id) => {
-  try{
+  try {
     return await businessIncome.findAll({ where: { taxpayerId: id } });
-  }catch (error){
+  } catch (error) {
     console.error(`Error: ${error}`);
   }
 };
@@ -1204,4 +1239,3 @@ module.exports.getSelfAssessmentPaymentByTaxpayerId = async (id) => {
     console.error(`Error: ${error}`);
   }
 };
-

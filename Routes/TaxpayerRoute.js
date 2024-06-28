@@ -101,11 +101,14 @@ router.post(
 
 router.get("/getUserDetails/:id", TaxpayerController.getUserDetails);
 
-//under development
+//Get tax details for view
 router.get("/getTaxCalDetails/:id", TaxpayerController.getTaxCalDetails);
 
 //Generate tax report
 router.get("/generate-report/:id", TaxpayerController.generateTaxReport);
+
+//download tax report
+router.get("/getSummaryReport/:id", TaxpayerController.downloadSummaryReport);
 
 //download tax report
 // router.get("/files/:id/:filename", TaxpayerController.taxReportDownload);

@@ -275,15 +275,17 @@ module.exports.getUserDetails = async (req, res) => {
   }
 };
 
-//get tax calculations(under development)
+//get tax calculations
 module.exports.getTaxCalDetails = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
-
     const result = await TaxpayerService.getTaxCalDetails(id);
     if (result.status) {
-      return res.json({ Status: "Success", Data: result.data });
+      return res.json({
+        Status: "Success",
+        Data: result.data,
+        Data2: result.data2,
+      });
     } else {
       return res.status(400).json({ Status: "NotSuccess" });
     }
@@ -303,7 +305,25 @@ module.exports.generateTaxReport = async (req, res) => {
     if (result.status) {
       return res.json({
         Status: "Successfully Generated",
-        filepath: result.filepath,
+      });
+    } else {
+      return res.status(400).json({ Status: result.msg });
+    }
+  } catch (error) {
+    res.status(500).send("Error generating tax report");
+  }
+};
+
+//download Tax Report
+module.exports.downloadSummaryReport = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const result = await TaxpayerService.downloadSummaryReport(id);
+    if (result.status) {
+      return res.json({
+        Status: "Successfull",
+        Data: result.data,
       });
     } else {
       return res.status(400).json({ Status: result.msg });
@@ -371,7 +391,9 @@ module.exports.updateNotificationStatus = async (req, res) => {
 
 module.exports.getBusinessIncomeByTaxpayerId = async (req, res) => {
   try {
-    const result = await TaxpayerService.getBusinessIncomeByTaxpayerId(req.params.id);
+    const result = await TaxpayerService.getBusinessIncomeByTaxpayerId(
+      req.params.id
+    );
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -380,7 +402,9 @@ module.exports.getBusinessIncomeByTaxpayerId = async (req, res) => {
 
 module.exports.getEmploymentIncomeByTaxpayerId = async (req, res) => {
   try {
-    const result = await TaxpayerService.getEmploymentIncomeByTaxpayerId(req.params.id);
+    const result = await TaxpayerService.getEmploymentIncomeByTaxpayerId(
+      req.params.id
+    );
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -389,7 +413,9 @@ module.exports.getEmploymentIncomeByTaxpayerId = async (req, res) => {
 
 module.exports.getInvestmentIncomeByTaxpayerId = async (req, res) => {
   try {
-    const result = await TaxpayerService.getInvestmentIncomeByTaxpayerId(req.params.id);
+    const result = await TaxpayerService.getInvestmentIncomeByTaxpayerId(
+      req.params.id
+    );
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -398,7 +424,9 @@ module.exports.getInvestmentIncomeByTaxpayerId = async (req, res) => {
 
 module.exports.getOtherIncomeByTaxpayerId = async (req, res) => {
   try {
-    const result = await TaxpayerService.getOtherIncomeByTaxpayerId(req.params.id);
+    const result = await TaxpayerService.getOtherIncomeByTaxpayerId(
+      req.params.id
+    );
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -407,7 +435,9 @@ module.exports.getOtherIncomeByTaxpayerId = async (req, res) => {
 
 module.exports.getCapitalValueGainByTaxpayerId = async (req, res) => {
   try {
-    const result = await TaxpayerService.getCapitalValueGainByTaxpayerId(req.params.id);
+    const result = await TaxpayerService.getCapitalValueGainByTaxpayerId(
+      req.params.id
+    );
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -416,7 +446,9 @@ module.exports.getCapitalValueGainByTaxpayerId = async (req, res) => {
 
 module.exports.getReliefForExpenditureByTaxpayerId = async (req, res) => {
   try {
-    const result = await TaxpayerService.getReliefForExpenditureByTaxpayerId(req.params.id);
+    const result = await TaxpayerService.getReliefForExpenditureByTaxpayerId(
+      req.params.id
+    );
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -425,7 +457,9 @@ module.exports.getReliefForExpenditureByTaxpayerId = async (req, res) => {
 
 module.exports.getReliefForRentIncomeByTaxpayerId = async (req, res) => {
   try {
-    const result = await TaxpayerService.getReliefForRentIncomeByTaxpayerId(req.params.id);
+    const result = await TaxpayerService.getReliefForRentIncomeByTaxpayerId(
+      req.params.id
+    );
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -434,7 +468,9 @@ module.exports.getReliefForRentIncomeByTaxpayerId = async (req, res) => {
 
 module.exports.getQualifyingPaymentsByTaxpayerId = async (req, res) => {
   try {
-    const result = await TaxpayerService.getQualifyingPaymentsByTaxpayerId(req.params.id);
+    const result = await TaxpayerService.getQualifyingPaymentsByTaxpayerId(
+      req.params.id
+    );
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -443,7 +479,9 @@ module.exports.getQualifyingPaymentsByTaxpayerId = async (req, res) => {
 
 module.exports.getTerminalBenefitsByTaxpayerId = async (req, res) => {
   try {
-    const result = await TaxpayerService.getTerminalBenefitsByTaxpayerId(req.params.id);
+    const result = await TaxpayerService.getTerminalBenefitsByTaxpayerId(
+      req.params.id
+    );
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -452,7 +490,9 @@ module.exports.getTerminalBenefitsByTaxpayerId = async (req, res) => {
 
 module.exports.getWhtOnInvestmentIncomeByTaxpayerId = async (req, res) => {
   try {
-    const result = await TaxpayerService.getWhtOnInvestmentIncomeByTaxpayerId(req.params.id);
+    const result = await TaxpayerService.getWhtOnInvestmentIncomeByTaxpayerId(
+      req.params.id
+    );
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -461,7 +501,9 @@ module.exports.getWhtOnInvestmentIncomeByTaxpayerId = async (req, res) => {
 
 module.exports.getWhtOnServiceFeeReceivedByTaxpayerId = async (req, res) => {
   try {
-    const result = await TaxpayerService.getWhtOnServiceFeeReceivedByTaxpayerId(req.params.id);
+    const result = await TaxpayerService.getWhtOnServiceFeeReceivedByTaxpayerId(
+      req.params.id
+    );
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -470,7 +512,9 @@ module.exports.getWhtOnServiceFeeReceivedByTaxpayerId = async (req, res) => {
 
 module.exports.getWhtWhichIsNotDeductedByTaxpayerId = async (req, res) => {
   try {
-    const result = await TaxpayerService.getWhtWhichIsNotDeductedByTaxpayerId(req.params.id);
+    const result = await TaxpayerService.getWhtWhichIsNotDeductedByTaxpayerId(
+      req.params.id
+    );
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -488,7 +532,9 @@ module.exports.getApitByTaxpayerId = async (req, res) => {
 
 module.exports.getSelfAssessmentPaymentByTaxpayerId = async (req, res) => {
   try {
-    const result = await TaxpayerService.getSelfAssessmentPaymentByTaxpayerId(req.params.id);
+    const result = await TaxpayerService.getSelfAssessmentPaymentByTaxpayerId(
+      req.params.id
+    );
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
