@@ -87,7 +87,7 @@ module.exports.getfiles = async (userId) => {
     const values = await DataEntryRepository.getfiles(userId);
 
     if (values.status) {
-      return { status: true, data: values.data };
+      return { status: true, data: values.data, user: values.user };
     } else {
       return { status: false };
     }
