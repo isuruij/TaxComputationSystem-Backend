@@ -4,13 +4,27 @@ const { Taxpayer } = require("../models");
 
 //For upload docs
 const multer = require("multer");
+// Importing the file system module for directory creation
+const fs = require("fs");
 //For upload docs
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/Images"); // Destination folder for uploaded files
+    const userId = req.params.userId;
+    const uploadPath = `./public/files/${userId}`;
+
+    // Create directory if it doesn't exist
+    fs.mkdirSync(uploadPath, { recursive: true });
+
+    cb(null, uploadPath); // Destination folder for uploaded files
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "_" + file.originalname;
+    // console.log(req.params);
+    const uniqueSuffix =
+      Date.now() +
+      "_TaxPayerID_" +
+      req.params.userId +
+      "_docs_" +
+      file.originalname;
     cb(null, uniqueSuffix);
   },
 });
@@ -30,11 +44,19 @@ router.get("/getusersubmission", DataEntryController.getUserSubmission);
 //Get user name and tin number
 router.get("/getUserDetails/:id", DataEntryController.getUserDetails);
 
+//get tax into taxview page
+router.get("/getTaxCalDetails/:id", DataEntryController.getTaxCalDetails);
+
+//get documents from server
+router.get("/getfiles/:id", DataEntryController.getfiles);
+
 //Upload files into database
 router.post(
   "/fileUpload/:userId",
   upload.array("files"),
   DataEntryController.fileUpload
 );
+
+///////////view files
 
 module.exports = router;

@@ -14,12 +14,19 @@ router.post('/createfirstadmin',SuperAdminController.addFirstAdmin);
 router.post('/login',SuperAdminController.loginSuperAdmin);
 
 router.post('/addnotifications',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.addNotifications);
+router.post('/addnotifications2',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.addNotifications2);
 router.get("/getusers",JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.getTaxpayers);
 
 router.get("/getBusinessIncome/",JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.getBusinessIncome);
 
 router.delete("/deletetaxpayers/:id",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.deleteTaxpayer);
 router.put("/updateUserApprovalStatus",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.toggleApproval);
+
+router.get("/fetchTaxpayer/:userId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.fetchTaxpayer);
+router.put("/updateNoOfSubmissions/:userId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateNoOfSubmissions);
+
+
+
 
 //get income details
 router.get('/getbusinessincome/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getBusinessIncomeByTaxpayerId);
@@ -32,7 +39,7 @@ router.get('/getreliefforexpenditure/:taxpayerId',JwtService.roleBasedAuth(["sup
 router.get('/getreliefforrentincome/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getReliefForRentIncome);
 router.get('/getselfassessmentpayment/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getSelfAssessmentPayment);
 router.get('/getTerminalBenefits/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getTerminalBenefits);
-router.get('/getwhtoninvestmentincome/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]),JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getWhtOnInvestmentIncome);
+router.get('/getwhtoninvestmentincome/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.getWhtOnInvestmentIncome);
 router.get('/getwhtonservicefeereceived/:taxpayerId', JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.getWhtOnServiceFeeReceived);
 router.get('/getwhtwhichisnotdeducted/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getWhtWhichIsNotDeducted);
 router.get('/getqualifyingpayments/:taxpayerId',JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.getQualifyingPayments);
@@ -59,6 +66,23 @@ router.put("/verifySelfAssessmentPayment",JwtService.roleBasedAuth(["superAdmin"
 router.post("/requestDocument",JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.requestDocument);
 router.post("/requestAgainDocument",JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.requestAgainDocument);
 
+//update submission status
+router.put("/updateSubmissionStatusBusinessIncome/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusBusinessIncome);
+router.put("/updateSubmissionStatusEmploymentIncome/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusEmploymentIncome);
+router.put("/updateSubmissionStatusInvestmentIncome/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusInvestmentIncome);
+router.put("/updateSubmissionStatusOtherIncome/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusOtherIncome);
+router.put("/updateSubmissionStatusreliefForExpenditure/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusreliefForExpenditure);
+router.put("/updateSubmissionStatusCapitalValueGain/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusCapitalValueGain);
+router.put("/updateSubmissionStatusReliefForRentIncome/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusReliefForRentIncome);
+router.put("/updateSubmissionStatusQualifyingPayments/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusQualifyingPayments);
+router.put("/updateSubmissionStatusTerminalBenefits/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusTerminalBenefits);
+router.put("/updateSubmissionStatusWhtOnInvestmentIncome/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusWhtOnInvestmentIncome);
+router.put("/updateSubmissionStatusWhtOnServiceFeeReceived/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusWhtOnServiceFeeReceived);
+router.put("/updateSubmissionStatusWhtWhichIsNotDeducted/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusWhtWhichIsNotDeducted);
+router.put("/updateSubmissionStatusApit/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusApit);
+router.put("/updateSubmissionStatusSelfAssessmentPayment/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusSelfAssessmentPayment);
+router.put("/updateSubmissionStatusreliefForExpenditure/:incomeId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateSubmissionStatusreliefForExpenditure);
+
 
 router.patch('/updatePolicy',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.updatePolicy);
 
@@ -69,6 +93,18 @@ router.get('/policy',SuperAdminController.policy);
 router.post('/createPolicy',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.createPolicy);
 
 router.get("/authtsuperAdmin", JwtService.authtsuperAdmin, SuperAdminController.authtsuperAdmin);
+
+
+//Mailbox
+
+router.get("/getinboxemail",SuperAdminController.getinboxMail);
+router.delete("/deletetInboxemail/:emailId", SuperAdminController.deletetInboxmail);
+
+
+router.get("/getsentemail",SuperAdminController.getSentMail);
+router.delete("/deleteSentemail/:emailId", SuperAdminController.deleteSentMail);
+
+router.post("/composemail", SuperAdminController.composemail);
 
 
  
