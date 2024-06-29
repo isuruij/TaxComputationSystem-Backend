@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false,
     },
 
-
+ 
   });
   
   Notification.associate = models => {
