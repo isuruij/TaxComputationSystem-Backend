@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { Taxpayer } = require("../models");
 
+
+const JwtService = require("../Services/JwtService")
+
 //For upload docs
 const multer = require("multer");
 // Importing the file system module for directory creation
@@ -58,5 +61,9 @@ router.post(
 );
 
 ///////////view files
+
+
+
+router.get("/authtsecondAdmin", JwtService.authtsecondAdmin, DataEntryController.authtsecondAdmin);
 
 module.exports = router;
