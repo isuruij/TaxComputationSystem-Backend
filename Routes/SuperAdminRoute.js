@@ -22,8 +22,8 @@ router.get("/getBusinessIncome/",JwtService.roleBasedAuth(["superAdmin"]),SuperA
 router.delete("/deletetaxpayers/:id",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.deleteTaxpayer);
 router.put("/updateUserApprovalStatus",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.toggleApproval);
 
-router.get("/fetchTaxpayer/:userId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.fetchTaxpayer);
-router.put("/updateNoOfSubmissions/:userId",JwtService.roleBasedAuth(["superAdmin"]), SuperAdminController.updateNoOfSubmissions);
+router.get("/fetchTaxpayer/:userId",JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.fetchTaxpayer);
+router.put("/updateNoOfSubmissions/:userId",JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateNoOfSubmissions);
 
 
 

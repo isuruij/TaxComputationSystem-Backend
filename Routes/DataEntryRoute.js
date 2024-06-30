@@ -36,27 +36,28 @@ const upload = multer({ storage: storage });
 const DataEntryController = require("../Controllers/DataEntryController");
 
 //get user names and is verified by admin detals to dataentry dashboard
-router.get("/getusernames", DataEntryController.getusernames);
+router.get("/getusernames",JwtService.roleBasedAuth(["secondAdmin"]), DataEntryController.getusernames);
 
 //Post income data into database
-router.post("/enterData", DataEntryController.postTaxDetails);
+router.post("/enterData",JwtService.roleBasedAuth(["secondAdmin"]), DataEntryController.postTaxDetails);
 
 //Get user submissions
-router.get("/getusersubmission", DataEntryController.getUserSubmission);
+router.get("/getusersubmission",JwtService.roleBasedAuth(["secondAdmin"]), DataEntryController.getUserSubmission);
 
 //Get user name and tin number
-router.get("/getUserDetails/:id", DataEntryController.getUserDetails);
+router.get("/getUserDetails/:id",JwtService.roleBasedAuth(["secondAdmin"]), DataEntryController.getUserDetails);
 
 //get tax into taxview page
-router.get("/getTaxCalDetails/:id", DataEntryController.getTaxCalDetails);
+router.get("/getTaxCalDetails/:id",JwtService.roleBasedAuth(["secondAdmin"]), DataEntryController.getTaxCalDetails);
 
 //get documents from server
-router.get("/getfiles/:id", DataEntryController.getfiles);
+router.get("/getfiles/:id",JwtService.roleBasedAuth(["secondAdmin"]), DataEntryController.getfiles);
 
 //Upload files into database
 router.post(
   "/fileUpload/:userId",
   upload.array("files"),
+  JwtService.roleBasedAuth(["secondAdmin"]),
   DataEntryController.fileUpload
 );
 
