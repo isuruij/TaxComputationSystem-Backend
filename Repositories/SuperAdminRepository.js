@@ -892,3 +892,26 @@ module.exports.deleteSentMail = async (emailId) => {
     throw new Error(`Error while deleting email: ${error.message}`);
   }
 };
+
+
+module.exports.addsendmail = async (to, subject, body) => {
+  try {
+    // Check whether taxpayerId exists
+    const taxpayer = await Taxpayer.findOne({ where: { email: to } }); // Assuming that `to` contains the email and Taxpayer model has an email field
+
+    // Create a new EmailSent record
+    const newEmail = await EmailSent.create({
+      sender: "isuruijs@gmail.com", // Replace with the actual sender email or get it dynamically
+      recipient: to,
+      subject: subject,
+      message: body,
+      sentDate: new Date(), // Add the current date and time as the sent date
+      taxpayerId: taxpayer ? taxpayer.id : 9999 // Use the taxpayerId from the found taxpayer, if available
+    });
+    console.log(newEmail)
+
+    return newEmail;
+  } catch (error) {
+    throw new Error(`Error while adding email: ${error.message}`);
+  }
+};
