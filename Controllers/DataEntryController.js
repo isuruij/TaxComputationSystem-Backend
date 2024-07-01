@@ -73,9 +73,50 @@ module.exports.getUserDetails = async (req, res) => {
   }
 };
 
+//get tax calculations
+module.exports.getTaxCalDetails = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await DataEntryService.getTaxCalDetails(id);
+    if (result.status) {
+      return res.json({
+        Status: "Success",
+        Data: result.data,
+        Data2: result.data2,
+      });
+    } else {
+      return res.status(400).json({ Status: "NotSuccess" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+//get files from server
+module.exports.getfiles = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await DataEntryService.getfiles(id);
+    console.log(userId, result.data, result.user, result.status);
+    if (result.status) {
+      return res.json({
+        Status: "Success",
+        Data: result.data,
+        User: result.user,
+      });
+    } else {
+      return res.status(400).json({ Status: "NotSuccess" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 //Doc upload part
 module.exports.fileUpload = async (req, res) => {
   try {
+    const protocol = req.protocol;
+    const host = req.get("host");
     const userId = req.params.userId;
     const files = req.files;
     const ids = req.body.fileIds;
@@ -95,7 +136,7 @@ module.exports.fileUpload = async (req, res) => {
     }));
 
     // Call the service to handle the file data
-    await DataEntryService.fileUpload(userId, fileData);
+    await DataEntryService.fileUpload(userId, fileData, host, protocol);
 
     // Respond to the client
     return res.json({ Status: "Files uploaded successfully!" });
@@ -103,4 +144,9 @@ module.exports.fileUpload = async (req, res) => {
     console.error(error);
     return res.status(500).json({ error: "Error uploading files" });
   }
+};
+
+
+module.exports.authtsecondAdmin = async (req, res) => {
+  res.json({ Status: "Success", name: req.name });
 };

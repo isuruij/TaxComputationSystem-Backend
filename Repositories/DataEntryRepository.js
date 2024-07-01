@@ -15,9 +15,12 @@ const {
   capitalValueGain,
   whtWhichIsNotDeducted,
   SecondAdmin,
-  SuperAdmin
+  SuperAdmin,
+  totalTax,
+  sumOfCat,
 } = require("../models");
 const bcrypt = require("bcrypt");
+const { sequelize, DataTypes } = require("../models/index");
 
 //get username and is verified details to dataentry dashboard
 module.exports.getusernames = async () => {
@@ -36,405 +39,469 @@ module.exports.getusernames = async () => {
 
 // dataentry data enter part
 module.exports.postTaxDetails = async (dataObject) => {
+  //     //dataObject.UserId is a string and want to convert to integer to compare
+  //     let id = parseInt(dataObject.UserId, 10);
+
+  //     // only update or insert when amount is not null
+  //     if (dataObject.amount[0]) {
+  //       // 1.update employment income table
+  //       // First, attempt to find the existing row
+  //       let [existingRow1, created1] = await employmentIncome.findOrCreate({
+  //         where: { taxpayerId: id }, // to find the existing row
+  //         defaults: {
+  //           employmentIncome: dataObject.amount[0],
+  //           eI_Note: dataObject.note[0],
+  //           taxpayerId: id,
+  //         },
+  //       });
+  //       // If the row was not created (already existed), update it
+  //       if (!created1) {
+  //         existingRow1 = await existingRow1.update({
+  //           employmentIncome: dataObject.amount[0],
+  //           eI_Note: dataObject.note[0],
+  //         });
+  //         console.log("Employemnet income row updated:", existingRow1.toJSON());
+  //       } else {
+  //         console.log("Employemnet income row created:", existingRow1.toJSON());
+  //       }
+  //     }
+
   try {
-    //dataObject.UserId is a string and want to convert to integer to compare
+    // Convert UserId to integer
     let id = parseInt(dataObject.UserId, 10);
 
-    // only update or insert when amount is not null
-    if (dataObject.amount[0]) {
-      // 1.update employment income table
-      // First, attempt to find the existing row
-      let [existingRow1, created1] = await employmentIncome.findOrCreate({
-        where: { taxpayerId: id }, // to find the existing row
+    // 1.update employment income table
+    const upsertEmploymentIncome = async (amountKey, note, id) => {
+      const columnName =
+        amountKey === "amount" ? "employmentIncome" : "employmentIncome2";
+      if (!dataObject[amountKey][0]) {
+        dataObject[amountKey][0] = 0;
+      }
+      let [existingRow, created] = await employmentIncome.findOrCreate({
+        where: { taxpayerId: id },
         defaults: {
-          employmentIncome: dataObject.amount[0],
-          eI_Note: dataObject.note[0],
+          [columnName]: dataObject[amountKey][0],
+          eI_Note: note,
           taxpayerId: id,
-          docname: "",
         },
       });
-      // If the row was not created (already existed), update it
-      if (!created1) {
-        existingRow1 = await existingRow1.update({
-          employmentIncome: dataObject.amount[0],
-          eI_Note: dataObject.note[0],
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][0],
+          eI_Note: note,
         });
-        console.log("Employemnet income row updated:", existingRow1.toJSON());
+        console.log(`Employment income row updated:`, existingRow.toJSON());
       } else {
-        console.log("Employemnet income row created:", existingRow1.toJSON());
+        console.log(`Employment income row created:`, existingRow.toJSON());
       }
+    };
+    // Update or create employment income entries for amount and amount2
+    if (dataObject.amount[0] || dataObject.amount2[0]) {
+      await upsertEmploymentIncome("amount", dataObject.note[0], id);
+      await upsertEmploymentIncome("amount2", dataObject.note[0], id);
     }
 
-    // only update or insert when amount is not null
-    if (dataObject.amount[1]) {
-      // 2.update bussiness income table
-      // First, attempt to find the existing row
-      let [existingRow2, created2] = await businessIncome.findOrCreate({
-        where: { taxpayerId: id }, // to find the existing row
+    // 2.update bussiness income table
+    const upsertBusinessIncome = async (amountKey, note, id) => {
+      const columnName =
+        amountKey === "amount" ? "businessIncome" : "businessIncome2";
+      if (!dataObject[amountKey][1]) {
+        dataObject[amountKey][1] = 0;
+      }
+      let [existingRow, created] = await businessIncome.findOrCreate({
+        where: { taxpayerId: id },
         defaults: {
-          businessIncome: dataObject.amount[1],
-          bI_Note: dataObject.note[1],
+          [columnName]: dataObject[amountKey][1],
+          bI_Note: note,
           taxpayerId: id,
-          docname: "",
         },
       });
-      // If the row was not created (already existed), update it using update()
-      if (!created2) {
-        existingRow2 = await existingRow2.update({
-          businessIncome: dataObject.amount[1],
-          bI_Note: dataObject.note[1],
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][1],
+          bI_Note: note,
         });
-        console.log("Business income row updated:", existingRow2.toJSON());
+        console.log(`Business income row updated:`, existingRow.toJSON());
       } else {
-        console.log("Business income new row created:", existingRow2.toJSON());
+        console.log(`Business income row created:`, existingRow.toJSON());
       }
+    };
+    // Update or create business income entries for amount and amount2
+    if (dataObject.amount[1] || dataObject.amount2[1]) {
+      await upsertBusinessIncome("amount", dataObject.note[1], id);
+      await upsertBusinessIncome("amount2", dataObject.note[1], id);
     }
 
-    // only update or insert when amount is not null
-    if (dataObject.amount[2]) {
-      // 3.update investment Income table
-      // First, attempt to find the existing row
-      let [existingRow3, created3] = await investmentIncome.findOrCreate({
-        where: { taxpayerId: id }, // to find the existing row
+    // 3.update InvestmentIncome table
+    const upsertInvestmentIncome = async (amountKey, note, id) => {
+      const columnName =
+        amountKey === "amount" ? "investmentIncome" : "investmentIncome2";
+      if (!dataObject[amountKey][2]) {
+        dataObject[amountKey][2] = 0;
+      }
+      let [existingRow, created] = await investmentIncome.findOrCreate({
+        where: { taxpayerId: id },
         defaults: {
-          investmentIncome: dataObject.amount[2],
-          iI_Note: dataObject.note[2],
+          [columnName]: dataObject[amountKey][2],
+          iI_Note: note,
           taxpayerId: id,
-          docname: "",
         },
       });
-      // If the row was not created (already existed), update it using update()
-      if (!created3) {
-        existingRow3 = await existingRow3.update({
-          investmentIncome: dataObject.amount[2],
-          iI_Note: dataObject.note[2],
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][2],
+          iI_Note: note,
         });
-        console.log("investment Income row updated:", existingRow3.toJSON());
+        console.log(`investment income row updated:`, existingRow.toJSON());
       } else {
-        console.log(
-          "investment Income new row created:",
-          existingRow3.toJSON()
-        );
+        console.log(`investment income row created:`, existingRow.toJSON());
       }
+    };
+    // Update or create InvestmentIncome entries for amount and amount2
+    if (dataObject.amount[2] || dataObject.amount2[2]) {
+      await upsertInvestmentIncome("amount", dataObject.note[2], id);
+      await upsertInvestmentIncome("amount2", dataObject.note[2], id);
     }
 
-    // only update or insert when amount is not null
-    if (dataObject.amount[3]) {
-      // 4.update other Income table
-      // First, attempt to find the existing row
-      let [existingRow4, created4] = await otherIncome.findOrCreate({
-        where: { taxpayerId: id }, // to find the existing row
+    // 4.update reliefForRentIncome table
+    const upsertreliefForRentIncome = async (amountKey, note, id) => {
+      const columnName =
+        amountKey === "amount" ? "reliefForRentIncome" : "reliefForRentIncome2";
+      if (!dataObject[amountKey][3]) {
+        dataObject[amountKey][3] = 0;
+      }
+      let [existingRow, created] = await reliefForRentIncome.findOrCreate({
+        where: { taxpayerId: id },
         defaults: {
-          otherIncome: dataObject.amount[3],
-          oI_Note: dataObject.note[3],
+          [columnName]: dataObject[amountKey][3],
+          rRI_Note: note,
           taxpayerId: id,
-          docname: "",
         },
       });
-      // If the row was not created (already existed), update it using update()
-      if (!created4) {
-        existingRow4 = await existingRow4.update({
-          otherIncome: dataObject.amount[3],
-          oI_Note: dataObject.note[3],
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][3],
+          rRI_Note: note,
         });
-        console.log("other Income row updated:", existingRow4.toJSON());
+        console.log(`reliefForRentIncome row updated:`, existingRow.toJSON());
       } else {
-        console.log("other Income new row created:", existingRow4.toJSON());
+        console.log(`reliefForRentIncome row created:`, existingRow.toJSON());
       }
+    };
+    // Update or create reliefForRentIncome entries for amount and amount2
+    if (dataObject.amount[3] || dataObject.amount2[3]) {
+      await upsertreliefForRentIncome("amount", dataObject.note[3], id);
+      await upsertreliefForRentIncome("amount2", dataObject.note[3], id);
     }
 
-    // only update or insert when amount is not null
-    if (dataObject.amount[4]) {
-      // 5.update relief for rent income table
-      // First, attempt to find the existing row
-      let [existingRow5, created5] = await reliefForRentIncome.findOrCreate({
-        where: { taxpayerId: id }, // to find the existing row
+    // 5.update otherIncome table
+    const upsertotherIncome = async (amountKey, note, id) => {
+      const columnName =
+        amountKey === "amount" ? "otherIncome" : "otherIncome2";
+      if (!dataObject[amountKey][4]) {
+        dataObject[amountKey][4] = 0;
+      }
+      let [existingRow, created] = await otherIncome.findOrCreate({
+        where: { taxpayerId: id },
         defaults: {
-          reliefForRentIncome: dataObject.amount[4],
-          rRI_Note: dataObject.note[4],
+          [columnName]: dataObject[amountKey][4],
+          oI_Note: note,
           taxpayerId: id,
-          docname: "",
         },
       });
-      // If the row was not created (already existed), update it using update()
-      if (!created5) {
-        existingRow5 = await existingRow5.update({
-          reliefForRentIncome: dataObject.amount[4],
-          rRI_Note: dataObject.note[4],
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][4],
+          oI_Note: note,
         });
-        console.log(
-          "relief for rent income row updated:",
-          existingRow5.toJSON()
-        );
+        console.log(`otherIncome row updated:`, existingRow.toJSON());
       } else {
-        console.log(
-          "relief for rent income new row created:",
-          existingRow5.toJSON()
-        );
+        console.log(`otherIncome row created:`, existingRow.toJSON());
       }
+    };
+    // Update or create otherIncomee entries for amount and amount2
+    if (dataObject.amount[4] || dataObject.amount2[4]) {
+      await upsertotherIncome("amount", dataObject.note[4], id);
+      await upsertotherIncome("amount2", dataObject.note[4], id);
     }
 
-    // only update or insert when amount is not null
-    if (dataObject.amount[5]) {
-      // 6.update relief for expenditure table
-      // First, attempt to find the existing row
-      let [existingRow6, created6] = await reliefForExpenditure.findOrCreate({
-        where: { taxpayerId: id }, // to find the existing row
+    // 6.update reliefForExpenditure table
+    const upsertreliefForExpenditure = async (amountKey, note, id) => {
+      const columnName =
+        amountKey === "amount"
+          ? "reliefForExpenditure"
+          : "reliefForExpenditure2";
+      if (!dataObject[amountKey][5]) {
+        dataObject[amountKey][5] = 0;
+      }
+      let [existingRow, created] = await reliefForExpenditure.findOrCreate({
+        where: { taxpayerId: id },
         defaults: {
-          reliefForExpenditure: dataObject.amount[5],
-          rE_Note: dataObject.note[5],
+          reliefForExpenditure: dataObject[amountKey][5],
+          rE_Note: note,
           taxpayerId: id,
-          docname: "",
         },
       });
-      // If the row was not created (already existed), update it using update()
-      if (!created6) {
-        existingRow6 = await existingRow6.update({
-          reliefForExpenditure: dataObject.amount[5],
-          rE_Note: dataObject.note[5],
+      if (!created) {
+        existingRow = await existingRow.update({
+          reliefForExpenditure: dataObject[amountKey][5],
+          rE_Note: note,
         });
-        console.log(
-          "relief for expenditure row updated:",
-          existingRow6.toJSON()
-        );
+        console.log(`reliefForExpenditure row updated:`, existingRow.toJSON());
       } else {
-        console.log(
-          "relief for expenditure new row created:",
-          existingRow6.toJSON()
-        );
+        console.log(`reliefForExpenditure row created:`, existingRow.toJSON());
       }
+    };
+    // Update or create reliefForExpenditure entries for amount and amount2
+    if (dataObject.amount[5] || dataObject.amount2[5]) {
+      await upsertreliefForExpenditure("amount", dataObject.note[5], id);
     }
 
-    // only update or insert when amount is not null
-    if (dataObject.amount[6]) {
-      // 7.update  qualifying payments table
-      // First, attempt to find the existing row
-      let [existingRow7, created7] = await qualifyingPayments.findOrCreate({
-        where: { taxpayerId: id }, // to find the existing row
+    // 7.update qualifingPayments table
+    const upsertqualifyingPayments = async (amountKey, note, id) => {
+      if (!dataObject[amountKey][6]) {
+        dataObject[amountKey][6] = 0;
+      }
+      let [existingRow, created] = await qualifyingPayments.findOrCreate({
+        where: { taxpayerId: id },
         defaults: {
-          qualifyingPayments: dataObject.amount[5],
-          qP_Note: dataObject.note[5],
+          qualifyingPayments: dataObject[amountKey][6],
+          qP_Note: note,
           taxpayerId: id,
-          docname: "",
         },
       });
-      // If the row was not created (already existed), update it using update()
-      if (!created7) {
-        existingRow7 = await existingRow7.update({
-          qualifyingPayments: dataObject.amount[5],
-          qP_Note: dataObject.note[5],
+      if (!created) {
+        existingRow = await existingRow.update({
+          qualifyingPayments: dataObject[amountKey][6],
+          qP_Note: note,
         });
-        console.log("qualifying payments row updated:", existingRow7.toJSON());
+        console.log(`qualifyingPayments row updated:`, existingRow.toJSON());
       } else {
-        console.log(
-          " qualifying payments new row created:",
-          existingRow7.toJSON()
-        );
+        console.log(`qualifyingPayments row created:`, existingRow.toJSON());
       }
+    };
+    // Update or create qualifyingPayments entries for amount and amount2
+    if (dataObject.amount[6] || dataObject.amount2[6]) {
+      await upsertqualifyingPayments("amount", dataObject.note[6], id);
     }
 
-    // only update or insert when amount is not null
-    if (dataObject.amount[7]) {
-      // 8.update apit table
-      // First, attempt to find the existing row
-      let [existingRow8, created8] = await apit.findOrCreate({
-        where: { taxpayerId: id }, // to find the existing row
+    // 8.update apit table
+    const upsertapit = async (amountKey, note, id) => {
+      const columnName = amountKey === "amount" ? "apit" : "apit2";
+      if (!dataObject[amountKey][7]) {
+        dataObject[amountKey][7] = 0;
+      }
+      let [existingRow, created] = await apit.findOrCreate({
+        where: { taxpayerId: id },
         defaults: {
-          apit: dataObject.amount[7],
-          aPIT_Note: dataObject.note[7],
+          [columnName]: dataObject[amountKey][7],
+          aPIT_Note: note,
           taxpayerId: id,
-          docname: "",
         },
       });
-      // If the row was not created (already existed), update it using update()
-      if (!created8) {
-        existingRow8 = await existingRow8.update({
-          apit: dataObject.amount[7],
-          aPIT_Note: dataObject.note[7],
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][7],
+          aPIT_Note: note,
         });
-        console.log("Apit row updated:", existingRow8.toJSON());
+        console.log(`apit row updated:`, existingRow.toJSON());
       } else {
-        console.log("Apit new row created:", existingRow8.toJSON());
+        console.log(`apit row created:`, existingRow.toJSON());
       }
+    };
+    // Update or create apit entries for amount and amount2
+    if (dataObject.amount[7] || dataObject.amount2[7]) {
+      await upsertapit("amount", dataObject.note[7], id);
+      await upsertapit("amount2", dataObject.note[7], id);
     }
 
-    // only update or insert when amount is not null
-    if (dataObject.amount[8]) {
-      // 9.update whtoninvestmentincome table
-      // First, attempt to find the existing row
-      let [existingRow9, created9] = await whtOnInvestmentIncome.findOrCreate({
-        where: { taxpayerId: id }, // to find the existing row
+    // 9.update whtOnInvestmentIncome table
+    const upsertwhtOnInvestmentIncome = async (amountKey, note, id) => {
+      const columnName =
+        amountKey === "amount"
+          ? "whtOnInvestmentIncome"
+          : "whtOnInvestmentIncome2";
+      if (!dataObject[amountKey][8]) {
+        dataObject[amountKey][8] = 0;
+      }
+      let [existingRow, created] = await whtOnInvestmentIncome.findOrCreate({
+        where: { taxpayerId: id },
         defaults: {
-          whtOnInvestmentIncome: dataObject.amount[8],
-          wHT_II_Note: dataObject.note[8],
+          [columnName]: dataObject[amountKey][8],
+          wHT_II_Note: note,
           taxpayerId: id,
-          docname: "",
         },
       });
-      // If the row was not created (already existed), update it using update()
-      if (!created9) {
-        existingRow9 = await existingRow9.update({
-          whtOnInvestmentIncome: dataObject.amount[8],
-          wHT_II_Note: dataObject.note[8],
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][8],
+          wHT_II_Note: note,
         });
-        console.log("wHT_II_ row updated:", existingRow9.toJSON());
+        console.log(`whtOnInvestmentIncome row updated:`, existingRow.toJSON());
       } else {
-        console.log("wHT_II_ new row created:", existingRow9.toJSON());
+        console.log(`whtOnInvestmentIncome row created:`, existingRow.toJSON());
       }
+    };
+    // Update or create whtOnInvestmentIncome entries for amount and amount2
+    if (dataObject.amount[8] || dataObject.amount2[8]) {
+      await upsertwhtOnInvestmentIncome("amount", dataObject.note[8], id);
+      await upsertwhtOnInvestmentIncome("amount2", dataObject.note[8], id);
     }
 
-    // only update or insert when amount is not null
-    if (dataObject.amount[9]) {
-      // 10.update whtonservicefeereceived table
-      // First, attempt to find the existing row
-      let [existingRow10, created10] =
-        await whtOnServiceFeeReceived.findOrCreate({
-          where: { taxpayerId: id }, // to find the existing row
-          defaults: {
-            whtOnServiceFeeReceived: dataObject.amount[9],
-            wHT_SFR_Note: dataObject.note[9],
-            taxpayerId: id,
-            docname: "",
-          },
-        });
-      // If the row was not created (already existed), update it using update()
-      if (!created10) {
-        existingRow10 = await existingRow10.update({
-          whtOnServiceFeeReceived: dataObject.amount[9],
-          wHT_SFR_Note: dataObject.note[9],
-        });
-        console.log(
-          "whtOnServiceFeeReceived row updated:",
-          existingRow10.toJSON()
-        );
-      } else {
-        console.log(
-          "whtOnServiceFeeReceived new row created:",
-          existingRow10.toJSON()
-        );
+    // 10.update whtOnServiceFeeReceived table
+    const upsertwhtOnServiceFeeReceived = async (amountKey, note, id) => {
+      const columnName =
+        amountKey === "amount"
+          ? "whtOnServiceFeeReceived"
+          : "whtOnServiceFeeReceived2";
+      if (!dataObject[amountKey][9]) {
+        dataObject[amountKey][9] = 0;
       }
-    }
-
-    // only update or insert when amount is not null
-    if (dataObject.amount[10]) {
-      // 11.update selfassessmentpayment table
-      // First, attempt to find the existing row
-      let [existingRow11, created11] = await selfAssessmentPayment.findOrCreate(
-        {
-          where: { taxpayerId: id }, // to find the existing row
-          defaults: {
-            selfAssessmentPayment: dataObject.amount[10],
-            sAP_Note: dataObject.note[10],
-            taxpayerId: id,
-            docname: "",
-          },
-        }
-      );
-      // If the row was not created (already existed), update it using update()
-      if (!created11) {
-        existingRow11 = await existingRow11.update({
-          selfAssessmentPayment: dataObject.amount[10],
-          sAP_Note: dataObject.note[10],
-        });
-        console.log(
-          "selfAssessmentPayment row updated:",
-          existingRow11.toJSON()
-        );
-      } else {
-        console.log(
-          "selfAssessmentPayment new row created:",
-          existingRow11.toJSON()
-        );
-      }
-    }
-
-    // only update or insert when amount is not null
-    if (dataObject.amount[11]) {
-      // 12.update terminalbenefits table
-      // First, attempt to find the existing row
-      let [existingRow12, created12] = await terminalBenefits.findOrCreate({
-        where: { taxpayerId: id }, // to find the existing row
+      let [existingRow, created] = await whtOnServiceFeeReceived.findOrCreate({
+        where: { taxpayerId: id },
         defaults: {
-          terminalBenefits: dataObject.amount[11],
-          tB_Note: dataObject.note[11],
+          [columnName]: dataObject[amountKey][9],
+          wHT_SFR_Note: note,
           taxpayerId: id,
-          docname: "",
         },
       });
-      // If the row was not created (already existed), update it using update()
-      if (!created12) {
-        existingRow12 = await existingRow12.update({
-          terminalBenefits: dataObject.amount[11],
-          tB_Note: dataObject.note[11],
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][9],
+          wHT_SFR_Note: note,
         });
-        console.log("terminalBenefits row updated:", existingRow12.toJSON());
+        console.log(
+          `whtOnServiceFeeReceived row updated:`,
+          existingRow.toJSON()
+        );
       } else {
         console.log(
-          "terminalBenefits new row created:",
-          existingRow12.toJSON()
+          `whtOnServiceFeeReceived row created:`,
+          existingRow.toJSON()
         );
       }
+    };
+    // Update or create whtOnServiceFeeReceived entries for amount and amount2
+    if (dataObject.amount[9] || dataObject.amount2[9]) {
+      await upsertwhtOnServiceFeeReceived("amount", dataObject.note[9], id);
+      await upsertwhtOnServiceFeeReceived("amount2", dataObject.note[9], id);
     }
 
-    // only update or insert when amount is not null
-    if (dataObject.amount[12]) {
-      // 13.update capitalValueAndGain table
-      // First, attempt to find the existing row
-      let [existingRow13, created13] = await capitalValueGain.findOrCreate({
-        where: { taxpayerId: id }, // to find the existing row
+    // 11.update selfAssessmentPayment table
+    const upsertselfAssessmentPayment = async (amountKey, note, id) => {
+      const columnName =
+        amountKey === "amount"
+          ? "selfAssessmentPayment"
+          : "selfAssessmentPayment2";
+      if (!dataObject[amountKey][10]) {
+        dataObject[amountKey][10] = 0;
+      }
+      let [existingRow, created] = await selfAssessmentPayment.findOrCreate({
+        where: { taxpayerId: id },
         defaults: {
-          capitalValueGain: dataObject.amount[12],
-          cVnG_Note: dataObject.note[12],
+          [columnName]: dataObject[amountKey][10],
+          sAP_Note: note,
           taxpayerId: id,
-          docname: "",
         },
       });
-      // If the row was not created (already existed), update it using update()
-      if (!created13) {
-        existingRow13 = await existingRow13.update({
-          capitalValueGain: dataObject.amount[12],
-          cVnG_Note: dataObject.note[12],
+      if (!created) {
+        existingRow = await existingRow.update({
+          [columnName]: dataObject[amountKey][10],
+          sAP_Note: note,
         });
-        console.log("capitalValueAndGain row updated:", existingRow13.toJSON());
+        console.log(`selfAssessmentPayment row updated:`, existingRow.toJSON());
       } else {
-        console.log(
-          "capitalValueAndGain new row created:",
-          existingRow13.toJSON()
-        );
+        console.log(`selfAssessmentPayment row created:`, existingRow.toJSON());
       }
+    };
+    // Update or create selfAssessmentPayment entries for amount and amount2
+    if (dataObject.amount[10] || dataObject.amount2[10]) {
+      await upsertselfAssessmentPayment("amount", dataObject.note[10], id);
+      await upsertselfAssessmentPayment("amount2", dataObject.note[10], id);
     }
 
-    // only update or insert when amount is not null
-    if (dataObject.amount[13]) {
-      // 14.update whtWhichIsNotDeducted table
-      // First, attempt to find the existing row
-      let [existingRow14, created14] = await whtWhichIsNotDeducted.findOrCreate(
-        {
-          where: { taxpayerId: id }, // to find the existing row
-          defaults: {
-            whtWhichIsNotDeducted: dataObject.amount[13],
-            wHT_WND_Note: dataObject.note[13],
-            taxpayerId: id,
-            docname: "",
-          },
-        }
-      );
-      // If the row was not created (already existed), update it using update()
-      if (!created14) {
-        existingRow14 = await existingRow14.update({
-          whtWhichIsNotDeducted: dataObject.amount[13],
-          wHT_WND_Note: dataObject.note[13],
-        });
-        console.log(
-          "whtWhichIsNotDeducted row updated:",
-          existingRow14.toJSON()
-        );
-      } else {
-        console.log(
-          "whtWhichIsNotDeducted new row created:",
-          existingRow14.toJSON()
-        );
+    // 12.update terminalBenefits table
+    const upsertterminalBenefits = async (amountKey, note, id) => {
+      if (!dataObject[amountKey][11]) {
+        dataObject[amountKey][11] = 0;
       }
+      let [existingRow, created] = await terminalBenefits.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          terminalBenefits: dataObject[amountKey][11],
+          tB_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          terminalBenefits: dataObject[amountKey][11],
+          tB_Note: note,
+        });
+        console.log(`terminalBenefits row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`terminalBenefits row created:`, existingRow.toJSON());
+      }
+    };
+    // Update or create terminalBenefits entries for amount and amount2
+    if (dataObject.amount[11] || dataObject.amount2[11]) {
+      await upsertterminalBenefits("amount", dataObject.note[11], id);
+    }
+
+    // 13.update capitalValueGain table
+    const upsertcapitalValueGain = async (amountKey, note, id) => {
+      if (!dataObject[amountKey][12]) {
+        dataObject[amountKey][12] = 0;
+      }
+      let [existingRow, created] = await capitalValueGain.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          capitalValueGain: dataObject[amountKey][12],
+          cVnG_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          capitalValueGain: dataObject[amountKey][12],
+          cVnG_Note: note,
+        });
+        console.log(`capitalValueGain row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`capitalValueGain row created:`, existingRow.toJSON());
+      }
+    };
+    // Update or create capitalValueGain entries for amount and amount2
+    if (dataObject.amount[12] || dataObject.amount2[12]) {
+      await upsertcapitalValueGain("amount", dataObject.note[12], id);
+    }
+
+    // 14.update whtWhichIsNotDeducted table
+    const upsertwhtWhichIsNotDeducted = async (amountKey, note, id) => {
+      if (!dataObject[amountKey][13]) {
+        dataObject[amountKey][13] = 0;
+      }
+      let [existingRow, created] = await whtWhichIsNotDeducted.findOrCreate({
+        where: { taxpayerId: id },
+        defaults: {
+          whtWhichIsNotDeducted: dataObject[amountKey][13],
+          wHT_WND_Note: note,
+          taxpayerId: id,
+        },
+      });
+      if (!created) {
+        existingRow = await existingRow.update({
+          whtWhichIsNotDeducted: dataObject[amountKey][13],
+          wHT_WND_Note: note,
+        });
+        console.log(`whtWhichIsNotDeducted row updated:`, existingRow.toJSON());
+      } else {
+        console.log(`whtWhichIsNotDeducted row created:`, existingRow.toJSON());
+      }
+    };
+    // Update or create whtWhichIsNotDeducted entries for amount and amount2
+    if (dataObject.amount[13] || dataObject.amount2[13]) {
+      await upsertwhtWhichIsNotDeducted("amount", dataObject.note[13], id);
     }
 
     return { status: true };
@@ -474,24 +541,159 @@ module.exports.getUserDetails = async (userId) => {
   }
 };
 
+//thimira get tax calculations(under development)
+module.exports.getTaxCalDetails = async (userId) => {
+  try {
+    const result = await totalTax.findOne({
+      attributes: [
+        "taxableAmount",
+        "taxableAmount2",
+        "incomeTax",
+        "incomeTax2",
+        "TerminalTax",
+        "CapitalTax",
+        "WHTNotDeductTax",
+        "createdAt",
+      ],
+      where: { taxpayerId: userId },
+    });
+    const result2 = await sumOfCat.findOne({
+      attributes: [
+        "TotAssessableIncome",
+        "TotAssessableIncome2",
+        "Reliefs",
+        "Reliefs2",
+        "Choosed_QP",
+        "TaxCredit",
+        "TaxCredit2",
+      ],
+      where: { taxpayerId: userId },
+    });
+    if (!result || !result2) {
+      return { status: false };
+    }
+    return { status: true, data: result, data2: result2 };
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+//get files from server
+module.exports.getfiles = async (userId) => {
+  try {
+    const taxpayer = await taxpayer.findOne({
+      attributes: ["name", "tin"],
+      where: { taxpayerId: userId },
+    });
+    const table1 = await employmentIncome.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table2 = await businessIncome.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table3 = await investmentIncome.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table4 = await reliefForRentIncome.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table5 = await otherIncome.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table6 = await reliefForExpenditure.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table7 = await qualifyingPayments.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table8 = await apit.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table9 = await whtOnInvestmentIncome.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table10 = await whtOnServiceFeeReceived.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table11 = await selfAssessmentPayment.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table12 = await terminalBenefits.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table13 = await capitalValueGain.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const table14 = await whtWhichIsNotDeducted.findOne({
+      attributes: ["filePath", "isverified", "isnewsubmission"],
+      where: { taxpayerId: userId },
+    });
+    const Data = [
+      table1,
+      table2,
+      table3,
+      table4,
+      table5,
+      table6,
+      table7,
+      table8,
+      table9,
+      table10,
+      table11,
+      table12,
+      table13,
+      table14,
+    ];
+    return { status: true, data: Data, user: taxpayer };
+  } catch (error) {
+    return { status: false };
+  }
+};
+
 ////////////////////////////////////////////////////////////
 
 // file upload part
-module.exports.fileUpload = async (userId, files) => {
+module.exports.fileUpload = async (userId, files, host, protocol) => {
   try {
     //dataObject.UserId is a string and want to convert to integer to compare
     let id = parseInt(userId, 10);
-    console.log(id, files, files[0].id, files.length);
+    // console.log(id, files, files[0].path, files.length, host, protocol);
+
+    //Update number of submissions in taxpayer table
+    const numSub = files.length;
+    const row = await Taxpayer.update(
+      { numOfSubmissions: sequelize.literal(`numOfSubmissions + ${numSub}`) },
+      { where: { id: id } }
+    );
 
     for (let i = 0; i < files.length; i++) {
       //01.Employment Income table
       if (files[i].id == 1) {
         // 1.update employment income table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await employmentIncome.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -500,7 +702,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -514,10 +716,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 2) {
         // 1.update business Income table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await businessIncome.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -526,7 +734,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -540,10 +748,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 3) {
         // 1.update investment Income table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await investmentIncome.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -552,7 +766,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -566,10 +780,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 4) {
         // 1.update other  Income table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await otherIncome.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -578,7 +798,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -592,10 +812,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 5) {
         // 1.update reliefForRentIncome table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await reliefForRentIncome.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -604,7 +830,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -624,10 +850,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 6) {
         // 1.update reliefForExpenditure table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await reliefForExpenditure.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -636,7 +868,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -656,10 +888,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 7) {
         // 1.update qualifyingPaymentse table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await qualifyingPayments.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -668,7 +906,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -682,10 +920,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 8) {
         // 1.update apit table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await apit.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -694,7 +938,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -708,11 +952,17 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 9) {
         // 1.update whtOnInvestmentIncome table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await whtOnInvestmentIncome.findOrCreate(
           {
             where: { taxpayerId: id }, // to find the existing row
             defaults: {
-              filePath: files[i].path,
+              filePath: path,
               docname: files[i].filename,
               isnewsubmission: 1,
               taxpayerId: id,
@@ -722,7 +972,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -742,11 +992,17 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 10) {
         // 1.update whtOnServiceFeeReceived table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] =
           await whtOnServiceFeeReceived.findOrCreate({
             where: { taxpayerId: id }, // to find the existing row
             defaults: {
-              filePath: files[i].path,
+              filePath: path,
               docname: files[i].filename,
               isnewsubmission: 1,
               taxpayerId: id,
@@ -755,7 +1011,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -775,11 +1031,17 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 11) {
         // 1.update selfAssessmentPayment table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await selfAssessmentPayment.findOrCreate(
           {
             where: { taxpayerId: id }, // to find the existing row
             defaults: {
-              filePath: files[i].path,
+              filePath: path,
               docname: files[i].filename,
               isnewsubmission: 1,
               taxpayerId: id,
@@ -789,7 +1051,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -809,10 +1071,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 12) {
         // 1.update business Income table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await terminalBenefits.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -821,7 +1089,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -835,10 +1103,16 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 13) {
         // 1.update capitalValueGain table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await capitalValueGain.findOrCreate({
           where: { taxpayerId: id }, // to find the existing row
           defaults: {
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
             taxpayerId: id,
@@ -847,7 +1121,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -861,11 +1135,17 @@ module.exports.fileUpload = async (userId, files) => {
       if (files[i].id == 14) {
         // 1.update business Income table
         // First, attempt to find the existing row
+
+        const normalizedPath = files[i].path.replace(/\\/g, "/");
+        const parts = normalizedPath.split("/").slice(1); // remove public
+        // Construct the URL
+        const path = `${protocol}://${host}/${parts.join("/")}`;
+
         let [existingRow1, created1] = await whtWhichIsNotDeducted.findOrCreate(
           {
             where: { taxpayerId: id }, // to find the existing row
             defaults: {
-              filePath: files[i].path,
+              filePath: path,
               docname: files[i].filename,
               isnewsubmission: 1,
               taxpayerId: id,
@@ -875,7 +1155,7 @@ module.exports.fileUpload = async (userId, files) => {
         // If the row was not created (already existed), update it
         if (!created1) {
           existingRow1 = await existingRow1.update({
-            filePath: files[i].path,
+            filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
           });
@@ -896,14 +1176,12 @@ module.exports.fileUpload = async (userId, files) => {
   }
 };
 
-
 module.exports.addSecondAdmin = async (obj) => {
   try {
-    
     const existingUser1 = await SecondAdmin.findOne({
       where: { userName: obj.userName },
     });
-    console.log("in repos")
+    console.log("in repos");
 
     const existingUser2 = await SuperAdmin.findOne({
       where: { userName: obj.userName },
@@ -923,5 +1201,3 @@ module.exports.addSecondAdmin = async (obj) => {
     return { status: false };
   }
 };
-
-
