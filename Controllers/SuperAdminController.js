@@ -379,7 +379,7 @@ module.exports.verifyOtherIncome = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-// Add these functions in SuperAdminController.js
+
 
 module.exports.verifyCapitalValueGain = async (req, res) => {
   try {
@@ -587,6 +587,263 @@ module.exports.policy = async (req, res) => {
 
 module.exports.authtsuperAdmin = async (req, res) => {
   res.json({ Status: "Success", name: req.name });
+};
+
+//update request and request agaian
+
+
+module.exports.updateRequestBusinessIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestBusinessIncome(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestEmploymentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestEmploymentIncome(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestInvestmentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestInvestmentIncome(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestOtherIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestOtherIncome(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestCapitalValueGain = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestCapitalValueGain(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestReliefForExpenditure = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestReliefForExpenditure(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestReliefForRentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestReliefForRentIncome(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestSelfAssessmentPayment = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestSelfAssessmentPayment(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestTerminalBenefits = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestTerminalBenefits(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestQualifyingPayments = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestQualifyingPayments(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestWhtOnInvestmentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestWhtOnInvestmentIncome(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestWhtOnServiceFeeReceived = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestWhtOnServiceFeeReceived(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestWhtWhichIsNotDeducted = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestWhtWhichIsNotDeducted(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestApit = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestApit(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Again functions
+
+module.exports.updateRequestAgainBusinessIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainBusinessIncome(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestAgainEmploymentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainEmploymentIncome(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestAgainInvestmentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainInvestmentIncome(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestAgainOtherIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainOtherIncome(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestAgainCapitalValueGain = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainCapitalValueGain(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestAgainReliefForExpenditure = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainReliefForExpenditure(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestAgainReliefForRentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainReliefForRentIncome(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestAgainSelfAssessmentPayment = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainSelfAssessmentPayment(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestAgainTerminalBenefits = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainTerminalBenefits(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestAgainQualifyingPayments = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainQualifyingPayments(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestAgainWhtOnInvestmentIncome = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainWhtOnInvestmentIncome(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestAgainWhtOnServiceFeeReceived = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainWhtOnServiceFeeReceived(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestAgainWhtWhichIsNotDeducted = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainWhtWhichIsNotDeducted(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.updateRequestAgainApit = async (req, res) => {
+  try {
+    await SuperAdminService.updateRequestAgainApit(req.params.incomeId);
+    return res.json({ message: "request status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 //update submission status

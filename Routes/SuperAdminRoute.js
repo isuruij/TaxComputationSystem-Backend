@@ -66,6 +66,38 @@ router.put("/verifySelfAssessmentPayment",JwtService.roleBasedAuth(["superAdmin"
 router.post("/requestDocument",JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.requestDocument);
 router.post("/requestAgainDocument",JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.requestAgainDocument);
 
+//update request and requestagain
+router.put("/updateRequestBusinessIncome/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestBusinessIncome);
+router.put("/updateRequestEmploymentIncome/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestEmploymentIncome);
+router.put("/updateRequestInvestmentIncome/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestInvestmentIncome);
+router.put("/updateRequestOtherIncome/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestOtherIncome);
+router.put("/updateRequestCapitalValueGain/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestCapitalValueGain);
+router.put("/updateRequestReliefForExpenditure/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestReliefForExpenditure);
+router.put("/updateRequestReliefForRentIncome/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestReliefForRentIncome);
+router.put("/updateRequestSelfAssessmentPayment/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestSelfAssessmentPayment);
+router.put("/updateRequestTerminalBenefits/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestTerminalBenefits);
+router.put("/updateRequestQualifyingPayments/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestQualifyingPayments);
+router.put("/updateRequestWhtOnInvestmentIncome/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestWhtOnInvestmentIncome);
+router.put("/updateRequestWhtOnServiceFeeReceived/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestWhtOnServiceFeeReceived);
+router.put("/updateRequestWhtWhichIsNotDeducted/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestWhtWhichIsNotDeducted);
+router.put("/updateRequestApit/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestApit);
+
+router.put("/updateRequestAgainBusinessIncome/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainBusinessIncome);
+router.put("/updateRequestAgainEmploymentIncome/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainEmploymentIncome);
+router.put("/updateRequestAgainInvestmentIncome/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainInvestmentIncome);
+router.put("/updateRequestAgainOtherIncome/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainOtherIncome);
+router.put("/updateRequestAgainCapitalValueGain/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainCapitalValueGain);
+router.put("/updateRequestAgainReliefForExpenditure/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainReliefForExpenditure);
+router.put("/updateRequestAgainReliefForRentIncome/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainReliefForRentIncome);
+router.put("/updateRequestAgainSelfAssessmentPayment/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainSelfAssessmentPayment);
+router.put("/updateRequestAgainTerminalBenefits/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainTerminalBenefits);
+router.put("/updateRequestAgainQualifyingPayments/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainQualifyingPayments);
+router.put("/updateRequestAgainWhtOnInvestmentIncome/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainWhtOnInvestmentIncome);
+router.put("/updateRequestAgainWhtOnServiceFeeReceived/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainWhtOnServiceFeeReceived);
+router.put("/updateRequestAgainWhtWhichIsNotDeducted/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainWhtWhichIsNotDeducted);
+router.put("/updateRequestAgainApit/:incomeId", JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateRequestAgainApit);
+
+
 //update submission status
 router.put("/updateSubmissionStatusBusinessIncome/:incomeId",JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateSubmissionStatusBusinessIncome);
 router.put("/updateSubmissionStatusEmploymentIncome/:incomeId",JwtService.roleBasedAuth(["superAdmin","secondAdmin"]), SuperAdminController.updateSubmissionStatusEmploymentIncome);

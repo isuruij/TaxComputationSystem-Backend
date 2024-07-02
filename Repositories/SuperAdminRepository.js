@@ -634,6 +634,374 @@ module.exports.updateoptionalpolicy = async (obj) => {
   }
 };
 
+//update request and request agaian
+module.exports.updateRequestBusinessIncome = async (incomeId) => {
+  try {
+    const existIncome = await businessIncome.findOne({ where: { incomeId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Business Income: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestEmploymentIncome = async (incomeId) => {
+  try {
+    const existIncome = await employmentIncome.findOne({ where: { incomeId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Employment Income: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestInvestmentIncome = async (incomeId) => {
+  try {
+    const existIncome = await investmentIncome.findOne({ where: { incomeId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Investment Income: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestOtherIncome = async (incomeId) => {
+  try {
+    const existIncome = await otherIncome.findOne({ where: { incomeId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Other Income: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestCapitalValueGain = async (incomeId) => {
+  try {
+    const existIncome = await capitalValueGain.findOne({ where: { assessmentId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Capital Value Gain: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestReliefForExpenditure = async (incomeId) => {
+  try {
+    const existIncome = await reliefForExpenditure.findOne({ where: { reliefid: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Relief For Expenditure: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestReliefForRentIncome = async (incomeId) => {
+  try {
+    const existIncome = await reliefForRentIncome.findOne({ where: { reliefid: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Relief For Rent Income: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestSelfAssessmentPayment = async (incomeId) => {
+  try {
+    const existIncome = await selfAssessmentPayment.findOne({ where: { taxCreditId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Self Assessment Payment: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestTerminalBenefits = async (incomeId) => {
+  try {
+    const existIncome = await terminalBenefits.findOne({ where: { assessmentId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Terminal Benefits: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestQualifyingPayments = async (incomeId) => {
+  try {
+    const existIncome = await qualifyingPayments.findOne({ where: { reliefid: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Qualifying Payments: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestWhtOnInvestmentIncome = async (incomeId) => {
+  try {
+    const existIncome = await whtOnInvestmentIncome.findOne({ where: { taxCreditId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Wht On Investment Income: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestWhtOnServiceFeeReceived = async (incomeId) => {
+  try {
+    const existIncome = await whtOnServiceFeeReceived.findOne({ where: { taxCreditId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Wht On Service Fee Received: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestWhtWhichIsNotDeducted = async (incomeId) => {
+  try {
+    const existIncome = await whtWhichIsNotDeducted.findOne({ where: { assessmentId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Wht Which Is Not Deducted: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestApit = async (incomeId) => {
+  try {
+    const existIncome = await apit.findOne({ where: { APITId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requested: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting Apit: ${error.message}`);
+  }
+};
+
+// Again functions
+
+module.exports.updateRequestAgainBusinessIncome = async (incomeId) => {
+  try {
+    const existIncome = await businessIncome.findOne({ where: { incomeId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Business Income: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainEmploymentIncome = async (incomeId) => {
+  try {
+    const existIncome = await employmentIncome.findOne({ where: { incomeId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Employment Income: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainInvestmentIncome = async (incomeId) => {
+  try {
+    const existIncome = await investmentIncome.findOne({ where: { incomeId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Investment Income: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainOtherIncome = async (incomeId) => {
+  try {
+    const existIncome = await otherIncome.findOne({ where: { incomeId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Other Income: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainCapitalValueGain = async (incomeId) => {
+  try {
+    const existIncome = await capitalValueGain.findOne({ where: { assessmentId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Capital Value Gain: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainReliefForExpenditure = async (incomeId) => {
+  try {
+    const existIncome = await reliefForExpenditure.findOne({ where: { reliefid: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Relief For Expenditure: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainReliefForRentIncome = async (incomeId) => {
+  try {
+    const existIncome = await reliefForRentIncome.findOne({ where: {reliefid: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Relief For Rent Income: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainSelfAssessmentPayment = async (incomeId) => {
+  try {
+    const existIncome = await selfAssessmentPayment.findOne({ where: { taxCreditId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Self Assessment Payment: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainTerminalBenefits = async (incomeId) => {
+  try {
+    const existIncome = await terminalBenefits.findOne({ where: { assessmentId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Terminal Benefits: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainQualifyingPayments = async (incomeId) => {
+  try {
+    const existIncome = await qualifyingPayments.findOne({ where: { reliefid: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Qualifying Payments: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainWhtOnInvestmentIncome = async (incomeId) => {
+  try {
+    const existIncome = await whtOnInvestmentIncome.findOne({ where: { taxCreditId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Wht On Investment Income: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainWhtOnServiceFeeReceived = async (incomeId) => {
+  try {
+    const existIncome = await whtOnServiceFeeReceived.findOne({ where: { taxCreditId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Wht On Service Fee Received: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainWhtWhichIsNotDeducted = async (incomeId) => {
+  try {
+    const existIncome = await whtWhichIsNotDeducted.findOne({ where: { assessmentId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Wht Which Is Not Deducted: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainApit = async (incomeId) => {
+  try {
+    const existIncome = await apit.findOne({ where: { APITId: incomeId } });
+    if (existIncome) {
+      await existIncome.update({ requestedAgain: true });
+    } else {
+      return { message: "requested is sent" };
+    }
+  } catch (error) {
+    throw new Error(`Error while requesting again Apit: ${error.message}`);
+  }
+};
+
+
 //update submission status
 
 module.exports.updateSubmissionStatusBusinessIncome = async (incomeId) => {
