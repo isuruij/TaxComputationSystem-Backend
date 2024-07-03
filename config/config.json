@@ -3,7 +3,7 @@
     "username": "root",
     "password": "",
     "database": "employee_db",
-    "host": "admintax2.mysql.database.azure.com",
+    "host": "localhost",
     "dialect": "mysql",
     "port": 3306
   },
