@@ -366,12 +366,66 @@ module.exports.getCalculatedTax = async (req, res) => {
   try {
     console.log(req.params.id);
     const result = await TaxpayerService.getCalculatedTax(req.params.id);
+
     if (result.status) {
       return res
         .status(200)
-        .json({ Status: "successfully fetched", Data: result });
+        .json({ Status: "successfully fetched", Data: result.data });
     } else {
       return res.status(400).json({ Status: "Error fetching taxes" });
+    }
+  } catch (error) {
+    return res.status(500).send("Error fetching taxes");
+  }
+};
+
+module.exports.getTaxPayments = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const result = await TaxpayerService.getTaxPayments(req.params.id);
+
+    if (result.status) {
+      return res
+        .status(200)
+        .json({ Status: "successfully fetched", Data: result.data });
+    } else {
+      return res.status(400).json({ Status: "Error fetching taxes" });
+    }
+  } catch (error) {
+    return res.status(500).send("Error fetching taxes");
+  }
+};
+
+module.exports.deleteTaxPayment = async (req, res) => {
+  try {
+    console.log(req.params.taxpaymentid);
+    const result = await TaxpayerService.deleteTaxPayment(req.params.taxpaymentid);
+
+    if (result.status) {
+      return res
+        .status(200)
+        .json({ Status: "successfully Deleted"});
+    } else {
+      return res.status(400).json({ Status: "Error deleting tax payments" });
+    }
+  } catch (error) {
+    return res.status(500).send("Error deleting tax payments");
+  }
+};
+
+//post paid tax
+module.exports.postpaidtax = async (req, res) => {
+  try {
+    console.log(req.body);
+    const cat = req.body.category;
+    const amnt = req.body.amount;
+    const result = await TaxpayerService.postpaidtax(req.params.id, cat, amnt);
+    if (result.status) {
+      return res
+        .status(200)
+        .json({ Status: "successfully updated" });
+    } else {
+      return res.status(400).json({ Status: "Error posting Paid tax" });
     }
   } catch (error) {
     return res.status(500).send("Error fetching taxes");
