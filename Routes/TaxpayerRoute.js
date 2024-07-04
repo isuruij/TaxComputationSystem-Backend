@@ -121,8 +121,14 @@ router.get("/getCalculatedTax/:id", TaxpayerController.getCalculatedTax);
 //get tax payments
 router.get("/getTaxPayments/:id", TaxpayerController.getTaxPayments);
 
-//delete taxpayment 
-router.delete("/deletePaidTax/:taxpaymentid", TaxpayerController.deleteTaxPayment);
+//get tax report is verified
+router.get("/isTaxReportVerified/:id", TaxpayerController.ReportVerified);
+
+//delete taxpayment
+router.delete(
+  "/deletePaidTax/:taxpaymentid",
+  TaxpayerController.deleteTaxPayment
+);
 
 //add paid tax
 router.post("/paidtax/:id", TaxpayerController.postpaidtax);

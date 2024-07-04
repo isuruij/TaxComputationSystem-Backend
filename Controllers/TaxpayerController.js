@@ -396,15 +396,31 @@ module.exports.getTaxPayments = async (req, res) => {
   }
 };
 
-module.exports.deleteTaxPayment = async (req, res) => {
+module.exports.ReportVerified = async (req, res) => {
   try {
-    console.log(req.params.taxpaymentid);
-    const result = await TaxpayerService.deleteTaxPayment(req.params.taxpaymentid);
+    const result = await TaxpayerService.ReportVerified(req.params.id);
 
     if (result.status) {
       return res
         .status(200)
-        .json({ Status: "successfully Deleted"});
+        .json({ Status: "successfully fetched", Data: result.data });
+    } else {
+      return res.status(400).json({ Status: "Error fetching taxes" });
+    }
+  } catch (error) {
+    return res.status(500).send("Error fetching taxes");
+  }
+};
+
+module.exports.deleteTaxPayment = async (req, res) => {
+  try {
+    console.log(req.params.taxpaymentid);
+    const result = await TaxpayerService.deleteTaxPayment(
+      req.params.taxpaymentid
+    );
+
+    if (result.status) {
+      return res.status(200).json({ Status: "successfully Deleted" });
     } else {
       return res.status(400).json({ Status: "Error deleting tax payments" });
     }
@@ -421,9 +437,7 @@ module.exports.postpaidtax = async (req, res) => {
     const amnt = req.body.amount;
     const result = await TaxpayerService.postpaidtax(req.params.id, cat, amnt);
     if (result.status) {
-      return res
-        .status(200)
-        .json({ Status: "successfully updated" });
+      return res.status(200).json({ Status: "successfully updated" });
     } else {
       return res.status(400).json({ Status: "Error posting Paid tax" });
     }

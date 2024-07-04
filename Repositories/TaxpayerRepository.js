@@ -1110,11 +1110,7 @@ module.exports.getCalculatedTax = async (id) => {
 module.exports.getTaxPayments = async (id) => {
   try {
     const taxPayments = await PaidTax.findAll({
-      attributes: [
-        "paidTaxId",
-        "Description",
-        "Paid",
-      ],
+      attributes: ["paidTaxId", "Description", "Paid"],
       where: { taxpayerId: id },
     });
 
@@ -1125,11 +1121,25 @@ module.exports.getTaxPayments = async (id) => {
   }
 };
 
+module.exports.ReportVerified = async (id) => {
+  try {
+    const taxPayments = await TaxSummaryReport.findOne({
+      attributes: ["isVerified"],
+      where: { taxpayerId: id },
+    });
+    // console.log(taxPayments.isVerified);
+    return { status: true, data: taxPayments.isVerified };
+  } catch (error) {
+    console.error(`Error fetching taxpayments: ${error}`);
+    return { status: false };
+  }
+};
+
 module.exports.deleteTaxPayment = async (id) => {
   try {
-    await PaidTax.destroy({ where: { paidTaxId: id} });
+    await PaidTax.destroy({ where: { paidTaxId: id } });
 
-    return { status: true};
+    return { status: true };
   } catch (error) {
     console.error(`Error deleting tax payments: ${error}`);
     return { status: false };
@@ -1140,26 +1150,26 @@ module.exports.postpaidtax = async (id, cat, amnt) => {
   try {
     // Check if a record exists with the given taxpayerId and Description
     const existingRecord = await PaidTax.findOne({
-      where: { taxpayerId: id, Description: cat }
+      where: { taxpayerId: id, Description: cat },
     });
 
     if (existingRecord) {
       // Update the existing record
       existingRecord.Paid += parseFloat(amnt);
       await existingRecord.save();
-      console.log('Record updated successfully:', existingRecord);
+      console.log("Record updated successfully:", existingRecord);
     } else {
       // Create a new record
       const newRecord = await PaidTax.create({
         taxpayerId: id,
         Description: cat,
-        Paid: parseFloat(amnt)
+        Paid: parseFloat(amnt),
       });
-      console.log('Record created successfully:', newRecord);
+      console.log("Record created successfully:", newRecord);
     }
     return { status: true };
   } catch (error) {
-    console.error('Error in upsertPaidTax:', error);
+    console.error("Error in upsertPaidTax:", error);
     return { status: false };
   }
 };
