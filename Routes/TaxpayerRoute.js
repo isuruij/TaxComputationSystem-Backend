@@ -59,6 +59,10 @@ router.patch(
   TaxpayerController.updateBasicDetails
 );
 
+router.post("/uploadpropic/:userId", upload.single("file"),JwtService.verifyuser,
+JwtService.roleBasedAuth(["taxpayer", "superAdmin", "secondAdmin"]),
+TaxpayerController.uploadpropic);
+
 router.post("/forgot-password", TaxpayerController.forgotPassword);
 
 router.get("/reset-password/:id/:token", TaxpayerController.resetPassword);

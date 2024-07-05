@@ -178,6 +178,40 @@ module.exports.updateBasicDetails = async (obj) => {
   }
 };
 
+module.exports.uploadpropic = async (id, files, host, protocol) => {
+  try {
+
+    let userid = parseInt(id, 10);
+    
+    if (!files || !files.path) {
+      throw new Error("Invalid file input: file is missing or file path is missing.");
+    }
+
+    const normalizedPath = files.path.replace(/\\/g, "/");
+    const parts = normalizedPath.split("/").slice(1); // remove public
+    // Construct the URL
+    const path = `${protocol}://${host}/${parts.join("/")}`;
+
+    console.log(path); // Log the path after it is defined
+
+    const taxpayer = await Taxpayer.findOne({ where: { id: userid } });
+
+    if (taxpayer) {
+      const existingRow1 = await taxpayer.update({ filePath: path });
+      console.log("Employment income row updated:", existingRow1.toJSON());
+    } else {
+      throw new Error("Taxpayer not found.");
+    }
+
+  } catch (error) {
+    console.error("Error processing file:", error);
+    throw new Error("Error saving or updating file: " + error.message);
+  }
+};
+
+
+
+
 // get taxpayer details
 module.exports.getBasicDetails = async (id) => {
   try {

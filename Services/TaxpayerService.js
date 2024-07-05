@@ -48,6 +48,16 @@ module.exports.updateBasicDetails = async (data) => {
   }
 };
 
+module.exports.uploadpropic = async (id, files, host, protocol) => {
+  try {
+    // console.log("Received file object at service:", files);
+    // Process the files as needed (e.g., save to the database)
+    await TaxpayerRepository.uploadpropic(id, files, host, protocol);
+  } catch (error) {
+    throw new Error("Error processing files: " + error.message);
+  }
+};
+
 module.exports.getBasicDetails = async (id) => {
   try {
     const created = await TaxpayerRepository.getBasicDetails(id);

@@ -72,7 +72,7 @@ module.exports.verifyEmail = async (req, res) => {
 };
 
 module.exports.updateBasicDetails = async (req, res) => {
-  try {
+   try {  
     if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ error: "empty request" });
     }
@@ -100,6 +100,28 @@ module.exports.updateBasicDetails = async (req, res) => {
     return res
       .status(400)
       .json({ Status: "NotSuccess", message: error.message });
+  }
+};
+
+module.exports.uploadpropic = async (req, res) => {
+  try {
+
+    const protocol = req.protocol;
+    const host = req.get("host");
+    const files = req.file;
+    // console.log("Received file object:", files);
+
+     // Check if no files were uploaded
+     if (!files) {
+      return res.status(400).json({ Status: "No file selected" });
+    }
+    await TaxpayerService.uploadpropic(req.params.userId,files, host, protocol);
+
+      return res.json({ Status: "Files uploaded successfully!" });
+   
+  }  catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Error uploading files" });
   }
 };
 
