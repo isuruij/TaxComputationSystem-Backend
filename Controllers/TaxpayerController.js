@@ -72,7 +72,7 @@ module.exports.verifyEmail = async (req, res) => {
 };
 
 module.exports.updateBasicDetails = async (req, res) => {
-  try {
+   try {  
     if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ error: "empty request" });
     }
@@ -102,6 +102,49 @@ module.exports.updateBasicDetails = async (req, res) => {
       .json({ Status: "NotSuccess", message: error.message });
   }
 };
+
+// handle propic
+
+module.exports.uploadpropic = async (req, res) => {
+  try {
+
+    const protocol = req.protocol;
+    const host = req.get("host");
+    const files = req.file;
+    // console.log("Received file object:", files);
+
+     // Check if no files were uploaded
+     if (!files) {
+      return res.status(400).json({ Status: "No file selected" });
+    }
+    await TaxpayerService.uploadpropic(req.params.userId,files, host, protocol);
+
+      return res.json({ Status: "Files uploaded successfully!" });
+   
+  }  catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Error uploading files" });
+  }
+};
+
+
+
+module.exports.removeProfilePic = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const result = await TaxpayerService.removeProfilePic(userId);
+    if (result) {
+      res.status(200).json({ status: 'Success', message: 'Profile picture removed successfully' });
+      return result
+    } else {
+      res.status(400).json({ status: 'Failure', message: 'Failed to remove profile picture' });
+      return result
+    }
+  } catch (error) {
+    res.status(500).json({ status: 'Error', message: error.message });
+  }
+};
+
 
 module.exports.getBasicDetails = async (req, res) => {
   try {

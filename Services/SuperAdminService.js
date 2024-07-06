@@ -318,7 +318,7 @@ module.exports.verifyOtherIncome = async (incomeId, value) => {
   }
 };
 
-// Add these functions in SuperAdminService.js
+
 
 module.exports.verifyCapitalValueGain = async (incomeId, value) => {
   try {
@@ -486,6 +486,265 @@ module.exports.updateoptionalpolicy = async (data) => {
     return { status: false, message: error.message };
   }
 };
+
+//update request and request again
+
+
+module.exports.updateRequestBusinessIncome = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestBusinessIncome(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestEmploymentIncome = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestEmploymentIncome(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestInvestmentIncome = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestInvestmentIncome(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestOtherIncome = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestOtherIncome(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestCapitalValueGain = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestCapitalValueGain(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestReliefForExpenditure = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestReliefForExpenditure(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestReliefForRentIncome = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestReliefForRentIncome(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestSelfAssessmentPayment = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestSelfAssessmentPayment(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestTerminalBenefits = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestTerminalBenefits(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestQualifyingPayments = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestQualifyingPayments(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestWhtOnInvestmentIncome = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestWhtOnInvestmentIncome(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestWhtOnServiceFeeReceived = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestWhtOnServiceFeeReceived(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestWhtWhichIsNotDeducted = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestWhtWhichIsNotDeducted(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestApit = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestApit(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+// Again functions
+
+module.exports.updateRequestAgainBusinessIncome = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainBusinessIncome(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainEmploymentIncome = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainEmploymentIncome(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainInvestmentIncome = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainInvestmentIncome(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainOtherIncome = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainOtherIncome(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainCapitalValueGain = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainCapitalValueGain(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainReliefForExpenditure = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainReliefForExpenditure(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainReliefForRentIncome = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainReliefForRentIncome(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainSelfAssessmentPayment = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainSelfAssessmentPayment(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainTerminalBenefits = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainTerminalBenefits(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainQualifyingPayments = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainQualifyingPayments(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainWhtOnInvestmentIncome = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainWhtOnInvestmentIncome(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainWhtOnServiceFeeReceived = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainWhtOnServiceFeeReceived(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainWhtWhichIsNotDeducted = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainWhtWhichIsNotDeducted(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+module.exports.updateRequestAgainApit = async (incomeId) => {
+  try {
+    await SuperAdminRepository.updateRequestAgainApit(incomeId);
+    return { message: 'false status toggled successfully' };
+  } catch (error) {
+    throw new Error(`Error while toggling false status: ${error.message}`);
+  }
+};
+
+
 
 //update submission status
 

@@ -59,6 +59,13 @@ router.patch(
   TaxpayerController.updateBasicDetails
 );
 
+// handle pro pic
+router.post("/uploadpropic/:userId", upload.single("file"),JwtService.verifyuser,
+JwtService.roleBasedAuth(["taxpayer", "superAdmin", "secondAdmin"]),
+TaxpayerController.uploadpropic);
+
+router.put('/removepropic/:userId', TaxpayerController.removeProfilePic);
+
 router.post("/forgot-password", TaxpayerController.forgotPassword);
 
 router.get("/reset-password/:id/:token", TaxpayerController.resetPassword);
