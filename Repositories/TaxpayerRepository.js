@@ -178,7 +178,7 @@ module.exports.updateBasicDetails = async (obj) => {
     return { status: false };
   }
 };
-
+// update profile pic 
 module.exports.uploadpropic = async (id, files, host, protocol) => {
   try {
 
@@ -199,7 +199,7 @@ module.exports.uploadpropic = async (id, files, host, protocol) => {
 
     if (taxpayer) {
       const existingRow1 = await taxpayer.update({ filePath: path });
-      console.log("Employment income row updated:", existingRow1.toJSON());
+      console.log("user profile pic updated:", existingRow1.toJSON());
     } else {
       throw new Error("Taxpayer not found.");
     }
@@ -207,6 +207,22 @@ module.exports.uploadpropic = async (id, files, host, protocol) => {
   } catch (error) {
     console.error("Error processing file:", error);
     throw new Error("Error saving or updating file: " + error.message);
+  }
+};
+
+module.exports.updateUserProfilePic = async (userId) => {
+  try {
+    const taxpayer = await Taxpayer.findOne({ where: { id: userId } });
+    
+    if (taxpayer) {
+      const existingRow1 = await taxpayer.update({ filePath:null });
+      console.log("delete path:", existingRow1.toJSON());
+      return existingRow1;
+    } else {
+      throw new Error("Taxpayer not found.");
+    }
+  } catch (error) {
+    throw new Error('Failed to remove profile picture');
   }
 };
 

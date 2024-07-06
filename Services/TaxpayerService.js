@@ -48,6 +48,7 @@ module.exports.updateBasicDetails = async (data) => {
   }
 };
 
+// handle profile pic
 module.exports.uploadpropic = async (id, files, host, protocol) => {
   try {
     // console.log("Received file object at service:", files);
@@ -55,6 +56,15 @@ module.exports.uploadpropic = async (id, files, host, protocol) => {
     await TaxpayerRepository.uploadpropic(id, files, host, protocol);
   } catch (error) {
     throw new Error("Error processing files: " + error.message);
+  }
+};
+
+exports.removeProfilePic = async (userId) => {
+  try {
+    const updatedUser = await TaxpayerRepository.updateUserProfilePic(userId);
+    return updatedUser;
+  } catch (error) {
+    throw new Error('Failed to remove profile picture');
   }
 };
 

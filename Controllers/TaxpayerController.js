@@ -103,6 +103,8 @@ module.exports.updateBasicDetails = async (req, res) => {
   }
 };
 
+// handle propic
+
 module.exports.uploadpropic = async (req, res) => {
   try {
 
@@ -124,6 +126,25 @@ module.exports.uploadpropic = async (req, res) => {
     return res.status(500).json({ error: "Error uploading files" });
   }
 };
+
+
+
+module.exports.removeProfilePic = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const result = await TaxpayerService.removeProfilePic(userId);
+    if (result) {
+      res.status(200).json({ status: 'Success', message: 'Profile picture removed successfully' });
+      return result
+    } else {
+      res.status(400).json({ status: 'Failure', message: 'Failed to remove profile picture' });
+      return result
+    }
+  } catch (error) {
+    res.status(500).json({ status: 'Error', message: error.message });
+  }
+};
+
 
 module.exports.getBasicDetails = async (req, res) => {
   try {
