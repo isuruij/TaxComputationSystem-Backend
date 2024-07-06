@@ -20,7 +20,7 @@ module.exports.addSuperAdmin = async (data) => {
         return created;
       }
     } else {
-      console.log("new here")
+      console.log("new here");
       const created = await DataEntryRepository.addSecondAdmin(data);
       if (created.status) {
         const tokenData = {
@@ -118,17 +118,17 @@ module.exports.getTaxpayers = async () => {
 
 module.exports.fetchTaxpayer = async (userId) => {
   try {
-    const taxpayerName = await  SuperAdminRepository.fetchTaxpayer(userId);
+    const taxpayerName = await SuperAdminRepository.fetchTaxpayer(userId);
     return taxpayerName;
   } catch (error) {
     throw new Error(`Error while geting taxpayer: ${error.message}`);
   }
 };
 
-module.exports.toggleApproval = async (taxpayerId,value) => {
+module.exports.toggleApproval = async (taxpayerId, value) => {
   try {
-    await SuperAdminRepository.toggleApproval(taxpayerId,value);
-    return { message: 'Approval status toggled successfully' };
+    await SuperAdminRepository.toggleApproval(taxpayerId, value);
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
@@ -142,170 +142,177 @@ module.exports.updateNoOfSubmissions = async (userId) => {
   }
 };
 
-
-
-
-
 //submissionlist
 module.exports.getBusinessIncome = async (req, res) => {
   try {
-    const businessIncome = await SuperAdminRepository.getBusinessIncome()
+    const businessIncome = await SuperAdminRepository.getBusinessIncome();
     return res.json(businessIncome);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
-
 };
-
 
 // get income details
 
-
-
-
 module.exports.getBusinessIncomeByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getBusinessIncomeByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching business income');
-    }
+  try {
+    return await SuperAdminRepository.getBusinessIncomeByTaxpayerId(taxpayerId);
+  } catch (error) {
+    throw new Error("Error fetching business income");
+  }
 };
 
 module.exports.getEmployeeIncomeByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getEmployeeIncomeByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching employee income');
-    }
+  try {
+    return await SuperAdminRepository.getEmployeeIncomeByTaxpayerId(taxpayerId);
+  } catch (error) {
+    throw new Error("Error fetching employee income");
+  }
 };
 
 module.exports.getInvestIncomeByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getInvestIncomeByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching investment income');
-    }
+  try {
+    return await SuperAdminRepository.getInvestIncomeByTaxpayerId(taxpayerId);
+  } catch (error) {
+    throw new Error("Error fetching investment income");
+  }
 };
 
 module.exports.getOtherIncomeByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getOtherIncomeByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching other income');
-    }
+  try {
+    return await SuperAdminRepository.getOtherIncomeByTaxpayerId(taxpayerId);
+  } catch (error) {
+    throw new Error("Error fetching other income");
+  }
 };
 
-
 module.exports.getCapitalValueGainByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getCapitalValueGainByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching capital value gain');
-    }
+  try {
+    return await SuperAdminRepository.getCapitalValueGainByTaxpayerId(
+      taxpayerId
+    );
+  } catch (error) {
+    throw new Error("Error fetching capital value gain");
+  }
 };
 
 module.exports.getApitByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getApitByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching APIT');
-    }
+  try {
+    return await SuperAdminRepository.getApitByTaxpayerId(taxpayerId);
+  } catch (error) {
+    throw new Error("Error fetching APIT");
+  }
 };
 
 module.exports.getReliefForExpenditureByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getReliefForExpenditureByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching relief for expenditure');
-    }
+  try {
+    return await SuperAdminRepository.getReliefForExpenditureByTaxpayerId(
+      taxpayerId
+    );
+  } catch (error) {
+    throw new Error("Error fetching relief for expenditure");
+  }
 };
 
 module.exports.getReliefForRentIncomeByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getReliefForRentIncomeByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching relief for rent income');
-    }
+  try {
+    return await SuperAdminRepository.getReliefForRentIncomeByTaxpayerId(
+      taxpayerId
+    );
+  } catch (error) {
+    throw new Error("Error fetching relief for rent income");
+  }
 };
 
 module.exports.getSelfAssessmentPaymentByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getSelfAssessmentPaymentByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching self assessment payment');
-    }
+  try {
+    return await SuperAdminRepository.getSelfAssessmentPaymentByTaxpayerId(
+      taxpayerId
+    );
+  } catch (error) {
+    throw new Error("Error fetching self assessment payment");
+  }
 };
 
 module.exports.getTerminalBenefitsByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getTerminalBenefitsByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching terminal benefits');
-    }
+  try {
+    return await SuperAdminRepository.getTerminalBenefitsByTaxpayerId(
+      taxpayerId
+    );
+  } catch (error) {
+    throw new Error("Error fetching terminal benefits");
+  }
 };
 
 module.exports.getWhtOnInvestmentIncomeByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getWhtOnInvestmentIncomeByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching WHT on investment income');
-    }
+  try {
+    return await SuperAdminRepository.getWhtOnInvestmentIncomeByTaxpayerId(
+      taxpayerId
+    );
+  } catch (error) {
+    throw new Error("Error fetching WHT on investment income");
+  }
 };
 
 module.exports.getWhtOnServiceFeeReceivedByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getWhtOnServiceFeeReceivedByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching WHT on service fee received');
-    }
+  try {
+    return await SuperAdminRepository.getWhtOnServiceFeeReceivedByTaxpayerId(
+      taxpayerId
+    );
+  } catch (error) {
+    throw new Error("Error fetching WHT on service fee received");
+  }
 };
 
 module.exports.getWhtWhichIsNotDeductedByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getWhtWhichIsNotDeductedByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching WHT which is not deducted');
-    }
+  try {
+    return await SuperAdminRepository.getWhtWhichIsNotDeductedByTaxpayerId(
+      taxpayerId
+    );
+  } catch (error) {
+    throw new Error("Error fetching WHT which is not deducted");
+  }
 };
 
 module.exports.getQualifyingPaymentsByTaxpayerId = async (taxpayerId) => {
-    try {
-        return await SuperAdminRepository.getQualifyingPaymentsByTaxpayerId(taxpayerId);
-    } catch (error) {
-        throw new Error('Error fetching qualifying payments');
-    }
+  try {
+    return await SuperAdminRepository.getQualifyingPaymentsByTaxpayerId(
+      taxpayerId
+    );
+  } catch (error) {
+    throw new Error("Error fetching qualifying payments");
+  }
 };
-
 
 //verify buttons
-module.exports.verifyBusinessIncome = async (incomeId,value) => {
+module.exports.verifyBusinessIncome = async (incomeId, value) => {
   try {
-    await SuperAdminRepository.verifyBusinessIncome(incomeId,value);
-    return { message: 'Approval status toggled successfully' };
+    await SuperAdminRepository.verifyBusinessIncome(incomeId, value);
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
 };
-module.exports.verifyEmploymentIncome = async (incomeId,value) => {
+module.exports.verifyEmploymentIncome = async (incomeId, value) => {
   try {
-    await SuperAdminRepository.verifyEmploymentIncome(incomeId,value);
-    return { message: 'Approval status toggled successfully' };
+    await SuperAdminRepository.verifyEmploymentIncome(incomeId, value);
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
 };
-module.exports.verifyInvestmentIncome = async (incomeId,value) => {
+module.exports.verifyInvestmentIncome = async (incomeId, value) => {
   try {
-    await SuperAdminRepository.verifyInvestmentIncome(incomeId,value);
-    return { message: 'Approval status toggled successfully' };
+    await SuperAdminRepository.verifyInvestmentIncome(incomeId, value);
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
 };
-module.exports.verifyOtherIncome = async (incomeId,value) => {
+module.exports.verifyOtherIncome = async (incomeId, value) => {
   try {
-    await SuperAdminRepository.verifyOtherIncome(incomeId,value);
-    return { message: 'Approval status toggled successfully' };
+    await SuperAdminRepository.verifyOtherIncome(incomeId, value);
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
@@ -316,7 +323,7 @@ module.exports.verifyOtherIncome = async (incomeId,value) => {
 module.exports.verifyCapitalValueGain = async (incomeId, value) => {
   try {
     await SuperAdminRepository.verifyCapitalValueGain(incomeId, value);
-    return { message: 'Approval status toggled successfully' };
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
@@ -325,7 +332,7 @@ module.exports.verifyCapitalValueGain = async (incomeId, value) => {
 module.exports.verifyReliefForExpenditure = async (incomeId, value) => {
   try {
     await SuperAdminRepository.verifyReliefForExpenditure(incomeId, value);
-    return { message: 'Approval status toggled successfully' };
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
@@ -334,7 +341,7 @@ module.exports.verifyReliefForExpenditure = async (incomeId, value) => {
 module.exports.verifyReliefForRentIncome = async (incomeId, value) => {
   try {
     await SuperAdminRepository.verifyReliefForRentIncome(incomeId, value);
-    return { message: 'Approval status toggled successfully' };
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
@@ -343,7 +350,7 @@ module.exports.verifyReliefForRentIncome = async (incomeId, value) => {
 module.exports.verifyQualifyingPayments = async (incomeId, value) => {
   try {
     await SuperAdminRepository.verifyQualifyingPayments(incomeId, value);
-    return { message: 'Approval status toggled successfully' };
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
@@ -352,7 +359,7 @@ module.exports.verifyQualifyingPayments = async (incomeId, value) => {
 module.exports.verifyTerminalBenefits = async (incomeId, value) => {
   try {
     await SuperAdminRepository.verifyTerminalBenefits(incomeId, value);
-    return { message: 'Approval status toggled successfully' };
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
@@ -361,18 +368,19 @@ module.exports.verifyTerminalBenefits = async (incomeId, value) => {
 module.exports.verifyApit = async (APITId, value) => {
   try {
     await SuperAdminRepository.verifyApit(APITId, value);
-    return { message: 'Approval status toggled successfully' };
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
 };
 
-
-
 module.exports.verifyWhtOnServiceFeeReceived = async (taxCreditId, value) => {
   try {
-    await SuperAdminRepository.verifyWhtOnServiceFeeReceived(taxCreditId, value);
-    return { message: 'Approval status toggled successfully' };
+    await SuperAdminRepository.verifyWhtOnServiceFeeReceived(
+      taxCreditId,
+      value
+    );
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
@@ -381,7 +389,7 @@ module.exports.verifyWhtOnServiceFeeReceived = async (taxCreditId, value) => {
 module.exports.verifyWhtWhichIsNotDeducted = async (taxCreditId, value) => {
   try {
     await SuperAdminRepository.verifyWhtWhichIsNotDeducted(taxCreditId, value);
-    return { message: 'Approval status toggled successfully' };
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
@@ -390,7 +398,7 @@ module.exports.verifyWhtWhichIsNotDeducted = async (taxCreditId, value) => {
 module.exports.verifyWhtOnInvestmentIncome = async (taxCreditId, value) => {
   try {
     await SuperAdminRepository.verifyWhtOnInvestmentIncome(taxCreditId, value);
-    return { message: 'Approval status toggled successfully' };
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
@@ -399,7 +407,7 @@ module.exports.verifyWhtOnInvestmentIncome = async (taxCreditId, value) => {
 module.exports.verifySelfAssessmentPayment = async (paymentId, value) => {
   try {
     await SuperAdminRepository.verifySelfAssessmentPayment(paymentId, value);
-    return { message: 'Approval status toggled successfully' };
+    return { message: "Approval status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
@@ -408,7 +416,7 @@ module.exports.verifySelfAssessmentPayment = async (paymentId, value) => {
 module.exports.requestDocument = async (taxpayerId, documentName) => {
   try {
     await SuperAdminRepository.requestDocument(taxpayerId, documentName);
-    return { message: 'rquest document status toggled successfully' };
+    return { message: "rquest document status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
@@ -417,12 +425,11 @@ module.exports.requestDocument = async (taxpayerId, documentName) => {
 module.exports.requestAgainDocument = async (taxpayerId, documentName) => {
   try {
     await SuperAdminRepository.requestAgainDocument(taxpayerId, documentName);
-    return { message: 'rquest document status toggled successfully' };
+    return { message: "rquest document status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling approval status: ${error.message}`);
   }
 };
-
 
 module.exports.createPolicy = async (data) => {
   try {
@@ -433,7 +440,6 @@ module.exports.createPolicy = async (data) => {
   }
 };
 
-
 module.exports.updatePolicy = async (data) => {
   try {
     const created = await SuperAdminRepository.updatePolicy(data);
@@ -443,8 +449,6 @@ module.exports.updatePolicy = async (data) => {
   }
 };
 
-
-
 module.exports.deletePolicy = async (data) => {
   try {
     const created = await SuperAdminRepository.deletePolicy(data);
@@ -453,7 +457,6 @@ module.exports.deletePolicy = async (data) => {
     return { status: false, message: error.message };
   }
 };
-
 
 module.exports.policy = async () => {
   try {
@@ -465,7 +468,6 @@ module.exports.policy = async () => {
   }
 };
 
-
 module.exports.optionalpolicy = async () => {
   try {
     const created = await SuperAdminRepository.optionalpolicy();
@@ -475,7 +477,6 @@ module.exports.optionalpolicy = async () => {
     return { status: false, message: error.message };
   }
 };
-
 
 module.exports.updateoptionalpolicy = async (data) => {
   try {
@@ -750,7 +751,7 @@ module.exports.updateRequestAgainApit = async (incomeId) => {
 module.exports.updateSubmissionStatusBusinessIncome = async (incomeId) => {
   try {
     await SuperAdminRepository.updateSubmissionStatusBusinessIncome(incomeId);
-    return { message: 'false status toggled successfully' };
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
@@ -759,7 +760,7 @@ module.exports.updateSubmissionStatusBusinessIncome = async (incomeId) => {
 module.exports.updateSubmissionStatusEmploymentIncome = async (incomeId) => {
   try {
     await SuperAdminRepository.updateSubmissionStatusEmploymentIncome(incomeId);
-    return { message: 'false status toggled successfully' };
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
@@ -768,7 +769,7 @@ module.exports.updateSubmissionStatusEmploymentIncome = async (incomeId) => {
 module.exports.updateSubmissionStatusInvestmentIncome = async (incomeId) => {
   try {
     await SuperAdminRepository.updateSubmissionStatusInvestmentIncome(incomeId);
-    return { message: 'false status toggled successfully' };
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
@@ -777,16 +778,20 @@ module.exports.updateSubmissionStatusInvestmentIncome = async (incomeId) => {
 module.exports.updateSubmissionStatusOtherIncome = async (incomeId) => {
   try {
     await SuperAdminRepository.updateSubmissionStatusOtherIncome(incomeId);
-    return { message: 'false status toggled successfully' };
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
 };
 
-module.exports.updateSubmissionStatusreliefForExpenditure = async (incomeId) => {
+module.exports.updateSubmissionStatusreliefForExpenditure = async (
+  incomeId
+) => {
   try {
-    await SuperAdminRepository.updateSubmissionStatusreliefForExpenditure(incomeId);
-    return { message: 'false status toggled successfully' };
+    await SuperAdminRepository.updateSubmissionStatusreliefForExpenditure(
+      incomeId
+    );
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
@@ -795,7 +800,7 @@ module.exports.updateSubmissionStatusreliefForExpenditure = async (incomeId) => 
 module.exports.updateSubmissionStatusCapitalValueGain = async (incomeId) => {
   try {
     await SuperAdminRepository.updateSubmissionStatusCapitalValueGain(incomeId);
-    return { message: 'false status toggled successfully' };
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
@@ -803,8 +808,10 @@ module.exports.updateSubmissionStatusCapitalValueGain = async (incomeId) => {
 
 module.exports.updateSubmissionStatusReliefForRentIncome = async (incomeId) => {
   try {
-    await SuperAdminRepository.updateSubmissionStatusReliefForRentIncome(incomeId);
-    return { message: 'false status toggled successfully' };
+    await SuperAdminRepository.updateSubmissionStatusReliefForRentIncome(
+      incomeId
+    );
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
@@ -812,8 +819,10 @@ module.exports.updateSubmissionStatusReliefForRentIncome = async (incomeId) => {
 
 module.exports.updateSubmissionStatusQualifyingPayments = async (incomeId) => {
   try {
-    await SuperAdminRepository.updateSubmissionStatusQualifyingPayments(incomeId);
-    return { message: 'false status toggled successfully' };
+    await SuperAdminRepository.updateSubmissionStatusQualifyingPayments(
+      incomeId
+    );
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
@@ -822,34 +831,46 @@ module.exports.updateSubmissionStatusQualifyingPayments = async (incomeId) => {
 module.exports.updateSubmissionStatusTerminalBenefits = async (incomeId) => {
   try {
     await SuperAdminRepository.updateSubmissionStatusTerminalBenefits(incomeId);
-    return { message: 'false status toggled successfully' };
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
 };
 
-module.exports.updateSubmissionStatusWhtOnInvestmentIncome = async (incomeId) => {
+module.exports.updateSubmissionStatusWhtOnInvestmentIncome = async (
+  incomeId
+) => {
   try {
-    await SuperAdminRepository.updateSubmissionStatusWhtOnInvestmentIncome(incomeId);
-    return { message: 'false status toggled successfully' };
+    await SuperAdminRepository.updateSubmissionStatusWhtOnInvestmentIncome(
+      incomeId
+    );
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
 };
 
-module.exports.updateSubmissionStatusWhtOnServiceFeeReceived = async (incomeId) => {
+module.exports.updateSubmissionStatusWhtOnServiceFeeReceived = async (
+  incomeId
+) => {
   try {
-    await SuperAdminRepository.updateSubmissionStatusWhtOnServiceFeeReceived(incomeId);
-    return { message: 'false status toggled successfully' };
+    await SuperAdminRepository.updateSubmissionStatusWhtOnServiceFeeReceived(
+      incomeId
+    );
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
 };
 
-module.exports.updateSubmissionStatusWhtWhichIsNotDeducted = async (incomeId) => {
+module.exports.updateSubmissionStatusWhtWhichIsNotDeducted = async (
+  incomeId
+) => {
   try {
-    await SuperAdminRepository.updateSubmissionStatusWhtWhichIsNotDeducted(incomeId);
-    return { message: 'false status toggled successfully' };
+    await SuperAdminRepository.updateSubmissionStatusWhtWhichIsNotDeducted(
+      incomeId
+    );
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
@@ -858,21 +879,24 @@ module.exports.updateSubmissionStatusWhtWhichIsNotDeducted = async (incomeId) =>
 module.exports.updateSubmissionStatusApit = async (incomeId) => {
   try {
     await SuperAdminRepository.updateSubmissionStatusApit(incomeId);
-    return { message: 'false status toggled successfully' };
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
 };
 
-module.exports.updateSubmissionStatusSelfAssessmentPayment = async (incomeId) => {
+module.exports.updateSubmissionStatusSelfAssessmentPayment = async (
+  incomeId
+) => {
   try {
-    await SuperAdminRepository.updateSubmissionStatusSelfAssessmentPayment(incomeId);
-    return { message: 'false status toggled successfully' };
+    await SuperAdminRepository.updateSubmissionStatusSelfAssessmentPayment(
+      incomeId
+    );
+    return { message: "false status toggled successfully" };
   } catch (error) {
     throw new Error(`Error while toggling false status: ${error.message}`);
   }
 };
-
 
 //Mailbox
 module.exports.getinboxMail = async () => {
@@ -887,7 +911,7 @@ module.exports.getinboxMail = async () => {
 module.exports.deletetInboxmail = async (emailId) => {
   try {
     await SuperAdminRepository.deletetInboxmail(emailId);
-    return { message: 'Email deleted successfully' };
+    return { message: "Email deleted successfully" };
   } catch (error) {
     throw new Error(`Error while deleting inboxmail: ${error.message}`);
   }
@@ -905,7 +929,7 @@ module.exports.getSentMail = async () => {
 module.exports.deleteSentMail = async (emailId) => {
   try {
     await SuperAdminRepository.deleteSentMail(emailId);
-    return { message: 'Email deleted successfully' };
+    return { message: "Email deleted successfully" };
   } catch (error) {
     throw new Error(`Error while deleting sentmail: ${error.message}`);
   }
@@ -913,15 +937,31 @@ module.exports.deleteSentMail = async (emailId) => {
 
 const composeMail = require("../utils/composeMail");
 
-
-
-
 module.exports.composemail = async (data) => {
   try {
     composeMail(data.to, data.subject, data.body);
     SuperAdminRepository.addsendmail(data.to, data.subject, data.body);
-    return { message: 'Email deleted successfully' };
+    return { message: "Email deleted successfully" };
   } catch (error) {
     throw new Error(`Error while deleting sentmail: ${error.message}`);
+  }
+};
+
+module.exports.getReport = async () => {
+  try {
+    const report = await SuperAdminRepository.getReport();
+    // console.log(report.data);
+    return { message: "Fetched report successfully", data: report.data };
+  } catch (error) {
+    throw new Error(`Error while Fetching reports: ${error.message}`);
+  }
+};
+
+module.exports.verifyTaxReport = async (reportId) => {
+  try {
+    const result = await SuperAdminRepository.verifyTaxReport(reportId);
+    return { message: result.message };
+  } catch (error) {
+    throw new Error(`Error verifying report: ${error.message}`);
   }
 };

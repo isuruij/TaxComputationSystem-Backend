@@ -253,6 +253,58 @@ module.exports.getCalculatedTax = async (id) => {
   }
 };
 
+module.exports.getTaxPayments = async (id) => {
+  try {
+    const created = await TaxpayerRepository.getTaxPayments(id);
+    if (created.status) {
+      return { status: true, data: created.data };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.ReportVerified = async (id) => {
+  try {
+    const created = await TaxpayerRepository.ReportVerified(id);
+    if (created.status) {
+      return { status: true, data: created.data };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.deleteTaxPayment = async (id) => {
+  try {
+    const created = await TaxpayerRepository.deleteTaxPayment(id);
+    if (created.status) {
+      return { status: true };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.postpaidtax = async (id, cat, amnt) => {
+  try {
+    const created = await TaxpayerRepository.postpaidtax(id, cat, amnt);
+    if (created.status) {
+      return { status: true };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false };
+  }
+};
+
 module.exports.updateNotificationStatus = async (id) => {
   try {
     const created = await TaxpayerRepository.updateNotificationStatus(id);

@@ -119,7 +119,23 @@ router.get("/getSummaryReport/:id", TaxpayerController.downloadSummaryReport);
 
 router.get("/getNotifications/:id", TaxpayerController.getNotifications);
 
+//for tax history
 router.get("/getCalculatedTax/:id", TaxpayerController.getCalculatedTax);
+
+//get tax payments
+router.get("/getTaxPayments/:id", TaxpayerController.getTaxPayments);
+
+//get tax report is verified
+router.get("/isTaxReportVerified/:id", TaxpayerController.ReportVerified);
+
+//delete taxpayment
+router.delete(
+  "/deletePaidTax/:taxpaymentid",
+  TaxpayerController.deleteTaxPayment
+);
+
+//add paid tax
+router.post("/paidtax/:id", TaxpayerController.postpaidtax);
 
 router.patch(
   "/updateNotificationStatus",
