@@ -368,4 +368,15 @@ router.get("/getTaxReport", SuperAdminController.getReport);
 
 router.post("/verifyTaxReport", SuperAdminController.verifyTaxReport);
 
+router.patch(
+  "/updatePassword",
+  JwtService.roleBasedAuth(["superAdmin","secondAdmin"]),
+  SuperAdminController.updatePassword
+);
+
+
+router.get("/getname", SuperAdminController.getname);
+
+router.patch("/updatename", SuperAdminController.updatename);
+
 module.exports = router;

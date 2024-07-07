@@ -965,3 +965,32 @@ module.exports.verifyTaxReport = async (reportId) => {
     throw new Error(`Error verifying report: ${error.message}`);
   }
 };
+
+
+module.exports.updatePassword = async (token, data) => {
+  try {
+    const created = await SuperAdminRepository.updatePassword(token, data);
+    return created;
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.getname = async (token, data) => {
+  try {
+    const created = await SuperAdminRepository.getname(token, data);
+    return created;
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+
+module.exports.updatename = async (token, data) => {
+  try {
+    const created = await SuperAdminRepository.updatename(token, data);
+    return created;
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};

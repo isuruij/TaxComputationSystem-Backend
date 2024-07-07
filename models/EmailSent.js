@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         EmailSent.belongsTo(models.Taxpayer, {
             foreignKey: 'taxpayerId',
             as: 'Taxpayer' // This alias must match the model used in the include statemen
-        });
+        }); 
     };
 
     return EmailSent;

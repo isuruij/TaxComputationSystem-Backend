@@ -1085,3 +1085,40 @@ module.exports.verifyTaxReport = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+
+module.exports.updatePassword = async (req, res) => {
+  try {
+    const result = await SuperAdminService.updatePassword(
+      req.cookies.token,
+      req.body
+    );
+    return res.status(200).json(result);
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+module.exports.getname = async (req, res) => {
+  try {
+    const result = await SuperAdminService.getname(
+      req.cookies.token,
+      req.body
+    );
+    return res.status(200).json(result);
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+module.exports.updatename = async (req, res) => {
+  try {
+    const result = await SuperAdminService.updatename(
+      req.cookies.token,
+      req.body
+    );
+    return res.status(200).json(result);
+  } catch (error) {
+    return { status: false };
+  }
+};

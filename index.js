@@ -40,7 +40,7 @@ const SuperAdminRoutes = require("./Routes/SuperAdminRoute");
 const { FORCE } = require("sequelize/lib/index-hints");
 app.use("/api/taxpayer", taxpayerRoutes);
 app.use("/api/dataentry", dataentryRoutes);
-app.use("/api/SuperAdmin", SuperAdminRoutes);
+app.use("/api/SuperAdmin", SuperAdminRoutes); 
 
 db.sequelize.sync({ force:false}).then(() => {
   app.listen(3000, () => {
