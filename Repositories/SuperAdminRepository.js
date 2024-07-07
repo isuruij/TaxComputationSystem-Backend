@@ -881,7 +881,7 @@ module.exports.getSentMail = async () => {
 module.exports.deleteSentMail = async (emailId) => {
   try {
     //check wether taxpayerid exsits
-    const existEmail =  await EmailInbox.findOne({where: {emailId: emailId}});
+    const existEmail =  await EmailSent.findOne({where: {emailId: emailId}});
     if(existEmail){
         await EmailSent.destroy({where: {emailId: emailId}});
     }else{

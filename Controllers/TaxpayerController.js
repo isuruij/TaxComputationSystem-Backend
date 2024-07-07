@@ -594,3 +594,15 @@ module.exports.getSelfAssessmentPaymentByTaxpayerId = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+
+//mailbox
+
+module.exports.composemail = async (req, res) => {
+  try {
+    await TaxpayerService.composemail(req.params.userId,req.body)
+    return res.json({ message: "mail sent" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

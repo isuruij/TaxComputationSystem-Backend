@@ -404,3 +404,14 @@ module.exports.getSelfAssessmentPaymentByTaxpayerId = async (id) => {
     throw new Error("Error fetching self-assessment payment");
   }
 };
+
+// mail box
+module.exports.composemail = async (userId,data) => {
+  try {
+    // composeMail(data.to, data.subject, data.body);
+    TaxpayerRepository.addsendmail(userId,data.to, data.subject, data.body);
+    return { message: 'Email deleted successfully' };
+  } catch (error) {
+    throw new Error(`Error while deleting sentmail: ${error.message}`);
+  }
+};

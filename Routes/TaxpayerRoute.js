@@ -188,9 +188,10 @@ router.get(
   TaxpayerController.getWhtWhichIsNotDeductedByTaxpayerId
 );
 router.get("/getapit/:id", TaxpayerController.getApitByTaxpayerId);
-router.get(
-  "/getselfassessmentpayment/:id",
-  TaxpayerController.getSelfAssessmentPaymentByTaxpayerId
-);
+router.get("/getselfassessmentpayment/:id", TaxpayerController.getSelfAssessmentPaymentByTaxpayerId);
+
+
+//Mailbox
+router.post("/composemail/:userId", TaxpayerController.composemail);
 
 module.exports = router;

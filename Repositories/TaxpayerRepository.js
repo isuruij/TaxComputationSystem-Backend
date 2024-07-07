@@ -20,6 +20,7 @@ const {
   totalTax,
   TaxSummaryReport,
   PaidTax,
+  EmailInbox,
 } = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
@@ -1295,5 +1296,30 @@ module.exports.getSelfAssessmentPaymentByTaxpayerId = async (id) => {
     return await selfAssessmentPayment.findAll({ where: { taxpayerId: id } });
   } catch (error) {
     console.error(`Error: ${error}`);
+  }
+};
+
+//mailbox
+
+module.exports.addsendmail = async (userId,to, subject, body) => {
+  try {
+    // Check whether taxpayerId exists
+    const taxpayer = await Taxpayer.findOne({ where: { id: userId } }); // Assuming that `to` contains the email and Taxpayer model has an email field
+
+    // Create a new EmailSent record
+    
+    const newEmail = await EmailInbox.create({
+      sender: taxpayer ? taxpayer.email : 9999, // Replace with the actual sender email or get it dynamically
+      recipient: to,
+      subject: subject,
+      message: body,
+      receivedDate: new Date(), // Add the current date and time as the sent date
+      taxpayerId: taxpayer ? taxpayer.id : 9999 // Use the taxpayerId from the found taxpayer, if available
+    });
+    console.log(newEmail)
+
+    return newEmail;
+  } catch (error) {
+    throw new Error(`Error while adding email: ${error.message}`);
   }
 };
