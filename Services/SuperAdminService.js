@@ -994,3 +994,24 @@ module.exports.updatename = async (token, data) => {
     return { status: false, message: error.message };
   }
 };
+
+
+module.exports.getadminlist = async () => {
+  try {
+    const created = await SuperAdminRepository.getadminlist();
+    return created;
+  } catch (error) {
+    console.error(`Error in service: ${error.message}`);
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.deleteAdmin = async (adminId,isSuperAdmin) => {
+  try {
+    const created = await SuperAdminRepository.deleteAdmin(adminId,isSuperAdmin);
+    return created;
+  } catch (error) {
+    console.error(`Error in service: ${error.message}`);
+    return { status: false, message: error.message };
+  }
+};

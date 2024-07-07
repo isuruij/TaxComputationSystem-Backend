@@ -379,4 +379,8 @@ router.get("/getname", SuperAdminController.getname);
 
 router.patch("/updatename", SuperAdminController.updatename);
 
+router.get('/getadminlist',SuperAdminController.getadminlist);
+
+router.delete('/deleteAdmin/:adminId/:isSuperAdmin',SuperAdminController.deleteAdmin);
+
 module.exports = router;

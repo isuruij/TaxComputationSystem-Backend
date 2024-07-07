@@ -1122,3 +1122,31 @@ module.exports.updatename = async (req, res) => {
     return { status: false };
   }
 };
+
+
+module.exports.getadminlist = async (req, res) => {
+  try {
+    const result = await SuperAdminService.getadminlist();
+    console.log(result);
+    // Return the result as a JSON response with a status code of 200
+    return res.status(200).json(result);
+
+  } catch (error) {
+    console.error(`Error in controller: ${error.message}`);
+    return res.status(500).json({ status: false, message: error.message });
+  }
+};
+
+
+module.exports.deleteAdmin = async (req, res) => {
+  try {
+    const { adminId, isSuperAdmin } = req.params;
+    const result = await SuperAdminService.deleteAdmin(adminId,isSuperAdmin);
+    // Return the result as a JSON response with a status code of 200
+    return res.status(200).json(result);
+
+  } catch (error) {
+    console.error(`Error in controller: ${error.message}`);
+    return res.status(500).json({ status: false, message: error.message });
+  }
+};

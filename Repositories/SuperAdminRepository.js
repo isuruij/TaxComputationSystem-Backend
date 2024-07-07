@@ -1668,3 +1668,55 @@ module.exports.updatename = async (token, data) => {
     throw new Error(`Error: ${error.message}`);
   }
 };
+
+
+module.exports.getadminlist = async () => {
+  try {
+    const superAdmins = await SuperAdmin.findAll({
+      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+    });
+    const secondAdmins = await SecondAdmin.findAll({
+      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+    });
+
+    // Map over superAdmins and secondAdmins to add the superadmin property
+    const formattedSuperAdmins = superAdmins.map(admin => ({
+      ...admin.toJSON(), // Assuming Sequelize ORM is used; adjust accordingly if not
+      issuperadmin:true
+    }));
+    const formattedSecondAdmins = secondAdmins.map(admin => ({
+      ...admin.toJSON(), // Assuming Sequelize ORM is used; adjust accordingly if not
+      issuperadmin:false
+    }));
+
+    // Concatenate the two arrays
+    const combinedAdmins = [...formattedSuperAdmins, ...formattedSecondAdmins];
+
+    return combinedAdmins; // Return the combined array
+  } catch (error) {
+    console.error(`Error in repository: ${error.message}`);
+    return { status: false, message: error.message };
+  }
+};
+
+
+module.exports.deleteAdmin = async (adminId,isSuperAdmin) => {
+  try {
+    if(isSuperAdmin==="true"){
+      const user = await SuperAdmin.findOne({ where: { id: adminId } });
+      if (!user) {
+        return { status: false, message: "super Admin not found" };
+      }
+      await SuperAdmin.destroy({ where: { id: adminId } });
+    }else{
+      const user = await SecondAdmin.findOne({ where: { id: adminId } });
+      if (!user) {
+        return { status: false, message: "Admin not found" };
+      }
+      await SecondAdmin.destroy({ where: { id: adminId } });
+    }
+  } catch (error) {
+    console.error(`Error in repository: ${error.message}`);
+    return { status: false, message: error.message };
+  }
+};
