@@ -1486,8 +1486,21 @@ module.exports.deleteSentMail = async (emailId) => {
   }
 };
 
-module.exports.addsendmail = async (to, subject, body) => {
+module.exports.addsendmail = async (to, subject, body,userId,files, host, protocol) => {
   try {
+
+    let userid = parseInt(userId, 10);
+
+    if (!files || !files.path) {
+      throw new Error("Invalid file input: file is missing or file path is missing.");
+    }
+
+    const normalizedPath = files.path.replace(/\\/g, "/");
+    const parts = normalizedPath.split("/").slice(1); // remove public
+    // Construct the URL
+    const path = `${protocol}://${host}/${parts.join("/")}`;
+
+    console.log(path); // Log the path after it is defined
     // Check whether taxpayerId exists
     const taxpayer = await Taxpayer.findOne({ where: { email: to } }); // Assuming that `to` contains the email and Taxpayer model has an email field
 
@@ -1499,6 +1512,7 @@ module.exports.addsendmail = async (to, subject, body) => {
       message: body,
       sentDate: new Date(), // Add the current date and time as the sent date
       taxpayerId: taxpayer ? taxpayer.id : 9999, // Use the taxpayerId from the found taxpayer, if available
+      filePath: path,
     });
     console.log(newEmail);
 

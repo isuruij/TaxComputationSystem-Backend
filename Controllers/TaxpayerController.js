@@ -655,11 +655,15 @@ module.exports.getSelfAssessmentPaymentByTaxpayerId = async (req, res) => {
 
 //mailbox
 
-module.exports.composemail = async (req, res) => {
-  try {
-    await TaxpayerService.composemail(req.params.userId,req.body)
-    return res.json({ message: "mail sent" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+// module.exports.composemail = async (req, res) => {
+//   try {
+//     const protocol = req.protocol;
+//     const host = req.get("host");
+//     const files = req.file;
+//     console.log(files);
+//     await TaxpayerService.composemail(req.params.userId,req.body,files, host, protocol)
+//     return res.json({ message: "mail sent" });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };

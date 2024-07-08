@@ -1361,25 +1361,41 @@ module.exports.getSelfAssessmentPaymentByTaxpayerId = async (id) => {
 
 //mailbox
 
-module.exports.addsendmail = async (userId,to, subject, body) => {
-  try {
-    // Check whether taxpayerId exists
-    const taxpayer = await Taxpayer.findOne({ where: { id: userId } }); // Assuming that `to` contains the email and Taxpayer model has an email field
+// module.exports.addsendmail = async (userId,to, subject, body,files, host, protocol) => {
+//   try {
 
-    // Create a new EmailSent record
+//     let userid = parseInt(userId, 10);
+//     // Check whether taxpayerId exists
+//     const taxpayer = await Taxpayer.findOne({ where: { id: userId } }); // Assuming that `to` contains the email and Taxpayer model has an email field
+//     console.log(files);
+
+//     if (!files || !files.path) {
+//       throw new Error("Invalid file input: file is missing or file path is missing.");
+//     }
+
+//     const normalizedPath = files.path.replace(/\\/g, "/");
+//     const parts = normalizedPath.split("/").slice(1); // remove public
+//     // Construct the URL
+//     const path = `${protocol}://${host}/${parts.join("/")}`;
+
+//     console.log(path); // Log the path after it is defined
+//     // Check whether taxpayerId exists
+
+//     // Create a new EmailSent record
     
-    const newEmail = await EmailInbox.create({
-      sender: taxpayer ? taxpayer.email : 9999, // Replace with the actual sender email or get it dynamically
-      recipient: to,
-      subject: subject,
-      message: body,
-      receivedDate: new Date(), // Add the current date and time as the sent date
-      taxpayerId: taxpayer ? taxpayer.id : 9999 // Use the taxpayerId from the found taxpayer, if available
-    });
-    console.log(newEmail)
+//     const newEmail = await EmailInbox.create({
+//       sender: taxpayer ? taxpayer.email : 9999, // Replace with the actual sender email or get it dynamically
+//       recipient: to,
+//       subject: subject,
+//       message: body,
+//       receivedDate: new Date(), // Add the current date and time as the sent date
+//       taxpayerId: taxpayer ? taxpayer.id : 9999, // Use the taxpayerId from the found taxpayer, if available
+//       filePath: path,
+//     });
+//     console.log(newEmail)
 
-    return newEmail;
-  } catch (error) {
-    throw new Error(`Error while adding email: ${error.message}`);
-  }
-};
+//     return newEmail;
+//   } catch (error) {
+//     throw new Error(`Error while adding email: ${error.message}`);
+//   }
+// };
