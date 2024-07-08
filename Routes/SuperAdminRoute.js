@@ -15,7 +15,7 @@ router.post('/login',SuperAdminController.loginSuperAdmin);
 
 router.post('/addnotifications',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.addNotifications);
 router.post('/addnotifications2',JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.addNotifications2);
-router.get("/getusers",JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.getTaxpayers);
+router.get("/getusers",SuperAdminController.getTaxpayers);
 
 router.get("/getBusinessIncome/",JwtService.roleBasedAuth(["superAdmin"]),SuperAdminController.getBusinessIncome);
 
