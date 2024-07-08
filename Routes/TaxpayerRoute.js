@@ -59,6 +59,13 @@ router.patch(
   TaxpayerController.updateBasicDetails
 );
 
+// handle pro pic
+router.post("/uploadpropic/:userId", upload.single("file"),JwtService.verifyuser,
+JwtService.roleBasedAuth(["taxpayer", "superAdmin", "secondAdmin"]),
+TaxpayerController.uploadpropic);
+
+router.put('/removepropic/:userId', TaxpayerController.removeProfilePic);
+
 router.post("/forgot-password", TaxpayerController.forgotPassword);
 
 router.get("/reset-password/:id/:token", TaxpayerController.resetPassword);
@@ -115,7 +122,23 @@ router.get("/getSummaryReport/:id", TaxpayerController.downloadSummaryReport);
 
 router.get("/getNotifications/:id", TaxpayerController.getNotifications);
 
+//for tax history
 router.get("/getCalculatedTax/:id", TaxpayerController.getCalculatedTax);
+
+//get tax payments
+router.get("/getTaxPayments/:id", TaxpayerController.getTaxPayments);
+
+//get tax report is verified
+router.get("/isTaxReportVerified/:id", TaxpayerController.ReportVerified);
+
+//delete taxpayment
+router.delete(
+  "/deletePaidTax/:taxpaymentid",
+  TaxpayerController.deleteTaxPayment
+);
+
+//add paid tax
+router.post("/paidtax/:id", TaxpayerController.postpaidtax);
 
 router.get("/getNameForProfile/:id", TaxpayerController.getNameForProfile);
 

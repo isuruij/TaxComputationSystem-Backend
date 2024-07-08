@@ -71,6 +71,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    docname: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    filePath: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   });
 
   Taxpayer.associate = (models) => {

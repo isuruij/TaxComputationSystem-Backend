@@ -19,6 +19,7 @@ const {
   sumOfCat,
   totalTax,
   TaxSummaryReport,
+  PaidTax,
 } = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
@@ -177,6 +178,56 @@ module.exports.updateBasicDetails = async (obj) => {
     return { status: false };
   }
 };
+// update profile pic 
+module.exports.uploadpropic = async (id, files, host, protocol) => {
+  try {
+
+    let userid = parseInt(id, 10);
+    
+    if (!files || !files.path) {
+      throw new Error("Invalid file input: file is missing or file path is missing.");
+    }
+
+    const normalizedPath = files.path.replace(/\\/g, "/");
+    const parts = normalizedPath.split("/").slice(1); // remove public
+    // Construct the URL
+    const path = `${protocol}://${host}/${parts.join("/")}`;
+
+    console.log(path); // Log the path after it is defined
+
+    const taxpayer = await Taxpayer.findOne({ where: { id: userid } });
+
+    if (taxpayer) {
+      const existingRow1 = await taxpayer.update({ filePath: path });
+      console.log("user profile pic updated:", existingRow1.toJSON());
+    } else {
+      throw new Error("Taxpayer not found.");
+    }
+
+  } catch (error) {
+    console.error("Error processing file:", error);
+    throw new Error("Error saving or updating file: " + error.message);
+  }
+};
+
+module.exports.updateUserProfilePic = async (userId) => {
+  try {
+    const taxpayer = await Taxpayer.findOne({ where: { id: userId } });
+    
+    if (taxpayer) {
+      const existingRow1 = await taxpayer.update({ filePath:null });
+      console.log("delete path:", existingRow1.toJSON());
+      return existingRow1;
+    } else {
+      throw new Error("Taxpayer not found.");
+    }
+  } catch (error) {
+    throw new Error('Failed to remove profile picture');
+  }
+};
+
+
+
 
 // get taxpayer details
 module.exports.getBasicDetails = async (id) => {
@@ -1120,6 +1171,73 @@ module.exports.getCalculatedTax = async (id) => {
     return { status: true, data: tax };
   } catch (error) {
     console.error(`Error fetching notifications: ${error}`);
+    return { status: false };
+  }
+};
+
+module.exports.getTaxPayments = async (id) => {
+  try {
+    const taxPayments = await PaidTax.findAll({
+      attributes: ["paidTaxId", "Description", "Paid"],
+      where: { taxpayerId: id },
+    });
+
+    return { status: true, data: taxPayments };
+  } catch (error) {
+    console.error(`Error fetching taxpayments: ${error}`);
+    return { status: false };
+  }
+};
+
+module.exports.ReportVerified = async (id) => {
+  try {
+    const taxPayments = await TaxSummaryReport.findOne({
+      attributes: ["isVerified"],
+      where: { taxpayerId: id },
+    });
+    // console.log(taxPayments.isVerified);
+    return { status: true, data: taxPayments.isVerified };
+  } catch (error) {
+    console.error(`Error fetching taxpayments: ${error}`);
+    return { status: false };
+  }
+};
+
+module.exports.deleteTaxPayment = async (id) => {
+  try {
+    await PaidTax.destroy({ where: { paidTaxId: id } });
+
+    return { status: true };
+  } catch (error) {
+    console.error(`Error deleting tax payments: ${error}`);
+    return { status: false };
+  }
+};
+
+module.exports.postpaidtax = async (id, cat, amnt) => {
+  try {
+    // Check if a record exists with the given taxpayerId and Description
+    const existingRecord = await PaidTax.findOne({
+      where: { taxpayerId: id, Description: cat },
+    });
+
+    if (existingRecord) {
+      // Update the existing record
+      existingRecord.Paid += parseFloat(amnt);
+      await existingRecord.save();
+      console.log("Record updated successfully:", existingRecord);
+    } else {
+      // Create a new record
+      const newRecord = await PaidTax.create({
+        taxpayerId: id,
+        Description: cat,
+        Paid: parseFloat(amnt),
+      });
+      console.log("Record created successfully:", newRecord);
+    }
+    return { status: true };
+  } catch (error) {
+    console.error("Error in upsertPaidTax:", error);
     return { status: false };
   }
 };
