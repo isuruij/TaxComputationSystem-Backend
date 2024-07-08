@@ -1160,7 +1160,7 @@ module.exports.getCalculatedTax = async (id) => {
 module.exports.getTaxPayments = async (id) => {
   try {
     const taxPayments = await PaidTax.findAll({
-      attributes: ["paidTaxId", "Description", "Paid"],
+      attributes: ["paidTaxId", "Description", "Paid", "updatedAt"],
       where: { taxpayerId: id },
     });
 
