@@ -372,6 +372,24 @@ module.exports.getNotifications = async (id) => {
   }
 };
 
+
+module.exports.getNameForProfile = async (id) => {
+  try {
+    const result = await Taxpayer.findOne({
+      attributes: ["name", "email"],
+      where: { id: id},
+    });
+    if (!result) {
+      return { status: false };
+    }
+    return { status: true, data: result };
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+
+
 module.exports.updatePassword = async (token, data) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

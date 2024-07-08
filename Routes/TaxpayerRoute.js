@@ -117,6 +117,10 @@ router.get("/getNotifications/:id", TaxpayerController.getNotifications);
 
 router.get("/getCalculatedTax/:id", TaxpayerController.getCalculatedTax);
 
+router.get("/getNameForProfile/:id", TaxpayerController.getNameForProfile);
+
+
+
 router.patch(
   "/updateNotificationStatus",
   JwtService.roleBasedAuth(["taxpayer"]),

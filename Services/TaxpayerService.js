@@ -243,6 +243,20 @@ module.exports.getCalculatedTax = async (id) => {
   }
 };
 
+
+module.exports.getNameForProfile = async (id) => {
+  try {
+    const created = await TaxpayerRepository.getNameForProfile(id);
+    if (created.status) {
+      return { status: true, data: created.data };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
 module.exports.updateNotificationStatus = async (id) => {
   try {
     const created = await TaxpayerRepository.updateNotificationStatus(id);

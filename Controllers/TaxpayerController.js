@@ -378,6 +378,24 @@ module.exports.getCalculatedTax = async (req, res) => {
   }
 };
 
+
+module.exports.getNameForProfile = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const result = await TaxpayerService.getNameForProfile(req.params.id);
+    if (result.status) {
+      return res
+        .status(200)
+        .json({ Status: "successfully fetched", Data: result });
+    } else {
+      return res.status(400).json({ Status: "Error fetching taxes" });
+    }
+  } catch (error) {
+    return res.status(500).send("Error fetching taxes");
+  }
+};
+
+
 module.exports.updateNotificationStatus = async (req, res) => {
   try {
     const result = await TaxpayerService.updateNotificationStatus(req.body.id);
