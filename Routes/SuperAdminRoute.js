@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const JwtService = require("../Services/JwtService");
 
-const SuperAdminController = require("../Controllers/SuperAdminController");
+const SuperAdminController =require('../Controllers/SuperAdminController')
 
 router.post(
   "/register",
@@ -28,7 +28,6 @@ router.post(
 );
 router.get(
   "/getusers",
-  JwtService.roleBasedAuth(["superAdmin"]),
   SuperAdminController.getTaxpayers
 );
 
