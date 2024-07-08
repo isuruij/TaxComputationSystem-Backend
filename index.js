@@ -24,7 +24,7 @@ app.use("/files", express.static(path.join(__dirname, "public", "files")));
 //middleware
 app.use(
   cors({
-    origin: process.env.FRONTEND_BASE_URL,
+    origin: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
     exposedHeaders: ["Content-Disposition"],

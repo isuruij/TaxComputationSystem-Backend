@@ -262,7 +262,7 @@ module.exports.forgotPassword = async (email) => {
       secret,
       { expiresIn: "15m" }
     );
-    const link = `http://localhost:3000/api/taxpayer/reset-password/${existingEmail.id}/${token}`;
+    const link = `${process.env.BACKEND_BASE_URL}/api/taxpayer/reset-password/${existingEmail.id}/${token}`;
     console.log(link);
     // sendMail here
     sendVerificationMail(existingEmail.id, existingEmail.email, token);
