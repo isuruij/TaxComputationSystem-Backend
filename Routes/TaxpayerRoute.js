@@ -128,6 +128,9 @@ router.get("/getCalculatedTax/:id", TaxpayerController.getCalculatedTax);
 //get tax payments
 router.get("/getTaxPayments/:id", TaxpayerController.getTaxPayments);
 
+//get sum tax payments
+router.get("/getSumTaxPayments/:id", TaxpayerController.getSumTaxPayments);
+
 //get tax report is verified
 router.get("/isTaxReportVerified/:id", TaxpayerController.ReportVerified);
 

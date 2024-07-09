@@ -1178,9 +1178,28 @@ module.exports.getCalculatedTax = async (id) => {
 module.exports.getTaxPayments = async (id) => {
   try {
     const taxPayments = await PaidTax.findAll({
-      attributes: ["paidTaxId", "Description", "Paid"],
+      attributes: ["paidTaxId", "Description", "Paid", "updatedAt"],
       where: { taxpayerId: id },
     });
+
+    return { status: true, data: taxPayments };
+  } catch (error) {
+    console.error(`Error fetching taxpayments: ${error}`);
+    return { status: false };
+  }
+};
+
+module.exports.getSumTaxPayments = async (id) => {
+  try {
+    const taxPayments = await PaidTax.findAll({
+      attributes: [
+        "Description",
+        [sequelize.fn("SUM", sequelize.col("Paid")), "totalPaid"],
+      ],
+      where: { taxpayerId: id },
+      group: ["Description"],
+    });
+    console.log(taxPayments);
 
     return { status: true, data: taxPayments };
   } catch (error) {
