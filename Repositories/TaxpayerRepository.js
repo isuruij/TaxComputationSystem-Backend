@@ -179,14 +179,15 @@ module.exports.updateBasicDetails = async (obj) => {
     return { status: false };
   }
 };
-// update profile pic 
+// update profile pic
 module.exports.uploadpropic = async (id, files, host, protocol) => {
   try {
-
     let userid = parseInt(id, 10);
-    
+
     if (!files || !files.path) {
-      throw new Error("Invalid file input: file is missing or file path is missing.");
+      throw new Error(
+        "Invalid file input: file is missing or file path is missing."
+      );
     }
 
     const normalizedPath = files.path.replace(/\\/g, "/");
@@ -204,7 +205,6 @@ module.exports.uploadpropic = async (id, files, host, protocol) => {
     } else {
       throw new Error("Taxpayer not found.");
     }
-
   } catch (error) {
     console.error("Error processing file:", error);
     throw new Error("Error saving or updating file: " + error.message);
@@ -214,21 +214,18 @@ module.exports.uploadpropic = async (id, files, host, protocol) => {
 module.exports.updateUserProfilePic = async (userId) => {
   try {
     const taxpayer = await Taxpayer.findOne({ where: { id: userId } });
-    
+
     if (taxpayer) {
-      const existingRow1 = await taxpayer.update({ filePath:null });
+      const existingRow1 = await taxpayer.update({ filePath: null });
       console.log("delete path:", existingRow1.toJSON());
       return existingRow1;
     } else {
       throw new Error("Taxpayer not found.");
     }
   } catch (error) {
-    throw new Error('Failed to remove profile picture');
+    throw new Error("Failed to remove profile picture");
   }
 };
-
-
-
 
 // get taxpayer details
 module.exports.getBasicDetails = async (id) => {
@@ -499,6 +496,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("Employemnet income row updated:", existingRow1.toJSON());
         } else {
@@ -531,6 +529,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("business income row updated:", existingRow1.toJSON());
         } else {
@@ -563,6 +562,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("investment income row updated:", existingRow1.toJSON());
         } else {
@@ -595,6 +595,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("other income row updated:", existingRow1.toJSON());
         } else {
@@ -627,6 +628,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log(
             "reliefForRentIncome row updated:",
@@ -665,6 +667,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log(
             "reliefForExpenditure row updated:",
@@ -703,6 +706,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("qualifyingPayments row updated:", existingRow1.toJSON());
         } else {
@@ -735,6 +739,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("apit row updated:", existingRow1.toJSON());
         } else {
@@ -769,6 +774,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log(
             "whtOnInvestmentIncome row updated:",
@@ -808,6 +814,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log(
             "whtOnServiceFeeReceived row updated:",
@@ -848,6 +855,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log(
             "selfAssessmentPayment row updated:",
@@ -863,7 +871,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
 
       //12.terminalBenefits table
       if (files[i].id == 12) {
-        // 1.update business Income table
+        // 1.update terminalBenefits Income table
         // First, attempt to find the existing row
 
         const normalizedPath = files[i].path.replace(/\\/g, "/");
@@ -886,6 +894,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("terminalBenefits row updated:", existingRow1.toJSON());
         } else {
@@ -918,6 +927,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("capitalValueGain row updated:", existingRow1.toJSON());
         } else {
@@ -927,7 +937,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
 
       //14.whtWhichIsNotDeducted table
       if (files[i].id == 14) {
-        // 1.update business Income table
+        // 1.update whtWhichIsNotDeducted Income table
         // First, attempt to find the existing row
 
         const normalizedPath = files[i].path.replace(/\\/g, "/");
@@ -952,6 +962,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log(
             "whtWhichIsNotDeducted row updated:",
@@ -1195,7 +1206,7 @@ module.exports.getNameForProfile = async (id) => {
   try {
     const result = await Taxpayer.findOne({
       attributes: ["name", "email"],
-      where: { id: id},
+      where: { id: id },
     });
     if (!result) {
       return { status: false };
@@ -1383,16 +1394,24 @@ module.exports.getSelfAssessmentPaymentByTaxpayerId = async (id) => {
 
 //mailbox
 
-module.exports.addsendmail = async (userId,subject, body,files, host, protocol) => {
+module.exports.addsendmail = async (
+  userId,
+  subject,
+  body,
+  files,
+  host,
+  protocol
+) => {
   try {
-
     let userid = parseInt(userId, 10);
     // Check whether taxpayerId exists
     const taxpayer = await Taxpayer.findOne({ where: { id: userId } }); // Assuming that `to` contains the email and Taxpayer model has an email field
     console.log(files);
 
     if (!files || !files.path) {
-      throw new Error("Invalid file input: file is missing or file path is missing.");
+      throw new Error(
+        "Invalid file input: file is missing or file path is missing."
+      );
     }
 
     const normalizedPath = files.path.replace(/\\/g, "/");
@@ -1404,7 +1423,7 @@ module.exports.addsendmail = async (userId,subject, body,files, host, protocol) 
     // Check whether taxpayerId exists
 
     // Create a new EmailSent record
-    
+
     const newEmail = await EmailInbox.create({
       sender: taxpayer ? taxpayer.email : 9999, // Replace with the actual sender email or get it dynamically
       recipient: "Tax computation System",
@@ -1414,7 +1433,7 @@ module.exports.addsendmail = async (userId,subject, body,files, host, protocol) 
       taxpayerId: taxpayer ? taxpayer.id : 9999, // Use the taxpayerId from the found taxpayer, if available
       filePath: path,
     });
-    console.log(newEmail)
+    console.log(newEmail);
 
     return newEmail;
   } catch (error) {

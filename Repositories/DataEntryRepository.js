@@ -705,6 +705,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("Employemnet income row updated:", existingRow1.toJSON());
         } else {
@@ -737,6 +738,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("business income row updated:", existingRow1.toJSON());
         } else {
@@ -769,6 +771,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("investment income row updated:", existingRow1.toJSON());
         } else {
@@ -801,6 +804,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("other income row updated:", existingRow1.toJSON());
         } else {
@@ -833,6 +837,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log(
             "reliefForRentIncome row updated:",
@@ -871,6 +876,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log(
             "reliefForExpenditure row updated:",
@@ -909,6 +915,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("qualifyingPayments row updated:", existingRow1.toJSON());
         } else {
@@ -941,6 +948,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("apit row updated:", existingRow1.toJSON());
         } else {
@@ -975,6 +983,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log(
             "whtOnInvestmentIncome row updated:",
@@ -1014,6 +1023,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log(
             "whtOnServiceFeeReceived row updated:",
@@ -1054,6 +1064,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log(
             "selfAssessmentPayment row updated:",
@@ -1092,6 +1103,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("terminalBenefits row updated:", existingRow1.toJSON());
         } else {
@@ -1124,6 +1136,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log("capitalValueGain row updated:", existingRow1.toJSON());
         } else {
@@ -1158,6 +1171,7 @@ module.exports.fileUpload = async (userId, files, host, protocol) => {
             filePath: path,
             docname: files[i].filename,
             isnewsubmission: 1,
+            requestedAgain: 0,
           });
           console.log(
             "whtWhichIsNotDeducted row updated:",
