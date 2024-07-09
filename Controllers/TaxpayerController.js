@@ -439,6 +439,23 @@ module.exports.getTaxPayments = async (req, res) => {
   }
 };
 
+module.exports.getSumTaxPayments = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const result = await TaxpayerService.getSumTaxPayments(req.params.id);
+
+    if (result.status) {
+      return res
+        .status(200)
+        .json({ Status: "successfully fetched", Data: result.data });
+    } else {
+      return res.status(400).json({ Status: "Error fetching taxes" });
+    }
+  } catch (error) {
+    return res.status(500).send("Error fetching taxes");
+  }
+};
+
 module.exports.ReportVerified = async (req, res) => {
   try {
     const result = await TaxpayerService.ReportVerified(req.params.id);
