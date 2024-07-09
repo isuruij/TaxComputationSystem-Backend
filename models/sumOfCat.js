@@ -50,7 +50,11 @@ module.exports = (sequelize, DataTypes) => {
           model: "Taxpayers",
           key: "id",
         },
+
+      onDelete: 'CASCADE',
       },
+
+
     },
     {
       hooks: {

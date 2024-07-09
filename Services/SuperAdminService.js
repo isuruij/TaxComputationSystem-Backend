@@ -1015,3 +1015,13 @@ module.exports.deleteAdmin = async (adminId,isSuperAdmin) => {
     return { status: false, message: error.message };
   }
 };
+
+
+module.exports.deleteTaxpayer = async (taxpayerId) => {
+  try {
+    await SuperAdminRepository.deleteTaxpayer(taxpayerId);
+    return { message: 'Taxpayer deleted successfully' };
+  } catch (error) {
+    throw new Error(`Error while deleting taxpayer: ${error.message}`);
+  }
+};
