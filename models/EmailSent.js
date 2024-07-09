@@ -22,6 +22,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,  // TEXT data type for potentially long email bodies
             allowNull: true,
         },
+        docname: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        filePath: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         sentDate: {
             type: DataTypes.DATE,
             allowNull: false,  // Date should always be recorded when email is sent

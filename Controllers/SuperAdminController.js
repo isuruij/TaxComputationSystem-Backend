@@ -1054,8 +1054,10 @@ module.exports.deleteSentMail = async (req, res) => {
 
 module.exports.composemail = async (req, res) => {
   try {
-    console.log(req.body);
-    await SuperAdminService.composemail(req.body);
+    const protocol = req.protocol;
+    const host = req.get("host");
+    const files = req.file;
+    await SuperAdminService.composemail(req.body,req.params.userId,files, host, protocol);
     return res.json({ message: "mail sent" });
   } catch (error) {
     res.status(500).json({ error: error.message });
