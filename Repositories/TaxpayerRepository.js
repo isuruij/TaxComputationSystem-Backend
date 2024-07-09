@@ -1191,6 +1191,8 @@ module.exports.getTaxPayments = async (id) => {
 
 module.exports.getSumTaxPayments = async (id) => {
   try {
+    console.log("hello");
+
     const taxPayments = await PaidTax.findAll({
       attributes: [
         "Description",
