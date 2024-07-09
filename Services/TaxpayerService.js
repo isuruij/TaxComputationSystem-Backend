@@ -439,12 +439,12 @@ module.exports.getSelfAssessmentPaymentByTaxpayerId = async (id) => {
 };
 
 // mail box
-// module.exports.composemail = async (userId,data,files, host, protocol) => {
-//   try {
-//     // composeMail(data.to, data.subject, data.body);
-//     TaxpayerRepository.addsendmail(userId,data.to, data.subject, data.body,files, host, protocol);
-//     return { message: 'Email deleted successfully' };
-//   } catch (error) {
-//     throw new Error(`Error while deleting sentmail: ${error.message}`);
-//   }
-// };
+module.exports.composemail = async (userId,data,files, host, protocol) => {
+  try {
+    // composeMail(data.to, data.subject, data.body);
+    TaxpayerRepository.addsendmail(userId,data.subject, data.body,files, host, protocol);
+    return { message: 'Email deleted successfully' };
+  } catch (error) {
+    throw new Error(`Error while deleting sentmail: ${error.message}`);
+  }
+};
