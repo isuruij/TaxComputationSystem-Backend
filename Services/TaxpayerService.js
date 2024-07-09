@@ -289,6 +289,19 @@ module.exports.getSumTaxPayments = async (id) => {
   }
 };
 
+module.exports.getNameForProfile = async (id) => {
+  try {
+    const created = await TaxpayerRepository.getNameForProfile(id);
+    if (created.status) {
+      return { status: true, data: created.data };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
 module.exports.ReportVerified = async (id) => {
   try {
     const created = await TaxpayerRepository.ReportVerified(id);
