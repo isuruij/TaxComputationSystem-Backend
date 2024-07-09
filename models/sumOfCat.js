@@ -1,5 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const totalTax = require("./totalTax")(sequelize, DataTypes);
+  const TaxSummaryReport = require("./TaxSummaryReport")(sequelize, DataTypes);
 
   const sumOfCat = sequelize.define(
     "sumOfCat",
@@ -49,7 +50,11 @@ module.exports = (sequelize, DataTypes) => {
           model: "Taxpayers",
           key: "id",
         },
+
+      onDelete: 'CASCADE',
       },
+
+
     },
     {
       hooks: {
@@ -172,6 +177,20 @@ module.exports = (sequelize, DataTypes) => {
               transaction: options.transaction,
             }
           );
+          // Check if the row exists
+          const existingReport = await TaxSummaryReport.findOne({
+            where: { taxpayerId: sumOfCatInstance.taxpayerId },
+          });
+          // Update only if the row exists
+          if (existingReport) {
+            await TaxSummaryReport.update(
+              { isVerified: false },
+              {
+                where: { taxpayerId: sumOfCatInstance.taxpayerId },
+                transaction: options.transaction,
+              }
+            );
+          }
           // }
         },
       },

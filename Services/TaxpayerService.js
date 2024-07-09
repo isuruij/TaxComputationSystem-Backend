@@ -48,6 +48,26 @@ module.exports.updateBasicDetails = async (data) => {
   }
 };
 
+// handle profile pic
+module.exports.uploadpropic = async (id, files, host, protocol) => {
+  try {
+    // console.log("Received file object at service:", files);
+    // Process the files as needed (e.g., save to the database)
+    await TaxpayerRepository.uploadpropic(id, files, host, protocol);
+  } catch (error) {
+    throw new Error("Error processing files: " + error.message);
+  }
+};
+
+exports.removeProfilePic = async (userId) => {
+  try {
+    const updatedUser = await TaxpayerRepository.updateUserProfilePic(userId);
+    return updatedUser;
+  } catch (error) {
+    throw new Error('Failed to remove profile picture');
+  }
+};
+
 module.exports.getBasicDetails = async (id) => {
   try {
     const created = await TaxpayerRepository.getBasicDetails(id);
@@ -243,6 +263,84 @@ module.exports.getCalculatedTax = async (id) => {
   }
 };
 
+module.exports.getTaxPayments = async (id) => {
+  try {
+    const created = await TaxpayerRepository.getTaxPayments(id);
+    if (created.status) {
+      return { status: true, data: created.data };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.getSumTaxPayments = async (id) => {
+  try {
+    const created = await TaxpayerRepository.getSumTaxPayments(id);
+    if (created.status) {
+      return { status: true, data: created.data };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.getNameForProfile = async (id) => {
+  try {
+    const created = await TaxpayerRepository.getNameForProfile(id);
+    if (created.status) {
+      return { status: true, data: created.data };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.ReportVerified = async (id) => {
+  try {
+    const created = await TaxpayerRepository.ReportVerified(id);
+    if (created.status) {
+      return { status: true, data: created.data };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.deleteTaxPayment = async (id) => {
+  try {
+    const created = await TaxpayerRepository.deleteTaxPayment(id);
+    if (created.status) {
+      return { status: true };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false, message: error.message };
+  }
+};
+
+module.exports.postpaidtax = async (id, cat, amnt) => {
+  try {
+    const created = await TaxpayerRepository.postpaidtax(id, cat, amnt);
+    if (created.status) {
+      return { status: true };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    return { status: false };
+  }
+};
+
 module.exports.updateNotificationStatus = async (id) => {
   try {
     const created = await TaxpayerRepository.updateNotificationStatus(id);
@@ -363,5 +461,16 @@ module.exports.getSelfAssessmentPaymentByTaxpayerId = async (id) => {
     return await TaxpayerRepository.getSelfAssessmentPaymentByTaxpayerId(id);
   } catch (error) {
     throw new Error("Error fetching self-assessment payment");
+  }
+};
+
+// mail box
+module.exports.composemail = async (userId,data,files, host, protocol) => {
+  try {
+    // composeMail(data.to, data.subject, data.body);
+    TaxpayerRepository.addsendmail(userId,data.subject, data.body,files, host, protocol);
+    return { message: 'Email deleted successfully' };
+  } catch (error) {
+    throw new Error(`Error while deleting sentmail: ${error.message}`);
   }
 };

@@ -81,3 +81,20 @@ module.exports.authtsuperAdmin = async (req, res, next) => {
     res.send({ Status: "Failed" });
   }
 };
+
+
+module.exports.authtsecondAdmin = async (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.name = decoded.name;
+    if (decoded.role === "secondAdmin") {
+      next();
+    } else {
+      res.send({ Status: "Failed" });
+    }
+  } catch (e) {
+    console.log(e.message)
+    res.send({ Status: "Failed" });
+  }
+};

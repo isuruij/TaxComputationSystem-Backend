@@ -24,7 +24,7 @@ app.use("/files", express.static(path.join(__dirname, "public", "files")));
 //middleware
 app.use(
   cors({
-    origin: process.env.FRONTEND_BASE_URL,
+    origin: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
     exposedHeaders: ["Content-Disposition"],
@@ -40,9 +40,9 @@ const SuperAdminRoutes = require("./Routes/SuperAdminRoute");
 const { FORCE } = require("sequelize/lib/index-hints");
 app.use("/api/taxpayer", taxpayerRoutes);
 app.use("/api/dataentry", dataentryRoutes);
-app.use("/api/SuperAdmin", SuperAdminRoutes);
+app.use("/api/SuperAdmin", SuperAdminRoutes); 
 
-db.sequelize.sync({ force: false }).then(() => {
+db.sequelize.sync({ force:false}).then(() => {
   app.listen(3000, () => {
     console.log("Server running on port 3000");
   });

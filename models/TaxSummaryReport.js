@@ -14,7 +14,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    taxpayerId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Taxpayers",
+        key: "id",
+      },
+    },
   });
+
+  TaxSummaryReport.associate = (models) => {
+    TaxSummaryReport.belongsTo(models.Taxpayer, { foreignKey: "taxpayerId" });
+  };
 
   return TaxSummaryReport;
 };

@@ -38,6 +38,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
+      requested:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      requestedAgain:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      }
     },
     {
       hooks: {

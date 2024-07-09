@@ -145,3 +145,8 @@ module.exports.fileUpload = async (req, res) => {
     return res.status(500).json({ error: "Error uploading files" });
   }
 };
+
+
+module.exports.authtsecondAdmin = async (req, res) => {
+  res.json({ Status: "Success", name: req.name });
+};
