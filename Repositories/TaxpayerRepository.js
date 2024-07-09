@@ -1235,25 +1235,12 @@ module.exports.deleteTaxPayment = async (id) => {
 
 module.exports.postpaidtax = async (id, cat, amnt) => {
   try {
-    // Check if a record exists with the given taxpayerId and Description
-    const existingRecord = await PaidTax.findOne({
-      where: { taxpayerId: id, Description: cat },
+    const newRecord = await PaidTax.create({
+      taxpayerId: id,
+      Description: cat,
+      Paid: parseFloat(amnt),
     });
-
-    if (existingRecord) {
-      // Update the existing record
-      existingRecord.Paid += parseFloat(amnt);
-      await existingRecord.save();
-      console.log("Record updated successfully:", existingRecord);
-    } else {
-      // Create a new record
-      const newRecord = await PaidTax.create({
-        taxpayerId: id,
-        Description: cat,
-        Paid: parseFloat(amnt),
-      });
-      console.log("Record created successfully:", newRecord);
-    }
+    console.log("Record created successfully:", newRecord);
     return { status: true };
   } catch (error) {
     console.error("Error in upsertPaidTax:", error);
