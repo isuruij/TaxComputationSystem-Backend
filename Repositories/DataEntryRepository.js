@@ -529,7 +529,7 @@ module.exports.getUserSubmission = async () => {
 module.exports.getUserDetails = async (userId) => {
   try {
     const result = await Taxpayer.findOne({
-      attributes: ["name", "tin"],
+      attributes: ["name", "tin", "filePath"],
       where: { id: userId },
     });
     if (!result) {
