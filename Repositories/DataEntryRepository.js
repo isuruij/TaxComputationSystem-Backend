@@ -26,7 +26,7 @@ const { sequelize, DataTypes } = require("../models/index");
 module.exports.getusernames = async () => {
   try {
     const listOfUsers = await Taxpayer.findAll({
-      attributes: ["id", "name", "isVerifiedUser"],
+      attributes: ["id", "name", "isVerifiedUser", "filePath"],
     });
     console.log(listOfUsers);
     return { status: true, data: listOfUsers };
