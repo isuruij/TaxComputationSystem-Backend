@@ -6,9 +6,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const path = require("path");
-//to file upload
-// const multer = require("multer");
-// const path = require("path");
+
 
 const db = require("./models");
 
@@ -16,7 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// app.use("/uploads", express.static("uploads")); // Serve uploaded files statically
+
 
 // Serve static files from the 'public' directory for file download process
 app.use("/files", express.static(path.join(__dirname, "public", "files")));
